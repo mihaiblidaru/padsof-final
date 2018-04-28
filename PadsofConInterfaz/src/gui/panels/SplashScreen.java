@@ -53,7 +53,7 @@ public class SplashScreen extends JFrame{
 		JLabel label = new JLabel(new ImageIcon(scaledImage));
 		label.setPreferredSize(new Dimension(IMAGE_WIDTH, IMAGE_HEIGHT));
 		root.add(label);
-		
+		  
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, label, 0, SpringLayout.HORIZONTAL_CENTER, root);
 		JLabel titulo = new JLabel("TuVacaPiso");
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titulo, 0, SpringLayout.HORIZONTAL_CENTER, root);
