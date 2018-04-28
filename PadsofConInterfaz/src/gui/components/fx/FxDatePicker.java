@@ -58,6 +58,7 @@ public class FxDatePicker extends FxWrapper {
                 return LocalDate.parse(dateString,dateTimeFormatter);
             }
         });
+        
         datePicker.setPromptText(this.placeholder);
         datePicker.setPrefWidth(this.getWidth());
         datePicker.setPrefHeight(this.getHeight());
