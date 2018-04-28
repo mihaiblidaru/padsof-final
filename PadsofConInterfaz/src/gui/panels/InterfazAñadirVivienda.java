@@ -60,10 +60,10 @@ public class InterfazAñadirVivienda {
 		frame.getContentPane().setLayout(springLayout);
 		
 		Container con = frame.getContentPane();
-		Font font = new Font("Comic Sans", Font.PLAIN, 35);
+		Font font = new Font("Comic Sans", Font.PLAIN, 40);
 		
 		JLabel etiqueta = new JLabel("Añadir Viviendas");
-		springLayout.putConstraint(SpringLayout.NORTH, etiqueta, 100, SpringLayout.NORTH, con);
+		springLayout.putConstraint(SpringLayout.NORTH, etiqueta, 80, SpringLayout.NORTH, con);
 		springLayout.putConstraint(SpringLayout.WEST, etiqueta, 320, SpringLayout.WEST, con);
 		etiqueta.setFont(font);
 		con.add(etiqueta);
@@ -146,16 +146,13 @@ public class InterfazAñadirVivienda {
 		confirmar.setFont(conffont);
 		springLayout.putConstraint(SpringLayout.NORTH, confirmar, 80, springLayout.SOUTH, escalera);
 		springLayout.putConstraint(SpringLayout.WEST, confirmar, 340, springLayout.WEST, con);
-		confirmar.setPreferredSize(new Dimension(200, 100));
+		confirmar.setPreferredSize(new Dimension(250, 150));
 		con.add(confirmar);
 		
 		JLabel alarm = new JLabel("No puedes añadir la misma oferta dos veces");
 		springLayout.putConstraint(SpringLayout.WEST, alarm, 0, SpringLayout.WEST, confirmar);
 		springLayout.putConstraint(SpringLayout.SOUTH, alarm, -20, SpringLayout.NORTH, confirmar);
 		con.add(alarm);
-		
-		
-		
 		
 	}
 }

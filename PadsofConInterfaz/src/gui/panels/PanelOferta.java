@@ -93,6 +93,28 @@ public class PanelOferta extends JPanel {
 		this.add(editar);
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, editar, 0, SpringLayout.HORIZONTAL_CENTER, precio);
 		springLayout.putConstraint(SpringLayout.NORTH, editar, 10, SpringLayout.SOUTH, fianza);
+		editar.setVisible(false);
+		
+		JButton contratar = new JButton("CONTRATAR");
+		this.add(contratar);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, contratar, 0, SpringLayout.HORIZONTAL_CENTER, precio);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, contratar, 0, SpringLayout.VERTICAL_CENTER, editar);
+		
+		JButton reservar = new JButton("RESERVAR");
+		this.add(reservar);
+		springLayout.putConstraint(SpringLayout.EAST, reservar, -20, SpringLayout.WEST, contratar);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reservar, 0, SpringLayout.VERTICAL_CENTER, contratar);
+		
+		JButton ver = new JButton("Ver mas detalles");
+		this.add(ver);
+		springLayout.putConstraint(SpringLayout.EAST, ver, -20, SpringLayout.WEST, reservar);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, ver, 0, SpringLayout.VERTICAL_CENTER, editar);
+		
+		JButton reservado = new JButton("          Reservado          ");
+		this.add(reservado);
+		springLayout.putConstraint(SpringLayout.WEST, reservado, 10, SpringLayout.EAST, ver);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reservado, 0, SpringLayout.VERTICAL_CENTER, ver);
+		reservado.setVisible(false);
 		
 		this.setPreferredSize(new Dimension(750, 160));
 		
