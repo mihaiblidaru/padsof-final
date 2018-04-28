@@ -5,10 +5,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
@@ -48,20 +46,26 @@ public class Gui extends JFrame{
 	
 	public static void main(String[] args) {
 		Gui gui = new Gui();
-		
+		SplashScreen splashScreen = new SplashScreen();
 		Controller controller = null;
 		try {
 			controller = new Controller();
 		} catch (SQLException e) {
 			 JOptionPane.showInputDialog(gui, "What is your name?", null);
 		}
-	
+		
+		
+
 		gui.initialize();
 		gui.createPanels();
 		gui.setVisible(true);
+		splashScreen.setVisible(false);
+		splashScreen.dispose();
+		splashScreen = null;
 		gui.SetController(controller);
 		
 	}
+	
 	
 	private void createPanels() {
 		Header header = new Header(this);
@@ -82,12 +86,14 @@ public class Gui extends JFrame{
 		return this.controller;
 	}
 	
+	
 	public void setVisiblePane(String panelName, boolean state) {
 		Component c = getComponent(panelName);
 		if(c!=null) {
 			c.setVisible(state);
 		}
 	}
+	
 	
 	public Component getComponent(String panelName) {
 		Component[] components = this.contentPane.getComponents();
