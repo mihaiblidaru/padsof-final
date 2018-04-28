@@ -11,9 +11,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-
 
 import javax.swing.SpringLayout;
 import java.awt.Color;
@@ -65,10 +64,10 @@ public class InterfazAñadirOferta {
 		Font font = new Font("Comic Sans", Font.PLAIN, 40);
 		Font descfont = new Font("Comic Sans", Font.PLAIN, 25);
 		Font conffont = new Font("Comic Sans", Font.PLAIN, 25);
-				
+		
 		JLabel AñadirOfertas = new JLabel("Añadir Oferta");
 		AñadirOfertas.setFont(font);
-		springLayout.putConstraint(SpringLayout.NORTH, AñadirOfertas, 50, SpringLayout.SOUTH, con);
+		springLayout.putConstraint(SpringLayout.NORTH, AñadirOfertas, 50, SpringLayout.NORTH, con);
 		springLayout.putConstraint(SpringLayout.WEST, AñadirOfertas, 20, SpringLayout.WEST, con);
 		con.add(AñadirOfertas);
 		
@@ -137,8 +136,8 @@ public class InterfazAñadirOferta {
 		
 		JButton confirmar = new JButton("Confirmar");
 		confirmar.setFont(conffont);
-		springLayout.putConstraint(SpringLayout.NORTH, confirmar, 40, SpringLayout.SOUTH, descripcionname);
-		springLayout.putConstraint(SpringLayout.WEST, confirmar, 70, SpringLayout.WEST, con);
+		springLayout.putConstraint(SpringLayout.NORTH, confirmar, 40, springLayout.SOUTH, descripcionname);
+		springLayout.putConstraint(SpringLayout.WEST, confirmar, 70, springLayout.WEST, con);
 		confirmar.setPreferredSize(new Dimension(200, 100));
 		con.add(confirmar);
 		
