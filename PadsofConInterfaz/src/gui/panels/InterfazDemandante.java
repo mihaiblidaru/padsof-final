@@ -79,7 +79,6 @@ public class InterfazDemandante {
 			springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, panel3, 0, SpringLayout.HORIZONTAL_CENTER, panel);
 			con.add(panel3);
 			
-			
 		}
 	
 }
