@@ -105,6 +105,21 @@ public class Gui extends JFrame{
 	}
 	
 	
+	public void showOnly(String...panelsName) {
+		Component[] components = this.contentPane.getComponents();
+		for (int i = 0; i < components.length; i++) {
+			components[i].setVisible(false);
+		}
+		
+		for (int i = 0; i < components.length; i++) {
+			for(int j=0; j< panelsName.length; j++) {
+				if(panelsName[j].equals(components[i].getName())) {
+					components[i].setVisible(true);
+				}
+			}
+		}
+	}
+	
 	public Component getComponent(String panelName) {
 		Component[] components = this.contentPane.getComponents();
 		Component res = null;

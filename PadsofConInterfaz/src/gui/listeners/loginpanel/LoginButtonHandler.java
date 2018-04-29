@@ -1,17 +1,30 @@
 package gui.listeners.loginpanel;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLException;
+
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import com.sun.glass.ui.Timer;
 
 import app.clases.users.Rol;
 import gui.Gui;
 import gui.components.fx.FxPasswordField;
 import gui.components.fx.FxTextField;
 import gui.controllers.Controller;
+import gui.dialogs.EditUserDialog;
 import gui.panels.Header;
 import gui.panels.LoginPanel;
 import gui.panels.SearchMenu;
 import gui.panels.admin.AdminView;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -45,7 +58,10 @@ public class LoginButtonHandler implements EventHandler<MouseEvent> {
 			}
 			
 			if(rol==null) {
-				//usuario o contraseña incorectos
+							
+				final JDialog dialog = new EditUserDialog();
+
+				dialog.setVisible(true);
 			} else {
 				gui.setVisiblePane(LoginPanel.NAME, false);
 				Header header = (Header) gui.getComponent(Header.NAME);
@@ -71,6 +87,23 @@ public class LoginButtonHandler implements EventHandler<MouseEvent> {
 		}
 		
 	}
+    private JPanel getPanel() {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Java Technology Dive Log");
+        ImageIcon image = null;
+        try {
+            image = new ImageIcon(ImageIO.read(
+                    new URL("http://i.imgur.com/6mbHZRU.png")));
+        } catch(MalformedURLException mue) {
+            mue.printStackTrace();
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        } 
 
+        label.setIcon(image);
+        panel.add(label);
+
+        return panel;
+    }
 
 }

@@ -126,6 +126,8 @@ public class Header extends JPanel {
  			setButtonVisibility(LOGOUT, false);
  			setButtonVisibility(LOGIN, true);
  			placeButtons();
+ 			
+ 			gui.showOnly(Header.NAME, SearchMenu.NAME);
          } 
       };  
 

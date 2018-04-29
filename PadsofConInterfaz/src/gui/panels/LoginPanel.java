@@ -79,7 +79,10 @@ public class LoginPanel extends JPanel {
 		add(loginBtn);
 		loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new LoginButtonHandler(gui, textUsuario, textPassword));
 		
-		textPassword.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+		
+		
+		EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
+
 			@Override
 			public void handle(KeyEvent event) {
 				if(event.getCode() == KeyCode.ENTER) {
@@ -89,18 +92,14 @@ public class LoginPanel extends JPanel {
 				}
 			}
 			
-		});
+		};
 		
-		textUsuario.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if(event.getCode() == KeyCode.ENTER) {
-					loginBtn.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED,
-				               0, 0, 0, 0, MouseButton.PRIMARY, 1,
-				               false, false, false, true, true, true, true, true, true, true, null));
-				}
-			}
-		});
+		
+		
+		//hacer login automaticamente al presionar la tecla enter estando escribiendo
+		//en el textbox de la contraseña o del usuario
+		textPassword.addEventHandler(KeyEvent.KEY_PRESSED, handler);
+		textUsuario.addEventHandler(KeyEvent.KEY_PRESSED, handler);
 
 	}
 	
