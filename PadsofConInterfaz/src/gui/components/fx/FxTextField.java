@@ -17,14 +17,10 @@ public class FxTextField extends FxWrapper {
 		super(width, height);
 		this.placeholder = placeholder;
 		JFXPanel panel = this;
-		
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-            	Scene scene = createScene();
-            	panel.setScene(scene);
-            }
-       });
+	   	Scene scene = createScene();
+       	panel.setScene(scene);
+       	this.setVisible(true);
+  
 		
 	}
 		
@@ -35,6 +31,7 @@ public class FxTextField extends FxWrapper {
         textfield.setPromptText(this.placeholder);
         textfield.setPrefWidth(this.getWidth());
         textfield.setPrefHeight(this.getHeight());
+        textfield.setMinSize(TextField.USE_PREF_SIZE, TextField.USE_PREF_SIZE);
         this.fixNavigation(textfield);
         this.node = textfield;
         root.getChildren().add(textfield);

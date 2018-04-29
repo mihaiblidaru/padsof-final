@@ -59,9 +59,9 @@ public class LoginButtonHandler implements EventHandler<MouseEvent> {
 			
 			if(rol==null) {
 							
-				final JDialog dialog = new EditUserDialog();
+				//final JDialog dialog = new EditUserDialog();
 
-				dialog.setVisible(true);
+				//dialog.setVisible(true);
 			} else {
 				gui.setVisiblePane(LoginPanel.NAME, false);
 				Header header = (Header) gui.getComponent(Header.NAME);

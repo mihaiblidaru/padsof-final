@@ -1,90 +1,65 @@
 package gui.dialogs;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
+import java.awt.EventQueue;
+import java.awt.HeadlessException;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
+public class EditUserDialog extends JFrame {
+    private static final long serialVersionUID = 1L;
+    private final JFXPanel mainPanel = new JFXPanel();
+    private final ImageView imageView;
+    private final JButton closeButton = new JButton("Close");
 
-import gui.components.fx.FxTextField;
+    public EditUserDialog() throws HeadlessException {
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setBounds(0, 0, 800, 600);
+        setPreferredSize(new Dimension(800, 600));
+        GroupLayout layout = new GroupLayout(this.getContentPane());
+        this.getContentPane().setLayout(layout);
+        layout.setAutoCreateContainerGaps(true);
+        layout.setAutoCreateGaps(true);
+        this.imageView = new ImageView(EditUserDialog.class.getResource("File_CC-BY-SA_3_icon_88x31.png").toString());
+        Platform.runLater(() -> {
+            BorderPane borderPane = new BorderPane();
+            Button bottomButton = new Button("Some button");
+            ScrollPane imageViewScrollPane = new ScrollPane(imageView);
+            borderPane.setCenter(imageViewScrollPane);
+            borderPane.setBottom(bottomButton);
+            imageView.setSmooth(true);
+            imageView.setFitHeight(400);
+            Group  root  =  new  Group();
+            Scene  scene  =  new  Scene(root, Color.ALICEBLUE);
+            root.getChildren().add(borderPane);
+            mainPanel.setScene(scene);
+        });
+        closeButton.addActionListener((event) -> {
+            setVisible(false);
+        });
+        layout.setHorizontalGroup(layout.createParallelGroup()
+                .addComponent(mainPanel)
+                .addComponent(closeButton));
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addComponent(mainPanel)
+                .addComponent(closeButton));
+        pack();
+    }
 
-public class EditUserDialog extends JDialog {
-	private final static int FRAME_WIDTH = 350;
-	private final static int FRAME_HEIGHT = 200;
-	public EditUserDialog() {
-		this.setTitle("Editar Usuario");
-		this.setModal(true);
-		
-		this.setContentPane(buildPanel());
-		this.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setResizable(false);
-		this.setBounds((int) (screenSize.getWidth()/2 - FRAME_WIDTH/2) , (int) (screenSize.getHeight()/2 - FRAME_HEIGHT/2), FRAME_WIDTH, FRAME_HEIGHT);
-		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		this.pack();
-	}
-	
-	
-	private JPanel buildPanel() {
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.decode("#ffffff"));
-		panel.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-		SpringLayout layout = new SpringLayout();
-		panel.setLayout(layout);
-				
-		JLabel dni = new JLabel("1234567X");
-		panel.add(dni);
-		
-		layout.putConstraint(SpringLayout.WEST, dni, 20, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, dni, 20, SpringLayout.NORTH, panel);
-		BufferedImage phoneIcon = null;
-		try {
-			phoneIcon = ImageIO.read(new File("res/img/fa-phone-square.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
-		JLabel phoneIconLabel = new JLabel(new ImageIcon(phoneIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
-		
-		panel.add(phoneIconLabel);
-		layout.putConstraint(SpringLayout.WEST, phoneIconLabel, 20, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, phoneIconLabel, 20, SpringLayout.NORTH, dni);
-		
-		
-		BufferedImage ccIcon = null;
-		try {
-			ccIcon = ImageIO.read(new File("res/img/fa-cc-visa.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		JLabel ccIconLabel = new JLabel(new ImageIcon(ccIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
-		
-		panel.add(ccIconLabel);
-		layout.putConstraint(SpringLayout.WEST, ccIconLabel, 20, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, ccIconLabel, 10, SpringLayout.SOUTH, phoneIconLabel);
-		
-		
-		FxTextField ccField = new FxTextField(100, 25, "credido");
-		
-		panel.add(ccField);
-		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, ccField, 0, SpringLayout.HORIZONTAL_CENTER, ccIconLabel);
-		layout.putConstraint(SpringLayout.WEST, ccField, 20, SpringLayout.EAST, ccIconLabel);
-		
-		
-		
-		return panel;
-	}
-
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            new EditUserDialog().setVisible(true);
+        });
+    }
 }

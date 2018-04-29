@@ -62,6 +62,7 @@ public class FxDatePicker extends FxWrapper {
         datePicker.setPromptText(this.placeholder);
         datePicker.setPrefWidth(this.getWidth());
         datePicker.setPrefHeight(this.getHeight());
+        datePicker.setMinSize(DatePicker.USE_PREF_SIZE, DatePicker.USE_PREF_SIZE);
         this.node = datePicker;
         this.fixNavigation(datePicker);
         root.getChildren().add(datePicker);

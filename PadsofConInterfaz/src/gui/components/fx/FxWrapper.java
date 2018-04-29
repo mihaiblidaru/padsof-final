@@ -1,5 +1,6 @@
 package gui.components.fx;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 
@@ -24,6 +25,7 @@ public abstract class FxWrapper extends JFXPanel {
 		this.width = width;
 		this.height = height;
 		this.setPreferredSize(new Dimension(width, height));
+		this.setBackground(Color.GREEN);
 	}
 
 	public int getWidth() {

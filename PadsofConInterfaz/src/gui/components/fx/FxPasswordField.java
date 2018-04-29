@@ -6,6 +6,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 
 public class FxPasswordField extends FxWrapper {
@@ -35,6 +36,7 @@ public class FxPasswordField extends FxWrapper {
         textfield.setPromptText(this.placeholder);
         textfield.setPrefWidth(this.getWidth());
         textfield.setPrefHeight(this.getHeight());
+        textfield.setMinSize(TextField.USE_PREF_SIZE, TextField.USE_PREF_SIZE);
         this.node = textfield;
         this.fixNavigation(textfield);
         root.getChildren().add(textfield);
