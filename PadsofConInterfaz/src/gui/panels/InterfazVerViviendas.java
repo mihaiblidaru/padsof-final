@@ -62,7 +62,7 @@ public class InterfazVerViviendas {
 		frame.getContentPane().setLayout(springLayout);
 		
 		Container con = frame.getContentPane();
-		
+		 
 		PanelOferta oferta = new PanelOferta();
 		springLayout.putConstraint(SpringLayout.NORTH, oferta, 50, SpringLayout.NORTH, con);
 		springLayout.putConstraint(SpringLayout.WEST, oferta, 10, SpringLayout.WEST, con);
