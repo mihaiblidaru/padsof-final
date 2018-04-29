@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.SQLException;
@@ -38,11 +37,13 @@ public class Gui extends JFrame{
 	private void initialize() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setBounds((int) (screenSize.getWidth()/2 - FRAME_WIDTH/2) , (int) (screenSize.getHeight()/2 - FRAME_HEIGHT/2), FRAME_WIDTH, FRAME_HEIGHT);
-		this.getContentPane().setBackground(Color.decode("#ffffff"));
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.contentPane = new JLayeredPane();
-		this.setContentPane(contentPane);
+		this.setContentPane(this.contentPane);
+		this.contentPane.setOpaque(true);
+		contentPane.setBackground(Color.decode("#ffffff"));
+		
 		this.layout = new SpringLayout();
 		getContentPane().setLayout(this.layout);
 	}
@@ -71,6 +72,7 @@ public class Gui extends JFrame{
 	private void createPanels() {
 		Header header = new Header(this);
 		contentPane.add(header);
+		contentPane.setBackground(Color.WHITE);
 		LoginPanel loginPanel = new LoginPanel(this);
 		contentPane.add(loginPanel);
 		loginPanel.setVisible(false);
@@ -80,13 +82,13 @@ public class Gui extends JFrame{
 		SearchMenu searchMenu = new SearchMenu();
 		contentPane.add(searchMenu);
 		layout.putConstraint(SpringLayout.NORTH, searchMenu, 0, SpringLayout.SOUTH, header);
-		searchMenu.setVisible(false);
 		
 		AdminView adminView = new AdminView(this);
 		contentPane.add(adminView);
 		layout.putConstraint(SpringLayout.NORTH, adminView, -25, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, adminView, -2, SpringLayout.WEST, header);
 		contentPane.moveToFront(adminView);
+		adminView.setVisible(false);
 		
 	}
 	

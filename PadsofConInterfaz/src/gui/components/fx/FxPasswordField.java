@@ -35,6 +35,7 @@ public class FxPasswordField extends FxWrapper {
         textfield.setPromptText(this.placeholder);
         textfield.setPrefWidth(this.getWidth());
         textfield.setPrefHeight(this.getHeight());
+        this.node = textfield;
         this.fixNavigation(textfield);
         root.getChildren().add(textfield);
         return scene;

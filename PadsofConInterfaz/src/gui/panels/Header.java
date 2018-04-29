@@ -2,8 +2,6 @@ package gui.panels;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,8 @@ import javax.swing.SpringLayout;
 
 import gui.Gui;
 import gui.components.fx.FxButton;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 public class Header extends JPanel {
 
@@ -66,8 +66,8 @@ public class Header extends JPanel {
 		this.add(misOfertasButton);
 		this.add(misInmueblesButton);
 		this.add(misReservasButton);
-		loginButton.addActionListener(loginButtonListener);
-		logoutButton.addActionListener(logoutButtonListener);
+		logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED, logoutButtonHandler);
+		loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED, loginButtonHandler);
 		
 		this.buttons.add(loginButton);
 		this.buttons.add(logoutButton);
@@ -106,27 +106,27 @@ public class Header extends JPanel {
 		}
 	}
 	
-	private ActionListener loginButtonListener = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			gui.setVisiblePane(Header.NAME, false);
+	
+    EventHandler<MouseEvent> loginButtonHandler = new EventHandler<MouseEvent>() { 
+        @Override 
+        public void handle(MouseEvent e) { 
+        	gui.setVisiblePane(Header.NAME, false);
 			gui.setVisiblePane(SearchMenu.NAME, false);
 			gui.setVisiblePane(LoginPanel.NAME, true);
-		}
-	};
-	
-	private ActionListener logoutButtonListener = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			gui.getController().logout();
-			setButtonVisibility(MIS_INMUEBLES, false);
-			setButtonVisibility(MIS_OFERTAS, false);
-			setButtonVisibility(MIS_RESERVAS, false);
-			setButtonVisibility(LOGOUT, false);
-			setButtonVisibility(LOGIN, true);
-			placeButtons();
-		}
-	};
-	
+        } 
+     };  
+     
+     EventHandler<MouseEvent> logoutButtonHandler = new EventHandler<MouseEvent>() { 
+         @Override 
+         public void handle(MouseEvent e) { 
+        	gui.getController().logout();
+ 			setButtonVisibility(MIS_INMUEBLES, false);
+ 			setButtonVisibility(MIS_OFERTAS, false);
+ 			setButtonVisibility(MIS_RESERVAS, false);
+ 			setButtonVisibility(LOGOUT, false);
+ 			setButtonVisibility(LOGIN, true);
+ 			placeButtons();
+         } 
+      };  
 
 }

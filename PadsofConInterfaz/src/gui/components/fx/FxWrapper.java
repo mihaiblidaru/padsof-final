@@ -4,7 +4,10 @@ import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 
 import javafx.embed.swing.JFXPanel;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -14,6 +17,7 @@ public abstract class FxWrapper extends JFXPanel {
 	private static final long serialVersionUID = -5416489256571893215L;
 	private final int width;
 	private final int height;
+	protected Node node;
 	private boolean navigationFixed = false;
 	
 	protected FxWrapper(int width, int height) {
@@ -30,6 +34,14 @@ public abstract class FxWrapper extends JFXPanel {
 		return height;
 	}
 	
+    public <T extends Event> void addEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler){
+    	node.addEventHandler(eventType, eventHandler);
+    }
+    
+    public void fireEvent(Event event) {
+    	node.fireEvent(event);
+    }
+    
 	protected void fixNavigation(Control control) {
 		if(!navigationFixed) {
 	        control.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {

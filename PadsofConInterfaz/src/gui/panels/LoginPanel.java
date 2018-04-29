@@ -13,7 +13,12 @@ import gui.Gui;
 import gui.components.fx.FxButton;
 import gui.components.fx.FxPasswordField;
 import gui.components.fx.FxTextField;
-import gui.listeners.loginpanel.LoginButtonListener;
+import gui.listeners.loginpanel.LoginButtonHandler;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 import javax.swing.JLabel;
 
@@ -22,17 +27,22 @@ public class LoginPanel extends JPanel {
 	private static final long serialVersionUID = -3260581588702723617L;
 	public final static String NAME = "LOGIN_PANEL";
 	private Gui gui;
+	private final SpringLayout layout;
 	
 	public LoginPanel(Gui gui) {
 		this.gui = gui;
 		this.setName(NAME);
-		ResourceBundle rb =  ResourceBundle.getBundle("locale.Lang");
+		
 		this.setBackground(Color.WHITE);
-		SpringLayout layout = new SpringLayout();
-		this.setLayout(layout);
+		this.layout = new SpringLayout();
+		this.setLayout(this.layout);
 		this.setBorder(new BevelBorder(BevelBorder.RAISED));
-		
-		
+		this.setPreferredSize(new Dimension(300, 180));
+		createComponents();
+	}
+	
+	private void createComponents() {
+		ResourceBundle rb =  ResourceBundle.getBundle("locale.Lang");
 		JLabel labelTitulo = new JLabel(rb.getString("app.name"));
 		
 		Font titleFont = new Font("Comic Sans", Font.PLAIN, 35);
@@ -57,21 +67,41 @@ public class LoginPanel extends JPanel {
 		layout.putConstraint(SpringLayout.WEST, labelPassword, 0, SpringLayout.WEST, labelUsuario);
 		add(labelPassword);
 		
-		
 		FxPasswordField textPassword = new FxPasswordField(170, 25, rb.getString("panels.login.password"));
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, textPassword, 0, SpringLayout.VERTICAL_CENTER, labelPassword);
 		layout.putConstraint(SpringLayout.WEST, textPassword, 0, SpringLayout.WEST, textUsuario);
 		add(textPassword);
 		
+	
 		FxButton loginBtn = new FxButton(80,30, rb.getString("panels.login.loginBtn"));
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, loginBtn, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.NORTH, loginBtn, 20, SpringLayout.SOUTH, textPassword);
-		
 		add(loginBtn);
+		loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new LoginButtonHandler(gui, textUsuario, textPassword));
 		
-		loginBtn.addActionListener(new LoginButtonListener(gui, textUsuario, textPassword));
-		this.setPreferredSize(new Dimension(300, 180));
+		textPassword.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.ENTER) {
+					loginBtn.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED,
+				               0,0, 0,0, MouseButton.PRIMARY, 1,
+				               true, true, true, true, true, true, true, true, true, true, null));
+				}
+			}
+			
+		});
+		
+		textUsuario.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.ENTER) {
+					loginBtn.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED,
+				               0, 0, 0, 0, MouseButton.PRIMARY, 1,
+				               false, false, false, true, true, true, true, true, true, true, null));
+				}
+			}
+		});
 
-		
 	}
+	
 }

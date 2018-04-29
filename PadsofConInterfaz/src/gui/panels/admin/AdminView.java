@@ -22,7 +22,7 @@ public class AdminView extends JTabbedPane {
 	 * 
 	 */
 	private static final long serialVersionUID = 6946331622568374988L;
-	public static String NAME = "AdminPanel";
+	public static String NAME = "ADMIN_PANEL";
 	private final Gui gui;
 	public AdminView(Gui gui) {
 		super(JTabbedPane.TOP);

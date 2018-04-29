@@ -1,7 +1,5 @@
 package gui.listeners.loginpanel;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import app.clases.users.Rol;
@@ -12,19 +10,26 @@ import gui.controllers.Controller;
 import gui.panels.Header;
 import gui.panels.LoginPanel;
 import gui.panels.SearchMenu;
+import gui.panels.admin.AdminView;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
-public class LoginButtonListener implements ActionListener {
+public class LoginButtonHandler implements EventHandler<MouseEvent> {
 	private Gui gui;
 	private FxTextField userTextFied;
 	private FxPasswordField passwordTextField;
-	public LoginButtonListener(Gui gui, FxTextField userTextFied, FxPasswordField passwordTextField) {
+	public LoginButtonHandler(Gui gui, FxTextField userTextFied, FxPasswordField passwordTextField) {
 		this.gui = gui;
 		this.userTextFied = userTextFied;
 		this.passwordTextField = passwordTextField;
 	}
-	
+
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void handle(MouseEvent event) {
+		event.getEventType();
+		
+		
 		Controller controller = gui.getController();
 		String user = userTextFied.getText();
 		String password = passwordTextField.getText();
@@ -50,23 +55,22 @@ public class LoginButtonListener implements ActionListener {
 				if(rol==Rol.D) {
 					gui.setVisiblePane(SearchMenu.NAME, true);
 					header.setButtonVisibility(Header.MIS_RESERVAS, true);
-				}
-				
-				if(rol==Rol.OD) {
+				}else if(rol==Rol.OD) {
 					gui.setVisiblePane(SearchMenu.NAME, true);
 					header.setButtonVisibility(Header.MIS_RESERVAS, true);
 					header.setButtonVisibility(Header.MIS_INMUEBLES, true);
 					header.setButtonVisibility(Header.MIS_OFERTAS, true);
-				}
-				
-				if(rol==Rol.O) {
+				}else if(rol==Rol.O) {
 					header.setButtonVisibility(Header.MIS_INMUEBLES, true);
 					header.setButtonVisibility(Header.MIS_OFERTAS, true);
+				} else {
+					gui.setVisiblePane(AdminView.NAME, true);
 				}
 				header.placeButtons();
 			}
 		}
-
+		
 	}
+
 
 }

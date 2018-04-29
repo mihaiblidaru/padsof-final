@@ -36,7 +36,7 @@ public class FxTextField extends FxWrapper {
         textfield.setPrefWidth(this.getWidth());
         textfield.setPrefHeight(this.getHeight());
         this.fixNavigation(textfield);
-		
+        this.node = textfield;
         root.getChildren().add(textfield);
         return scene;
     }
