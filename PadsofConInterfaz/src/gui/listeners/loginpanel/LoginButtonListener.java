@@ -39,20 +39,34 @@ public class LoginButtonListener implements ActionListener {
 				//popup;
 			}
 			
-			if(rol == Rol.A) {
+			if(rol==null) {
+				//usuario o contraseña incorectos
+			} else {
 				gui.setVisiblePane(LoginPanel.NAME, false);
-				gui.setVisiblePane(SearchMenu.NAME, true);
 				Header header = (Header) gui.getComponent(Header.NAME);
 				header.setButtonVisibility(Header.LOGIN, false);
 				header.setButtonVisibility(Header.LOGOUT, true);
-				header.placeButtons();
 				gui.setVisiblePane(Header.NAME, true);
+				if(rol==Rol.D) {
+					gui.setVisiblePane(SearchMenu.NAME, true);
+					header.setButtonVisibility(Header.MIS_RESERVAS, true);
+				}
+				
+				if(rol==Rol.OD) {
+					gui.setVisiblePane(SearchMenu.NAME, true);
+					header.setButtonVisibility(Header.MIS_RESERVAS, true);
+					header.setButtonVisibility(Header.MIS_INMUEBLES, true);
+					header.setButtonVisibility(Header.MIS_OFERTAS, true);
+				}
+				
+				if(rol==Rol.O) {
+					header.setButtonVisibility(Header.MIS_INMUEBLES, true);
+					header.setButtonVisibility(Header.MIS_OFERTAS, true);
+				}
+				header.placeButtons();
 			}
 		}
-		
-		
-		
-		
+
 	}
 
 }

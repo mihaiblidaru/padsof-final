@@ -16,5 +16,9 @@ public class Controller {
 		return model.login(user, password);
 	}
 	
+	public void logout() {
+		model.logout();
+	}
+	
 
 }

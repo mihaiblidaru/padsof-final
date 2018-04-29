@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
 
@@ -16,6 +17,7 @@ import gui.panels.Header;
 import gui.panels.LoginPanel;
 import gui.panels.SearchMenu;
 import gui.panels.SplashScreen;
+import gui.panels.admin.AdminView;
 
 public class Gui extends JFrame{
 	public Gui() {
@@ -26,7 +28,7 @@ public class Gui extends JFrame{
 	public static int FRAME_HEIGHT = 621;
 
 	private Controller controller;
-	private Container contentPane;
+	private JLayeredPane contentPane;
 	private SpringLayout layout;
 		
 	public void SetController(Controller controller) {
@@ -39,7 +41,8 @@ public class Gui extends JFrame{
 		this.getContentPane().setBackground(Color.decode("#ffffff"));
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.contentPane = this.getContentPane();
+		this.contentPane = new JLayeredPane();
+		this.setContentPane(contentPane);
 		this.layout = new SpringLayout();
 		getContentPane().setLayout(this.layout);
 	}
@@ -55,15 +58,13 @@ public class Gui extends JFrame{
 		}
 		
 		
-
 		gui.initialize();
 		gui.createPanels();
 		gui.setVisible(true);
 		splashScreen.setVisible(false);
 		splashScreen.dispose();
 		splashScreen = null;
-		gui.SetController(controller);
-		
+		gui.SetController(controller);	
 	}
 	
 	
@@ -79,6 +80,13 @@ public class Gui extends JFrame{
 		SearchMenu searchMenu = new SearchMenu();
 		contentPane.add(searchMenu);
 		layout.putConstraint(SpringLayout.NORTH, searchMenu, 0, SpringLayout.SOUTH, header);
+		searchMenu.setVisible(false);
+		
+		AdminView adminView = new AdminView(this);
+		contentPane.add(adminView);
+		layout.putConstraint(SpringLayout.NORTH, adminView, -25, SpringLayout.SOUTH, header);
+		layout.putConstraint(SpringLayout.WEST, adminView, -2, SpringLayout.WEST, header);
+		contentPane.moveToFront(adminView);
 		
 	}
 	

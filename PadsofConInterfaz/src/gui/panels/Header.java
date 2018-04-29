@@ -29,7 +29,7 @@ public class Header extends JPanel {
 	public final static int MIS_OFERTAS = 3;
 	public final static int MIS_INMUEBLES = 4;
 	
-	private List<JComponent> buttons;
+	private List<FxButton> buttons;
 	
 	
 	public void setButtonVisibility(int button, boolean state) {
@@ -40,7 +40,7 @@ public class Header extends JPanel {
 	public Header(Gui gui) {
 		this.gui = gui;
 		this.setName(NAME);
-		this.buttons = new ArrayList<JComponent>();
+		this.buttons = new ArrayList<FxButton>();
 		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, 30));
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);
@@ -54,12 +54,15 @@ public class Header extends JPanel {
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, label, 0, SpringLayout.VERTICAL_CENTER, this);
 		
 		FxButton loginButton = new FxButton(50, 25, "Login");
-		FxButton logoutButton = new FxButton(50, 25, "Logout");
+		FxButton logoutButton = new FxButton(60, 25, "Logout");
 		FxButton misReservasButton = new FxButton(100, 25, "Mis reservas");
 		FxButton misOfertasButton = new FxButton(100, 25, "Mis ofertas");
 		FxButton misInmueblesButton = new FxButton(100, 25, "Mis viviendas");
 		
+		logoutButton.setVisible(true);
+		
 		this.add(loginButton);
+		this.add(logoutButton);
 		this.add(misOfertasButton);
 		this.add(misInmueblesButton);
 		this.add(misReservasButton);
@@ -80,24 +83,23 @@ public class Header extends JPanel {
 	
 	public void placeButtons() {
 		SpringLayout layout = (SpringLayout) this.getLayout();
+				
+		List<FxButton> visible = new ArrayList<FxButton>();
 		
-		
-		List<JComponent> visible = new ArrayList<JComponent>();
-		
-		for (JComponent button : this.buttons) {
+		for (FxButton button : this.buttons) {
 			if(button.isVisible()) {
 				visible.add(button);
 			}
 		}
 		
-		JComponent last = visible.remove(0);
-		layout.removeLayoutComponent(last);		
+		FxButton last = visible.remove(0);
+			
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, last, 0, SpringLayout.VERTICAL_CENTER, this);
 		layout.putConstraint(SpringLayout.EAST, last, -10, SpringLayout.EAST, this);
 		
 		while(!visible.isEmpty()) {
-			JComponent actual = visible.remove(0);
-			layout.removeLayoutComponent(actual);
+			FxButton actual = visible.remove(0);
+			
 			layout.putConstraint(SpringLayout.EAST, actual, -10, SpringLayout.WEST, last);
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, actual, 0, SpringLayout.VERTICAL_CENTER, this);
 			last = actual;
@@ -116,9 +118,13 @@ public class Header extends JPanel {
 	private ActionListener logoutButtonListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			/*gui.setVisiblePane(Header.NAME, false);
-			gui.setVisiblePane(SearchMenu.NAME, false);
-			gui.setVisiblePane(LoginPanel.NAME, true);*/
+			gui.getController().logout();
+			setButtonVisibility(MIS_INMUEBLES, false);
+			setButtonVisibility(MIS_OFERTAS, false);
+			setButtonVisibility(MIS_RESERVAS, false);
+			setButtonVisibility(LOGOUT, false);
+			setButtonVisibility(LOGIN, true);
+			placeButtons();
 		}
 	};
 	
