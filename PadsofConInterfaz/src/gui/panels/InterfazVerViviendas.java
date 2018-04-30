@@ -8,8 +8,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import gui.panels.PanelOferta;
 
@@ -49,7 +47,7 @@ public class InterfazVerViviendas {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1000, 720);
+		frame.setBounds(0, 0, 1000, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setBackground(Color.WHITE);
 		try {
@@ -69,8 +67,10 @@ public class InterfazVerViviendas {
 		springLayout.putConstraint(SpringLayout.EAST, oferta, 10, SpringLayout.EAST, con);
 		
 		JButton anadir = new JButton ("Añadir vivienda");
-		springLayout.putConstraint(SpringLayout.SOUTH, anadir, 10, springLayout.SOUTH, con);
-		springLayout.putConstraint(SpringLayout.EAST, anadir, -10, springLayout.EAST, con);
+		springLayout.putConstraint(SpringLayout.SOUTH, anadir, 10, SpringLayout.SOUTH, con);
+		springLayout.putConstraint(SpringLayout.EAST, anadir, -10, SpringLayout.EAST, con);
 		con.add(anadir);
+		
+		
 	}
 }

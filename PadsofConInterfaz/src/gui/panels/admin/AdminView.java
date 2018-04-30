@@ -1,20 +1,15 @@
 package gui.panels.admin;
 
-import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+
 import javax.swing.JTabbedPane;
-import javax.swing.SpringLayout;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.synth.SynthLookAndFeel;
+
 
 import gui.Gui;
-import gui.panels.LoginPanel;
+
 
 public class AdminView extends JTabbedPane {
 

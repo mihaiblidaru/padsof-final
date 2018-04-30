@@ -18,11 +18,12 @@ import gui.panels.LoginPanel;
 import gui.panels.SearchMenu;
 import gui.panels.SplashScreen;
 import gui.panels.admin.AdminView;
+import gui.panels.ofertante.InterfazAniadirOferta;
+import gui.panels.ofertante.InterfazAniadirVivienda;
 import gui.utils.CssLoader;
 
 public class Gui extends JFrame{
-	public Gui() {
-	}
+
 
 	private static final long serialVersionUID = -8417053675962769827L;
 	public static int FRAME_WIDTH = 1000;
@@ -57,11 +58,11 @@ public class Gui extends JFrame{
 		try {
 			controller = new Controller();
 		} catch (SQLException e) {
-			 JOptionPane.showInputDialog(gui, "What is your name?", null);
+			 JOptionPane.showInputDialog(gui, "SQL ERROR", null);
 		}
 		
 		try {
-			CssLoader cssLoader = new CssLoader("res/style/main.css");
+			new CssLoader("res/style/main.css");
 		} catch (IOException e) {
 			throw new RuntimeException();
 		}
@@ -77,10 +78,10 @@ public class Gui extends JFrame{
 	
 	
 	private void createPanels() {
-		Header header = new Header(this);
+		Header header = Header.getInstance(this);
 		contentPane.add(header);
 		contentPane.setBackground(Color.WHITE);
-		LoginPanel loginPanel = new LoginPanel(this);
+		LoginPanel loginPanel = LoginPanel.getInstance(this);
 		contentPane.add(loginPanel);
 		loginPanel.setVisible(false);
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, loginPanel, 0, SpringLayout.HORIZONTAL_CENTER, contentPane);
@@ -96,6 +97,21 @@ public class Gui extends JFrame{
 		layout.putConstraint(SpringLayout.WEST, adminView, -2, SpringLayout.WEST, header);
 		contentPane.moveToFront(adminView);
 		adminView.setVisible(false);
+		
+		InterfazAniadirOferta aniadirOferta = InterfazAniadirOferta.getInstance(this);
+		contentPane.add(aniadirOferta);
+		layout.putConstraint(SpringLayout.NORTH, aniadirOferta, 0, SpringLayout.SOUTH, header);
+		layout.putConstraint(SpringLayout.WEST, aniadirOferta, 0, SpringLayout.WEST, contentPane);
+		aniadirOferta.setVisible(false);
+		
+		InterfazAniadirVivienda aniadirVivienda = InterfazAniadirVivienda.getInstance(this);
+		
+		contentPane.add(aniadirVivienda);
+		layout.putConstraint(SpringLayout.NORTH, aniadirVivienda, 0, SpringLayout.SOUTH, header);
+		layout.putConstraint(SpringLayout.WEST, aniadirVivienda, 0, SpringLayout.WEST, contentPane);
+		
+		
+		searchMenu.setVisible(false);
 		
 	}
 	

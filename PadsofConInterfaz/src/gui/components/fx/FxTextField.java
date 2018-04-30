@@ -2,6 +2,7 @@ package gui.components.fx;
 
 
 import javafx.application.Platform;
+import javafx.beans.property.StringProperty;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -46,6 +47,15 @@ public class FxTextField extends FxWrapper {
     
     public String getText() {
     	return this.textfield.getText();
+    	
+    }
+    
+    public void setText(String value) {
+    	this.textfield.setText(value);
+    }
+    
+    public StringProperty textProperty() {
+    	return this.textfield.textProperty();
     }
 
 }

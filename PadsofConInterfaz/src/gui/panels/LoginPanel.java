@@ -3,10 +3,12 @@ package gui.panels;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.FileNotFoundException;
 import java.util.ResourceBundle;
 
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 import gui.Gui;
@@ -20,6 +22,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 
 public class LoginPanel extends JPanel {
@@ -29,7 +32,21 @@ public class LoginPanel extends JPanel {
 	private Gui gui;
 	private final SpringLayout layout;
 	
-	public LoginPanel(Gui gui) {
+	private FxTextField textUsuario;
+	private FxPasswordField textPassword;
+	
+	
+	private static LoginPanel instance = null; 
+	
+	public static LoginPanel getInstance(Gui gui) {
+		if(instance == null) {
+			return (instance = new LoginPanel(gui));
+		}else {
+			return instance;
+		}
+	}
+
+	private LoginPanel(Gui gui) {
 		this.gui = gui;
 		this.setName(NAME);
 		
@@ -57,7 +74,7 @@ public class LoginPanel extends JPanel {
 		layout.putConstraint(SpringLayout.WEST, labelUsuario, -30, SpringLayout.WEST, labelTitulo);
 		add(labelUsuario);
 		
-		FxTextField textUsuario = new FxTextField(170,25, rb.getString("panels.login.userInstruction"));
+		this.textUsuario = new FxTextField(170,25, rb.getString("panels.login.userInstruction"));
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, textUsuario, 0, SpringLayout.VERTICAL_CENTER, labelUsuario);
 		layout.putConstraint(SpringLayout.WEST, textUsuario, 25, SpringLayout.EAST, labelUsuario);
 		add(textUsuario);
@@ -67,7 +84,7 @@ public class LoginPanel extends JPanel {
 		layout.putConstraint(SpringLayout.WEST, labelPassword, 0, SpringLayout.WEST, labelUsuario);
 		add(labelPassword);
 		
-		FxPasswordField textPassword = new FxPasswordField(170, 25, rb.getString("panels.login.password"));
+		this.textPassword = new FxPasswordField(170, 25, rb.getString("panels.login.password"));
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, textPassword, 0, SpringLayout.VERTICAL_CENTER, labelPassword);
 		layout.putConstraint(SpringLayout.WEST, textPassword, 0, SpringLayout.WEST, textUsuario);
 		add(textPassword);
@@ -78,6 +95,21 @@ public class LoginPanel extends JPanel {
 		layout.putConstraint(SpringLayout.NORTH, loginBtn, 20, SpringLayout.SOUTH, textPassword);
 		add(loginBtn);
 		loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new LoginButtonHandler(gui, textUsuario, textPassword));
+		
+		FxButton volverBtn = new FxButton(80,30, "Volver");
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, volverBtn, 0, SpringLayout.VERTICAL_CENTER, loginBtn);
+		layout.putConstraint(SpringLayout.EAST, volverBtn, -20, SpringLayout.WEST, loginBtn);
+		add(volverBtn);
+	
+	    
+	    
+	    try {
+			volverBtn.setGraphics("res/img/fa-triangle-left.png");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		
 		EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
@@ -102,4 +134,16 @@ public class LoginPanel extends JPanel {
 
 	}
 	
+	@Override
+	public void setVisible(boolean state) {
+		super.setVisible(state);
+		if(state == true) {
+			clearField();
+		}
+	}
+
+	private void clearField() {
+		this.textUsuario.setText("");
+		this.textPassword.setText("");
+	}
 }

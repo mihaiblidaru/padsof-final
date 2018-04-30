@@ -31,13 +31,25 @@ public class Header extends JPanel {
 	
 	private List<FxButton> buttons;
 	
+	private static Header instance = null; 
+	
+	public static Header getInstance(Gui gui) {
+		if(instance == null) {
+			return (instance = new Header(gui));
+		}else {
+			return instance;
+		}
+	}
+
+	
+	
 	
 	public void setButtonVisibility(int button, boolean state) {
 		JComponent btn = buttons.get(button); 
 		btn.setVisible(state);
 	}
 	
-	public Header(Gui gui) {
+	private Header(Gui gui) {
 		this.gui = gui;
 		this.setName(NAME);
 		this.buttons = new ArrayList<FxButton>();

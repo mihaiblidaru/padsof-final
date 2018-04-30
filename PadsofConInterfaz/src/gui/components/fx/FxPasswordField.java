@@ -46,5 +46,9 @@ public class FxPasswordField extends FxWrapper {
     public String getText() {
     	return this.textfield.getText();
     }
+    
+    public void setText(String value) {
+    	this.textfield.setText(value);
+    }
 
 }

@@ -72,7 +72,8 @@ public class EditUserDialog extends JFrame {
 		SpringLayout layout = new SpringLayout();
 		panel.setLayout(layout);
 				
-		JLabel dni = new JLabel("<html><h1>1234567X</h1></html>");
+		JLabel dni = new JLabel("<html><h1 class='big'>1234567X</h1></html>");
+		dni.validate();
 		panel.add(dni);
 		
 		layout.putConstraint(SpringLayout.WEST, dni, 20, SpringLayout.WEST, panel);
