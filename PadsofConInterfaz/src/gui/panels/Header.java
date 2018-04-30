@@ -44,7 +44,7 @@ public class Header extends JPanel {
 		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, 30));
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);
-		this.setBackground(Color.decode("#FFFFFF"));
+		this.setBackground(Color.decode("#fefffe"));
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
 		JLabel label = new JLabel("<html><body><font face=\"Courier New\" size=\"3\" color='#00'>TuVacaPiso</font></body></html>");

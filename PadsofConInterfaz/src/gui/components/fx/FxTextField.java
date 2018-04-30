@@ -17,9 +17,15 @@ public class FxTextField extends FxWrapper {
 		super(width, height);
 		this.placeholder = placeholder;
 		JFXPanel panel = this;
-	   	Scene scene = createScene();
-       	panel.setScene(scene);
-       	this.setVisible(true);
+	   	
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+            	Scene scene = createScene();
+               	panel.setScene(scene);
+               	panel.setVisible(true);
+            }
+       });
   
 		
 	}

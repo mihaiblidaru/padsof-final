@@ -80,7 +80,6 @@ public class LoginPanel extends JPanel {
 		loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new LoginButtonHandler(gui, textUsuario, textPassword));
 		
 		
-		
 		EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
 
 			@Override

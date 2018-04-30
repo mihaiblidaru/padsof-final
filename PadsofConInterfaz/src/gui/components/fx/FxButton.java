@@ -3,7 +3,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Screen;
+
 
 
 public class FxButton extends FxWrapper {
@@ -27,8 +27,6 @@ public class FxButton extends FxWrapper {
         this.button = new Button(text);
         button.setPrefWidth(this.getWidth());
         button.setPrefHeight(this.getHeight());
-        Screen mainScreen = Screen.getPrimary();
-        System.out.println(mainScreen.getDpi());
         button.setMinSize(Button.USE_PREF_SIZE, Button.USE_PREF_SIZE);
         button.setEllipsisString("");
         button.setStyle(String.format("-fx-font-size: %dpx;", (int)(0.5 * this.getHeight())));

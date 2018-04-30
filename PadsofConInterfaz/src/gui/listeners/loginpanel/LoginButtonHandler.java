@@ -1,19 +1,7 @@
 package gui.listeners.loginpanel;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.SQLException;
-
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import com.sun.glass.ui.Timer;
+import javax.swing.JFrame;
 
 import app.clases.users.Rol;
 import gui.Gui;
@@ -42,7 +30,6 @@ public class LoginButtonHandler implements EventHandler<MouseEvent> {
 	public void handle(MouseEvent event) {
 		event.getEventType();
 		
-		
 		Controller controller = gui.getController();
 		String user = userTextFied.getText();
 		String password = passwordTextField.getText();
@@ -59,9 +46,9 @@ public class LoginButtonHandler implements EventHandler<MouseEvent> {
 			
 			if(rol==null) {
 							
-				//final JDialog dialog = new EditUserDialog();
-
-				//dialog.setVisible(true);
+				final JFrame dialog = new EditUserDialog(gui);
+				
+				dialog.setVisible(true);
 			} else {
 				gui.setVisiblePane(LoginPanel.NAME, false);
 				Header header = (Header) gui.getComponent(Header.NAME);
@@ -87,23 +74,4 @@ public class LoginButtonHandler implements EventHandler<MouseEvent> {
 		}
 		
 	}
-    private JPanel getPanel() {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Java Technology Dive Log");
-        ImageIcon image = null;
-        try {
-            image = new ImageIcon(ImageIO.read(
-                    new URL("http://i.imgur.com/6mbHZRU.png")));
-        } catch(MalformedURLException mue) {
-            mue.printStackTrace();
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        } 
-
-        label.setIcon(image);
-        panel.add(label);
-
-        return panel;
-    }
-
 }

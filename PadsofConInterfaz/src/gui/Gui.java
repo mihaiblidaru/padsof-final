@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
@@ -17,6 +18,7 @@ import gui.panels.LoginPanel;
 import gui.panels.SearchMenu;
 import gui.panels.SplashScreen;
 import gui.panels.admin.AdminView;
+import gui.utils.CssLoader;
 
 public class Gui extends JFrame{
 	public Gui() {
@@ -58,6 +60,11 @@ public class Gui extends JFrame{
 			 JOptionPane.showInputDialog(gui, "What is your name?", null);
 		}
 		
+		try {
+			CssLoader cssLoader = new CssLoader("res/style/main.css");
+		} catch (IOException e) {
+			throw new RuntimeException();
+		}
 		
 		gui.initialize();
 		gui.createPanels();
