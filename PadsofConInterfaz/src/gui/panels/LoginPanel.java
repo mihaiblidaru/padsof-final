@@ -17,6 +17,7 @@ import gui.components.fx.FxPasswordField;
 import gui.components.fx.FxTextField;
 import gui.listeners.loginpanel.LoginButtonHandler;
 import javafx.event.EventHandler;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -100,17 +101,9 @@ public class LoginPanel extends JPanel {
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, volverBtn, 0, SpringLayout.VERTICAL_CENTER, loginBtn);
 		layout.putConstraint(SpringLayout.EAST, volverBtn, -20, SpringLayout.WEST, loginBtn);
 		add(volverBtn);
-	
-	    
-	    
-	    try {
-			volverBtn.setGraphics("res/img/fa-triangle-left.png");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+		volverBtn.setGraphics("res/img/fa-triangle-left.png", 15, 15);
+		volverBtn.setContentDisplay(ContentDisplay.LEFT);
+		volverBtn.setFontScale(0.5);
 		
 		EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
 

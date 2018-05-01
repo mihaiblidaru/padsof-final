@@ -14,6 +14,7 @@ import javax.swing.SpringLayout;
 
 import gui.Gui;
 import gui.components.fx.FxButton;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -78,8 +79,8 @@ public class Header extends JPanel {
 		this.add(misOfertasButton);
 		this.add(misInmueblesButton);
 		this.add(misReservasButton);
-		logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED, logoutButtonHandler);
-		loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED, loginButtonHandler);
+		logoutButton.setOnAction(logoutButtonHandler);
+		loginButton.setOnAction(loginButtonHandler);
 		
 		this.buttons.add(loginButton);
 		this.buttons.add(logoutButton);
@@ -119,18 +120,18 @@ public class Header extends JPanel {
 	}
 	
 	
-    EventHandler<MouseEvent> loginButtonHandler = new EventHandler<MouseEvent>() { 
+    EventHandler<ActionEvent> loginButtonHandler = new EventHandler<ActionEvent>() { 
         @Override 
-        public void handle(MouseEvent e) { 
+        public void handle(ActionEvent e) { 
         	gui.setVisiblePane(Header.NAME, false);
 			gui.setVisiblePane(SearchMenu.NAME, false);
 			gui.setVisiblePane(LoginPanel.NAME, true);
         } 
      };  
      
-     EventHandler<MouseEvent> logoutButtonHandler = new EventHandler<MouseEvent>() { 
+     EventHandler<ActionEvent> logoutButtonHandler = new EventHandler<ActionEvent>() { 
          @Override 
-         public void handle(MouseEvent e) { 
+         public void handle(ActionEvent e) { 
         	gui.getController().logout();
  			setButtonVisibility(MIS_INMUEBLES, false);
  			setButtonVisibility(MIS_OFERTAS, false);

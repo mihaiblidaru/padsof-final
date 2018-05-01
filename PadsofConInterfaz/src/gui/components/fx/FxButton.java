@@ -6,7 +6,10 @@ import java.io.FileNotFoundException;
 
 import javax.imageio.ImageIO;
 
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -50,16 +53,37 @@ public class FxButton extends FxWrapper {
     	button.setStyle(String.format("-fx-font-size: %dpx;", (int)(scale * this.getHeight())));
     }
     
-    public void setGraphics(String path) throws FileNotFoundException {
-    	Image image = new Image(new FileInputStream(path));
-    	ImageView imageView = new ImageView(image);
-    	imageView.setFitWidth(20);
-    	imageView.setFitHeight(20);
-    	this.button.setGraphic(imageView);
-    	imageView.setVisible(true);
-    	this.button.setContentDisplay(ContentDisplay.RIGHT);
+    public void setGraphics(String path, int w, int h) {
+    	Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+            	Image image = null;
+				try {
+					image = new Image(new FileInputStream(path));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	ImageView imageView = new ImageView(image);
+            	imageView.setFitWidth(w);
+            	imageView.setFitHeight(h);
+            	button.setGraphic(imageView);
+            	imageView.setVisible(true);
+            }
+        });
+    	
     	    	
     }
+
+    
+	public final void setOnAction(EventHandler<ActionEvent> arg0) {
+		button.setOnAction(arg0);
+	}
+
+	public final void setContentDisplay(ContentDisplay arg0) {
+		button.setContentDisplay(arg0);
+	}
+    
     
     
 }
