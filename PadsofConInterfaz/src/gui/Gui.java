@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
+import javax.swing.UIManager;
 
 import gui.controllers.Controller;
 import gui.panels.Header;
@@ -53,6 +54,7 @@ public class Gui extends JFrame{
 	
 	public static void main(String[] args) {
 		Gui gui = new Gui();
+		UIManager.put("Panel.background", Color.WHITE);
 		SplashScreen splashScreen = new SplashScreen();
 		Controller controller = null;
 		try {
