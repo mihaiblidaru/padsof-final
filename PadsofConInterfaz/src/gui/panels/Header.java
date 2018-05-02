@@ -14,7 +14,8 @@ import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.fx.FxButton;
-import gui.panels.ofertante.MisOfertas;
+import gui.panels.ofertante.inmuebles.MisInmuebles;
+import gui.panels.ofertante.ofertas.MisOfertas;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -93,8 +94,17 @@ public class Header extends JPanel {
 		misInmueblesButton.setVisible(false);
 		misReservasButton.setVisible(false);
 		misOfertasButton.setOnAction(event -> gui.showOnly(Header.NAME, MisOfertas.NAME));
+		misInmueblesButton.setOnAction(event -> {
+			SwingUtilities.invokeLater(new Runnable() {
 
+				@Override
+				public void run() {
+					gui.showOnly(Header.NAME, MisInmuebles.NAME);
+				}
+			});
+		});
 		placeButtons();
+
 	}
 
 	public void placeButtons() {

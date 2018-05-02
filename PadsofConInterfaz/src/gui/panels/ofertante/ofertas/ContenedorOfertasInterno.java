@@ -1,4 +1,4 @@
-package gui.panels.ofertante;
+package gui.panels.ofertante.ofertas;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -33,7 +33,6 @@ public class ContenedorOfertasInterno extends JPanel {
 
 	private SpringLayout layout;
 
-	private final Gui gui;
 	private JLabel labelActivas;
 	private JLabel labelPendientes;
 	private JLabel labelRechazadas;
@@ -51,7 +50,6 @@ public class ContenedorOfertasInterno extends JPanel {
 	private static final int SEPARACION_SECCIONES = 70;
 
 	public ContenedorOfertasInterno(Gui gui) {
-		this.gui = gui;
 		layout = new SpringLayout();
 		this.setLayout(layout);
 		Font font = new Font("Times New Roman", Font.PLAIN, 20);

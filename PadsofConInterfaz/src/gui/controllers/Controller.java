@@ -7,8 +7,10 @@ import java.util.List;
 
 import app.clases.MiVacaPiso;
 import app.clases.inmueble.Inmueble;
+import app.clases.inmueble.InmuebleDuplicadoException;
 import app.clases.ofertas.Estado;
 import app.clases.users.Rol;
+import app.clases.users.UsuarioNoPermisoException;
 
 public class Controller {
 	private final MiVacaPiso model;
@@ -87,10 +89,19 @@ public class Controller {
 	}
 
 	public String inmuebleGetDireccionCompleta(Integer id) {
-		Inmueble inmueble = model.getInmuebleById(model.getOfertaById(id).getInmueble());
+		Inmueble inmueble = model.getInmuebleById(id);
 		return String.format("%s, %d, %s", inmueble.getDireccion(), inmueble.getcodigoPostal(),
 				inmueble.getLocalidad());
 
+	}
+
+	public int inmuebleGetNumOfertas(Integer id) {
+		return model.getInmuebleById(id).getOfertas().size();
+	}
+
+	public Integer addInmueble(String localidad, int cp, String direccion, List<String> claves, List<String> valores)
+			throws UsuarioNoPermisoException, InmuebleDuplicadoException {
+		return model.addInmueble(localidad, cp, direccion, claves, valores);
 	}
 
 }

@@ -21,18 +21,16 @@ public class SearchButtonHandler implements EventHandler<ActionEvent> {
 	private final FxDatePicker desdeDatePicker;
 	private final FxDatePicker hastaDatePicker;
 	private final FxCheckBox checkBoxVacacional;
-	private final FxCheckBox checkBoxVivienda;
 	private static final String regexOnlyDigits = "^\\d*\\d";
 
 	public SearchButtonHandler(Gui gui, FxTextField localidadOCPField, FxDatePicker desdeDatePicker,
-			FxDatePicker hastaDatePicker, FxCheckBox checkBoxVacacional, FxCheckBox checkBoxVivienda) {
+			FxDatePicker hastaDatePicker, FxCheckBox checkBoxVacacional) {
 		super();
 		this.gui = gui;
 		this.localidadOCPField = localidadOCPField;
 		this.desdeDatePicker = desdeDatePicker;
 		this.hastaDatePicker = hastaDatePicker;
 		this.checkBoxVacacional = checkBoxVacacional;
-		this.checkBoxVivienda = checkBoxVivienda;
 	}
 
 	@Override

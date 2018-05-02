@@ -1,4 +1,4 @@
-package gui.panels.ofertante;
+package gui.panels.ofertante.ofertas;
 
 import java.awt.Container;
 import java.awt.Dimension;

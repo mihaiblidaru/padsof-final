@@ -15,7 +15,7 @@ import gui.panels.Header;
 import gui.panels.LoginPanel;
 import gui.panels.SearchMenu;
 import gui.panels.admin.AdminView;
-import gui.panels.ofertante.MisOfertas;
+import gui.panels.ofertante.ofertas.MisOfertas;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 

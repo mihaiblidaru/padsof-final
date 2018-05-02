@@ -28,11 +28,8 @@ public class SearchMenu extends JPanel {
 		}
 	}
 
-	private final Gui gui;
-
 	private SearchMenu(Gui gui) {
 		this.setName(NAME);
-		this.gui = gui;
 		this.setPreferredSize(new Dimension(180, Gui.FRAME_HEIGHT));
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);
@@ -95,6 +92,6 @@ public class SearchMenu extends JPanel {
 			}
 		});
 
-		buscar.setOnAction(new SearchButtonHandler(gui, localidad, desde, hasta, checkBoxVacacional, checkBoxVivienda));
+		buscar.setOnAction(new SearchButtonHandler(gui, localidad, desde, hasta, checkBoxVacacional));
 	}
 }
