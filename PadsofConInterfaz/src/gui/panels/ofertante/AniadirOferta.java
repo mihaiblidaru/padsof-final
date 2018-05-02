@@ -25,6 +25,7 @@ import gui.Gui;
 import gui.components.fx.FxButton;
 import gui.components.fx.FxDatePicker;
 import gui.components.fx.FxTextField;
+import gui.controllers.Controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
@@ -41,6 +42,7 @@ public class AniadirOferta extends JPanel {
 	private FxDatePicker desdeDatePicker;
 	private FxDatePicker hastaDatePicker;
 	private JTextArea descripcionTextBox;
+	private JComboBox<String> comboBoxInmueble;
 
 	private static AniadirOferta instance = null;
 
@@ -75,16 +77,14 @@ public class AniadirOferta extends JPanel {
 		layout.putConstraint(SpringLayout.WEST, name, 30, SpringLayout.WEST, this);
 		this.add(name);
 
-		String[] petStrings = {
-				"Pisofffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffgggggggggffffffffffffffffffffff 1",
-				"Piso 2", "Piso 3", "Piso 4", "Piso 5" };
+		String[] petStrings = { "Piso 1", "Piso 2", "Piso 3", "Piso 4", "Piso 5" };
 
-		JComboBox<String> viviendaname = new JComboBox<>(petStrings);
-		this.add(viviendaname);
-		viviendaname.setPreferredSize(new Dimension(415, 25));
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, viviendaname, 0, SpringLayout.VERTICAL_CENTER, name);
-		layout.putConstraint(SpringLayout.WEST, viviendaname, 10, SpringLayout.EAST, name);
-		viviendaname.setBackground(Color.WHITE);
+		comboBoxInmueble = new JComboBox<>(petStrings);
+		this.add(comboBoxInmueble);
+		comboBoxInmueble.setPreferredSize(new Dimension(415, 25));
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, comboBoxInmueble, 0, SpringLayout.VERTICAL_CENTER, name);
+		layout.putConstraint(SpringLayout.WEST, comboBoxInmueble, 10, SpringLayout.EAST, name);
+		comboBoxInmueble.setBackground(Color.WHITE);
 
 		JLabel precio = new JLabel("Precio");
 		layout.putConstraint(SpringLayout.NORTH, precio, 20, SpringLayout.SOUTH, name);
@@ -225,7 +225,16 @@ public class AniadirOferta extends JPanel {
 			desdeDatePicker.setValue(null);
 			hastaDatePicker.setValue(null);
 			descripcionTextBox.setText("");
+			cargarListaInmuebles();
 		}
+
+	}
+
+	private void cargarListaInmuebles() {
+		Controller c = gui.getController();
+		comboBoxInmueble.removeAllItems();
+		c.ofertanteGetMisInmuebles().stream().map(i -> c.inmuebleGetDireccionCompleta(i))
+				.forEach(d -> comboBoxInmueble.addItem(d));
 	}
 
 	/**

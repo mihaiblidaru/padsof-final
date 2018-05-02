@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -90,7 +92,7 @@ public class Gui extends JFrame {
 				contentPane);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, loginPanel, 0, SpringLayout.VERTICAL_CENTER, contentPane);
 
-		SearchMenu searchMenu = new SearchMenu();
+		SearchMenu searchMenu = SearchMenu.getInstance(this);
 		contentPane.add(searchMenu);
 		layout.putConstraint(SpringLayout.NORTH, searchMenu, 0, SpringLayout.SOUTH, header);
 
@@ -125,6 +127,7 @@ public class Gui extends JFrame {
 		layout.putConstraint(SpringLayout.NORTH, interfazOfertante, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, interfazOfertante, 0, SpringLayout.WEST, contentPane);
 		interfazOfertante.setVisible(false);
+		contentPane.moveToFront(interfazOfertante);
 
 		// resBusqueda.setVisible(false);
 		// searchMenu.setVisible(false);
@@ -143,18 +146,11 @@ public class Gui extends JFrame {
 	}
 
 	public void showOnly(String... panelsName) {
-		Component[] components = this.contentPane.getComponents();
-		for (int i = 0; i < components.length; i++) {
-			components[i].setVisible(false);
-		}
+		Stream.of(this.contentPane.getComponents()).forEach(c -> c.setVisible(false));
 
-		for (int i = 0; i < components.length; i++) {
-			for (int j = 0; j < panelsName.length; j++) {
-				if (panelsName[j].equals(components[i].getName())) {
-					components[i].setVisible(true);
-				}
-			}
-		}
+		Predicate<Component> contains = (t) -> Stream.of(panelsName).filter(s -> s.equals(t.getName())).count() == 1;
+
+		Stream.of(this.contentPane.getComponents()).filter(contains).forEach(c -> c.setVisible(true));
 	}
 
 	public Component getComponent(String panelName) {

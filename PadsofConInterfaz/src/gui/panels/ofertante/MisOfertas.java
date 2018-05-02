@@ -2,24 +2,28 @@ package gui.panels.ofertante;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.List;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.JLayeredPane;
+import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
+import app.clases.ofertas.Estado;
 import gui.Gui;
-import gui.components.fx.FxButton;
-import gui.panels.Header;
-import gui.panels.PanelOferta;
+import gui.components.ThinSolidScrollBarUi;
+import gui.controllers.Controller;
+import gui.panels.oferta.PanelOferta;
+import gui.panels.oferta.PanelOfertaEditable;
 
-public class MisOfertas extends JPanel {
+public class MisOfertas extends JLayeredPane {
 
 	private static final long serialVersionUID = -8320036169616362237L;
 
 	public static final String NAME = "MIS_OFERTAS";
 
 	private Gui gui;
+
+	private ContenedorOfertasInterno coi;
 
 	private static MisOfertas instance = null;
 
@@ -34,7 +38,7 @@ public class MisOfertas extends JPanel {
 	private MisOfertas(Gui gui) {
 		this.gui = gui;
 		this.setPreferredSize(new Dimension(995, 600));
-		this.setBackground(Color.GREEN);
+		// this.setBackground(Color.GREEN);
 		this.setName(NAME);
 		initialize();
 	}
@@ -42,54 +46,45 @@ public class MisOfertas extends JPanel {
 	private void initialize() {
 		SpringLayout springLayout = new SpringLayout();
 		this.setLayout(springLayout);
-		FxButton anyadir = new FxButton(160, 40, "Añadir Oferta");
 
-		springLayout.putConstraint(SpringLayout.EAST, anyadir, -40, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, anyadir, 20, SpringLayout.NORTH, this);
-		this.add(anyadir);
+		coi = new ContenedorOfertasInterno(gui);
 
-		anyadir.setOnAction(event -> {
-			if (gui.getController().getNumInmuebles() == 0) {
+		JScrollPane scrollPane = new JScrollPane(coi, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.getVerticalScrollBar().setUI(new ThinSolidScrollBarUi(7));
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane.setPreferredSize(new Dimension(1006, 563));
+		scrollPane.setBackground(Color.BLUE);
 
-				JOptionPane.showMessageDialog(new JPanel(),
-						"No tienes ningun inmueble registrado. Registra un inmueble e intentalo de nuevo", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			} else {
-				gui.showOnly(Header.NAME, AniadirOferta.NAME);
-			}
-
-		});
-
-		JPanel panel = new PanelOferta();
-		springLayout.putConstraint(SpringLayout.NORTH, panel, 100, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, panel, 20, SpringLayout.WEST, this);
-		this.add(panel);
-
-		JPanel panel2 = new PanelOferta();
-		springLayout.putConstraint(SpringLayout.NORTH, panel2, 20, SpringLayout.SOUTH, panel);
-		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, panel2, 0, SpringLayout.HORIZONTAL_CENTER, panel);
-		this.add(panel2);
-
-		JLabel activas = new JLabel("Activas");
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, activas, 0, SpringLayout.VERTICAL_CENTER, anyadir);
-		springLayout.putConstraint(SpringLayout.WEST, activas, 20, SpringLayout.WEST, this);
-		this.add(activas);
-
-		JLabel pendientes = new JLabel("Pendientes: el administrador debe aceptar está oferta antes de ser publicada");
-		springLayout.putConstraint(SpringLayout.NORTH, pendientes, 5, SpringLayout.SOUTH, panel);
-		springLayout.putConstraint(SpringLayout.WEST, pendientes, 20, SpringLayout.WEST, this);
-		this.add(pendientes);
-
-		JLabel rechazadas = new JLabel("Rechazadas");
-		springLayout.putConstraint(SpringLayout.NORTH, rechazadas, 15, SpringLayout.SOUTH, panel2);
-		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, rechazadas, 20, SpringLayout.HORIZONTAL_CENTER,
-				activas);
-		this.add(rechazadas);
-
-		JPanel panel3 = new PanelOferta();
-		springLayout.putConstraint(SpringLayout.NORTH, panel3, 10, SpringLayout.SOUTH, rechazadas);
-		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, panel3, 0, SpringLayout.HORIZONTAL_CENTER, panel);
-		this.add(panel3);
+		this.add(scrollPane);
+		this.setLayer(scrollPane, 1);
 
 	}
+
+	public void cargarOfertas() {
+		Controller c = gui.getController();
+		List<Integer> ofertas = c.ofertanteGetMisOfertas();
+		for (Integer id : ofertas) {
+			Estado estado = c.ofertaGetEstado(id);
+			if (estado == Estado.ACEPTADA || estado == Estado.CONTRATADA || estado == Estado.RESERVADA) {
+				PanelOferta oferta = new PanelOferta(gui);
+				oferta.cargarDatos(id);
+				coi.addActiva(oferta);
+			} else if (estado == Estado.PENDIENTE || estado == Estado.PENDIENTE_DE_CAMBIOS) {
+				PanelOferta oferta = new PanelOfertaEditable(gui);
+				oferta.cargarDatos(id);
+				coi.addPendiente(oferta);
+			} else if (estado == Estado.RETIRADA) {
+				PanelOferta oferta = new PanelOferta(gui);
+				oferta.cargarDatos(id);
+				coi.addRechazada(oferta);
+			}
+		}
+		coi.repaint();
+	}
+
+	public void clearOfertas() {
+		coi.clearOfertas();
+	}
+
 }

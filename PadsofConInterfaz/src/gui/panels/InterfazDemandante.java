@@ -15,6 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import javax.swing.SpringLayout;
+
+import gui.panels.oferta.PanelOferta;
+
 import java.awt.Color;
 
 public class InterfazDemandante {

@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.fx.FxButton;
@@ -124,15 +125,23 @@ public class Header extends JPanel {
 	EventHandler<ActionEvent> logoutButtonHandler = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent e) {
-			gui.getController().logout();
-			setButtonVisibility(MIS_INMUEBLES, false);
-			setButtonVisibility(MIS_OFERTAS, false);
-			setButtonVisibility(MIS_RESERVAS, false);
-			setButtonVisibility(LOGOUT, false);
-			setButtonVisibility(LOGIN, true);
-			placeButtons();
+			SwingUtilities.invokeLater(new Runnable() {
 
-			gui.showOnly(Header.NAME, SearchMenu.NAME);
+				@Override
+				public void run() {
+					gui.getController().logout();
+					setButtonVisibility(MIS_INMUEBLES, false);
+					setButtonVisibility(MIS_OFERTAS, false);
+					setButtonVisibility(MIS_RESERVAS, false);
+					setButtonVisibility(LOGOUT, false);
+					setButtonVisibility(LOGIN, true);
+					placeButtons();
+					MisOfertas mo = (MisOfertas) gui.getComponent(MisOfertas.NAME);
+					mo.clearOfertas();
+					gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
+				}
+			});
+
 		}
 	};
 

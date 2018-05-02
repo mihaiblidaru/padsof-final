@@ -8,10 +8,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-
-import gui.panels.PanelOferta;
-
 import javax.swing.SpringLayout;
+
+import gui.panels.oferta.PanelOferta;
+
 import java.awt.Color;
 
 
