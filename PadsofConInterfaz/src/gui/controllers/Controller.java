@@ -7,18 +7,21 @@ import app.clases.users.Rol;
 
 public class Controller {
 	private final MiVacaPiso model;
-	
+
 	public Controller() throws SQLException {
 		this.model = MiVacaPiso.getInstance();
 	}
-	
+
 	public Rol login(String user, String password) throws SQLException {
 		return model.login(user, password);
 	}
-	
+
 	public void logout() {
 		model.logout();
 	}
-	
+
+	public int getNumInmuebles() {
+		return model.getOfertanteLogueado().getInmuebles().size();
+	}
 
 }

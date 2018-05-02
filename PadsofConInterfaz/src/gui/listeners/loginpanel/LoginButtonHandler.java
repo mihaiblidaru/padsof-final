@@ -1,6 +1,7 @@
 package gui.listeners.loginpanel;
 
 import java.sql.SQLException;
+
 import javax.swing.JFrame;
 
 import app.clases.users.Rol;
@@ -13,13 +14,15 @@ import gui.panels.Header;
 import gui.panels.LoginPanel;
 import gui.panels.SearchMenu;
 import gui.panels.admin.AdminView;
+import gui.panels.ofertante.MisOfertas;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 
-public class LoginButtonHandler implements EventHandler<MouseEvent> {
+public class LoginButtonHandler implements EventHandler<ActionEvent> {
 	private Gui gui;
 	private FxTextField userTextFied;
 	private FxPasswordField passwordTextField;
+
 	public LoginButtonHandler(Gui gui, FxTextField userTextFied, FxPasswordField passwordTextField) {
 		this.gui = gui;
 		this.userTextFied = userTextFied;
@@ -27,27 +30,27 @@ public class LoginButtonHandler implements EventHandler<MouseEvent> {
 	}
 
 	@Override
-	public void handle(MouseEvent event) {
+	public void handle(ActionEvent event) {
 		event.getEventType();
-		
+
 		Controller controller = gui.getController();
 		String user = userTextFied.getText();
 		String password = passwordTextField.getText();
-		
-		if(user.isEmpty() || password.isEmpty()) {
-			//directamente no llama al controllador
-		}else {
+
+		if (user.isEmpty() || password.isEmpty()) {
+			// directamente no llama al controllador
+		} else {
 			Rol rol = null;
 			try {
 				rol = controller.login(user, password);
 			} catch (SQLException e) {
-				//popup;
+				// popup;
 			}
-			
-			if(rol==null) {
-							
+
+			if (rol == null) {
+
 				final JFrame dialog = new EditUserDialog(gui);
-				
+
 				dialog.setVisible(true);
 			} else {
 				gui.setVisiblePane(LoginPanel.NAME, false);
@@ -55,23 +58,24 @@ public class LoginButtonHandler implements EventHandler<MouseEvent> {
 				header.setButtonVisibility(Header.LOGIN, false);
 				header.setButtonVisibility(Header.LOGOUT, true);
 				gui.setVisiblePane(Header.NAME, true);
-				if(rol==Rol.D) {
+				if (rol == Rol.D) {
 					gui.setVisiblePane(SearchMenu.NAME, true);
 					header.setButtonVisibility(Header.MIS_RESERVAS, true);
-				}else if(rol==Rol.OD) {
+				} else if (rol == Rol.OD) {
 					gui.setVisiblePane(SearchMenu.NAME, true);
 					header.setButtonVisibility(Header.MIS_RESERVAS, true);
 					header.setButtonVisibility(Header.MIS_INMUEBLES, true);
 					header.setButtonVisibility(Header.MIS_OFERTAS, true);
-				}else if(rol==Rol.O) {
+				} else if (rol == Rol.O) {
 					header.setButtonVisibility(Header.MIS_INMUEBLES, true);
 					header.setButtonVisibility(Header.MIS_OFERTAS, true);
+					gui.setVisiblePane(MisOfertas.NAME, true);
 				} else {
 					gui.setVisiblePane(AdminView.NAME, true);
 				}
 				header.placeButtons();
 			}
 		}
-		
+
 	}
 }
