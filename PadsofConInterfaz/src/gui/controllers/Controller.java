@@ -9,6 +9,7 @@ import app.clases.MiVacaPiso;
 import app.clases.inmueble.Inmueble;
 import app.clases.inmueble.InmuebleDuplicadoException;
 import app.clases.ofertas.Estado;
+import app.clases.ofertas.OfertaNoModificableException;
 import app.clases.users.Rol;
 import app.clases.users.UsuarioNoPermisoException;
 
@@ -112,6 +113,20 @@ public class Controller {
 	public Integer addOfertaVacacional(LocalDate fechaInicio, LocalDate fechaFin, float precio, float fianza,
 			String descripcion, Integer idInmueble) throws UsuarioNoPermisoException {
 		return model.addOferta(fechaInicio, fechaFin, precio, fianza, descripcion, idInmueble);
+	}
+
+	public void ofertaSetPrecio(int id, float parseFloat) throws OfertaNoModificableException {
+		model.getOfertaById(id).setPrecio(parseFloat);
+	}
+
+	public void ofertaSetFianza(int id, float parseFloat) throws OfertaNoModificableException {
+		model.getOfertaById(id).setFianza(parseFloat);
+
+	}
+
+	public void ofertaSetDescripcion(int id, String descripcion) throws OfertaNoModificableException {
+		model.getOfertaById(id).setDescripcion(descripcion);
+
 	}
 
 }

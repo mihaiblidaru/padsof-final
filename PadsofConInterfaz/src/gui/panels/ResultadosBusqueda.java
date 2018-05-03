@@ -46,8 +46,6 @@ public class ResultadosBusqueda extends JPanel {
 		scrollPanel.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		this.add(scrollPanel);
-		contenedor.addOtro(new PanelOferta(this.gui));
-		contenedor.addOtro(new PanelOferta(this.gui));
 	}
 
 	class ContenedorOfertas extends JPanel {
@@ -80,8 +78,7 @@ public class ResultadosBusqueda extends JPanel {
 
 	public void cargarResultados(List<Integer> resultados) {
 		for (Integer id : resultados) {
-			PanelOferta panelOferta = new PanelOferta(this.gui);
-			panelOferta.cargarDatos(id);
+			PanelOferta panelOferta = new PanelOferta(this.gui, id);
 			contenedor.addOtro(panelOferta);
 		}
 		this.revalidate();

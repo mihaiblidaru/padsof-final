@@ -67,16 +67,13 @@ public class MisOfertas extends JLayeredPane {
 		for (Integer id : ofertas) {
 			Estado estado = c.ofertaGetEstado(id);
 			if (estado == Estado.ACEPTADA || estado == Estado.CONTRATADA || estado == Estado.RESERVADA) {
-				PanelOferta oferta = new PanelOferta(gui);
-				oferta.cargarDatos(id);
+				PanelOferta oferta = new PanelOferta(gui, id);
 				coi.addActiva(oferta);
 			} else if (estado == Estado.PENDIENTE || estado == Estado.PENDIENTE_DE_CAMBIOS) {
-				PanelOferta oferta = new PanelOfertaEditable(gui);
-				oferta.cargarDatos(id);
+				PanelOferta oferta = new PanelOfertaEditable(gui, id);
 				coi.addPendiente(oferta);
 			} else if (estado == Estado.RETIRADA) {
-				PanelOferta oferta = new PanelOferta(gui);
-				oferta.cargarDatos(id);
+				PanelOferta oferta = new PanelOferta(gui, id);
 				coi.addRechazada(oferta);
 			}
 		}

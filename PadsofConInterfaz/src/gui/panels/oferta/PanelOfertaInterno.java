@@ -11,8 +11,8 @@ public class PanelOfertaInterno extends PanelOferta {
 
 	private FxButton editar;
 
-	public PanelOfertaInterno(Gui gui) {
-		super(gui);
+	public PanelOfertaInterno(Gui gui, int idOferta) {
+		super(gui, idOferta);
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class PanelOfertaInterno extends PanelOferta {
 	}
 
 	@Override
-	public void cargarDatos(Integer id) {
+	protected void cargarDatos(Integer id) {
 		super.cargarDatos(id);
 		this.editar.setVisible(this.gui.getController().ofertaGetEditable(id));
 	}

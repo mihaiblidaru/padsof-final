@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import gui.controllers.Controller;
@@ -28,6 +29,7 @@ import gui.panels.admin.AdminView;
 import gui.panels.ofertante.inmuebles.AniadirInmueble;
 import gui.panels.ofertante.inmuebles.MisInmuebles;
 import gui.panels.ofertante.ofertas.AniadirOferta;
+import gui.panels.ofertante.ofertas.EditarOferta;
 import gui.panels.ofertante.ofertas.MisOfertas;
 
 public class Gui extends JFrame {
@@ -72,14 +74,16 @@ public class Gui extends JFrame {
 		} catch (SQLException e) {
 			JOptionPane.showInputDialog(gui, "SQL ERROR", null);
 		}
-
-		gui.initialize();
-		gui.createPanels();
-		gui.setVisible(true);
-		splashScreen.setVisible(false);
-		splashScreen.dispose();
-		splashScreen = null;
 		gui.SetController(controller);
+
+		SwingUtilities.invokeLater(() -> {
+			gui.initialize();
+			gui.createPanels();
+			gui.setVisible(true);
+			splashScreen.setVisible(false);
+			splashScreen.dispose();
+		});
+
 	}
 
 	private void createPanels() {
@@ -106,6 +110,11 @@ public class Gui extends JFrame {
 		contentPane.add(aniadirOferta);
 		layout.putConstraint(SpringLayout.NORTH, aniadirOferta, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, aniadirOferta, 0, SpringLayout.WEST, contentPane);
+
+		EditarOferta editarOferta = EditarOferta.getInstance(this);
+		contentPane.add(editarOferta);
+		layout.putConstraint(SpringLayout.NORTH, editarOferta, 0, SpringLayout.SOUTH, header);
+		layout.putConstraint(SpringLayout.WEST, editarOferta, 0, SpringLayout.WEST, contentPane);
 
 		AniadirInmueble aniadirVivienda = AniadirInmueble.getInstance(this);
 
@@ -137,6 +146,7 @@ public class Gui extends JFrame {
 		misOfertas.setVisible(false);
 		resBusqueda.setVisible(false);
 		misInmuebles.setVisible(false);
+		editarOferta.setVisible(false);
 
 		// contentPane.moveToFront(misInmuebles);
 

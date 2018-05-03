@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -20,7 +21,7 @@ public abstract class FxWrapper extends JFXPanel {
 	private final int height;
 	protected Node node;
 	private boolean navigationFixed = false;
-	
+
 	protected FxWrapper(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -28,34 +29,41 @@ public abstract class FxWrapper extends JFXPanel {
 		this.setBackground(Color.GREEN);
 	}
 
+	@Override
 	public int getWidth() {
 		return width;
 	}
 
+	@Override
 	public int getHeight() {
 		return height;
 	}
-	
-    public <T extends Event> void addEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler){
-    	node.addEventHandler(eventType, eventHandler);
-    }
-    
-    public void fireEvent(Event event) {
-    	node.fireEvent(event);
-    }
-    
+
+	public <T extends Event> void addEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler) {
+		node.addEventHandler(eventType, eventHandler);
+	}
+
+	public void fireEvent(Event event) {
+		node.fireEvent(event);
+	}
+
 	protected void fixNavigation(Control control) {
-		if(!navigationFixed) {
-	        control.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+		if (!navigationFixed) {
+			control.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 				@Override
 				public void handle(KeyEvent event) {
-					if(event.getCode() == KeyCode.TAB) {
-					    KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-					    manager.focusNextComponent();
+					if (event.getCode() == KeyCode.TAB) {
+						KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+						manager.focusNextComponent();
 					}
 				}
 			});
-	        navigationFixed = true;
-        }
+			navigationFixed = true;
+		}
 	}
+
+	public final void setDisable(boolean value) {
+		Platform.runLater(() -> node.setDisable(value));
+	}
+
 }

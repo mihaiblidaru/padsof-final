@@ -12,7 +12,7 @@ import gui.components.fx.FxButton;
 import gui.components.fx.FxCheckBox;
 import gui.components.fx.FxDatePicker;
 import gui.components.fx.FxTextField;
-import gui.listeners.searchmenu.SearchButtonHandler;
+import gui.listeners.SearchButtonHandler;
 
 public class SearchMenu extends JPanel {
 	public final static String NAME = "SEARCH_MENU";

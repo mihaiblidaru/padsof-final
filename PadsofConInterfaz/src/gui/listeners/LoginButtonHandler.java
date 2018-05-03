@@ -1,4 +1,4 @@
-package gui.listeners.loginpanel;
+package gui.listeners;
 
 import java.sql.SQLException;
 

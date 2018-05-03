@@ -50,7 +50,8 @@ public class FxTextField extends FxWrapper {
 	}
 
 	public void setText(String value) {
-		this.textfield.setText(value);
+		Platform.runLater(() -> this.textfield.setText(value));
+
 	}
 
 	public void setOnlyInteger() {

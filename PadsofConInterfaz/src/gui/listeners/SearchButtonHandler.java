@@ -1,4 +1,4 @@
-package gui.listeners.searchmenu;
+package gui.listeners;
 
 import java.time.LocalDate;
 import java.util.List;

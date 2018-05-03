@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +33,11 @@ import gui.components.fx.FxTextField;
 import gui.controllers.Controller;
 import gui.listeners.AniadirOfertaListener;
 
-public class AniadirOferta extends JPanel {
+public class EditarOferta extends JPanel {
 
 	private static final long serialVersionUID = 2220134063340646027L;
 
-	public final static String NAME = "PANEL_ANIADIR_OFERTA";
+	public final static String NAME = "PANEL_EDITAR_OFERTA";
 
 	private final Gui gui;
 	private FxTextField precioTextBox;
@@ -66,17 +67,39 @@ public class AniadirOferta extends JPanel {
 	private JLabel descripcion;
 	protected int limit = 300;
 
-	private static AniadirOferta instance = null;
+	private static EditarOferta instance = null;
 
-	public static AniadirOferta getInstance(Gui gui) {
+	public static EditarOferta getInstance(Gui gui) {
 		if (instance == null) {
-			return (instance = new AniadirOferta(gui));
-		} else {
-			return instance;
+			instance = new EditarOferta(gui);
 		}
+
+		return instance;
+
 	}
 
-	private AniadirOferta(Gui gui) {
+	public void cargarDatos(int id) {
+		SwingUtilities.invokeLater(() -> {
+			Controller c = gui.getController();
+			precioTextBox.setText(String.valueOf(c.ofertaGetPrecio(id)));
+			fianzaTextBox.setText(String.valueOf(c.ofertaGetFianza(id)));
+			descripcionTextBox.setText(c.ofertaGetDescripcion(id));
+			desdeDatePicker.setValue(c.ofertaGetFechaFin(id));
+			LocalDate fechaFin = c.ofertaGetFechaFin(id);
+			if (fechaFin == null) {
+				checkBoxVivienda.fire();
+				mesesTextField.setText(String.valueOf(c.ofertaGetNumMeses(id)));
+			} else {
+				checkBoxVacacional.fire();
+				hastaDatePicker.setValue(fechaFin);
+			}
+			checkBoxVacacional.setDisable(true);
+			checkBoxVivienda.setDisable(true);
+
+		});
+	}
+
+	private EditarOferta(Gui gui) {
 		this.gui = gui;
 		this.setName(NAME);
 
@@ -103,7 +126,7 @@ public class AniadirOferta extends JPanel {
 		Font descfont = new Font("Comic Sans", Font.PLAIN, 25);
 		Font conffont = new Font("Comic Sans", Font.PLAIN, 25);
 
-		aniadirOfertas = new JLabel("Añadir Oferta");
+		aniadirOfertas = new JLabel("Editar Oferta");
 		name = new JLabel("Selecciona la vivienda que quieres ofertar");
 		precioTextBox = new FxTextField(70, 25, "321.33 €");
 		fianza = new JLabel("Fianza");
@@ -123,6 +146,7 @@ public class AniadirOferta extends JPanel {
 		checkBoxVivienda = new FxCheckBox(100, 20, "Vivienda");
 		precio = new JLabel("Precio");
 		comboBoxInmueble = new JComboBox<>(petStrings);
+		comboBoxInmueble.setEnabled(false);
 
 		aniadirOfertas.setFont(font);
 

@@ -66,4 +66,8 @@ public class FxCheckBox extends FxWrapper {
 		Platform.runLater(() -> checkBox.setOnAction(arg0));
 	}
 
+	public void fire() {
+		checkBox.fire();
+	}
+
 }

@@ -23,6 +23,7 @@ public class PanelOferta extends JPanel {
 
 	protected final Gui gui;
 
+	private final int idOferta;
 	private JMultiLineLabel descripcion;
 	private JLabel precio;
 	private JLabel fianza;
@@ -33,21 +34,13 @@ public class PanelOferta extends JPanel {
 
 	protected SpringLayout layout;
 
-	public final static int REGISTRADO = 1;
-	public final static int NO_REGISTRADO = 2;
+	private final static int PANEL_HEIGHT = 160;
+	private final static int PANEL_WIDTH = 750;
 
-	public final static int HEIGHT = 160;
-
-	private static int perm;
-
-	public static void setPermisos(int permisos) {
-		perm = permisos;
-
-	}
-
-	public PanelOferta(Gui gui) {
+	public PanelOferta(Gui gui, int idOferta) {
 		this.gui = gui;
-		this.setPreferredSize(new Dimension(750, HEIGHT));
+		this.idOferta = idOferta;
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		Font precioFont = new Font("Comic Sans", Font.PLAIN, 40);
 		Font fianzaFont = new Font("Comic Sans", Font.PLAIN, 20);
 		setBorder(BorderFactory.createEtchedBorder());
@@ -100,12 +93,13 @@ public class PanelOferta extends JPanel {
 		layout.putConstraint(SpringLayout.NORTH, fianza, 10, SpringLayout.SOUTH, precio);
 
 		this.addButtons();
+		cargarDatos(idOferta);
 	}
 
 	protected void addButtons() {
 	}
 
-	public void cargarDatos(Integer id) {
+	protected void cargarDatos(Integer id) {
 		Controller c = this.gui.getController();
 		this.precio.setText(String.format("%.2f €", c.ofertaGetPrecio(id)));
 		this.fianza.setText(String.format("+ %.2f €", c.ofertaGetFianza(id)));
@@ -123,6 +117,10 @@ public class PanelOferta extends JPanel {
 		}
 		this.descripcion.setText(c.ofertaGetDescripcion(id));
 		this.direccion.setText(c.ofertaGetDireccion(id));
+	}
+
+	public int getIdOferta() {
+		return idOferta;
 	}
 
 }

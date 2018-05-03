@@ -12,8 +12,8 @@ public class PanelOfertaFull extends PanelOferta {
 	 */
 	private static final long serialVersionUID = -5513253061378866849L;
 
-	public PanelOfertaFull(Gui gui) {
-		super(gui);
+	public PanelOfertaFull(Gui gui, int idOferta) {
+		super(gui, idOferta);
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import gui.Gui;
 import gui.components.fx.FxButton;
 import gui.components.fx.FxPasswordField;
 import gui.components.fx.FxTextField;
-import gui.listeners.loginpanel.LoginButtonHandler;
+import gui.listeners.LoginButtonHandler;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.input.KeyCode;

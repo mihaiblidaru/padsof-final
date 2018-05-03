@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import app.clases.ofertas.OfertaNoModificableException;
 import app.clases.users.UsuarioNoPermisoException;
 import gui.Gui;
 import gui.components.fx.FxCheckBox;
@@ -19,7 +20,7 @@ import gui.util.DialogFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-public class AniadirConfirmarListener implements EventHandler<ActionEvent> {
+public class EditarOfertaListener implements EventHandler<ActionEvent> {
 	private final Gui gui;
 	private final FxTextField precioTextBox;
 	private final FxTextField fianzaTextBox;
@@ -31,7 +32,7 @@ public class AniadirConfirmarListener implements EventHandler<ActionEvent> {
 	private final JComboBox<String> comboBoxInmuebles;
 	private final List<Integer> inmuebles;
 
-	public AniadirConfirmarListener(Gui gui, FxTextField precioTextBox, FxTextField fianzaTextBox,
+	public EditarOfertaListener(Gui gui, FxTextField precioTextBox, FxTextField fianzaTextBox,
 			FxDatePicker desdeDatePicker, FxDatePicker hastaDatePicker, JTextArea descripcionTextBox,
 			FxTextField mesesTextField, FxCheckBox checkBoxVacacional, JComboBox<String> comboBoxInmuebles,
 			List<Integer> inmuebles) {
@@ -79,13 +80,20 @@ public class AniadirConfirmarListener implements EventHandler<ActionEvent> {
 					DialogFactory.emptyFieldError("hasta");
 					return;
 				}
+
+				int id = 1;
+				// TODO faltan las demás comprobaciones
 				try {
-					c.addOfertaVacacional(desde, hasta, Float.parseFloat(precio), Float.parseFloat(fianza), descripcion,
-							idInmueble);
-					gui.showOnly(Header.NAME, MisOfertas.NAME);
-				} catch (NumberFormatException | UsuarioNoPermisoException e) {
+					c.ofertaSetPrecio(id, Float.parseFloat(precio));
+					c.ofertaSetFianza(id, Float.parseFloat(fianza));
+					c.ofertaSetDescripcion(id, descripcion);
+				} catch (NumberFormatException | OfertaNoModificableException e) {
+
 					e.printStackTrace();
 				}
+
+				gui.showOnly(Header.NAME, MisOfertas.NAME);
+
 			} else {
 				String numMeses = mesesTextField.getText();
 				if (numMeses.isEmpty()) {
