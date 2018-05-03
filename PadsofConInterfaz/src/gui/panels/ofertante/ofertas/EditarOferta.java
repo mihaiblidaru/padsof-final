@@ -3,15 +3,10 @@ package gui.panels.ofertante.ofertas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -60,8 +55,6 @@ public class EditarOferta extends JPanel {
 
 	private FxCheckBox checkBoxVivienda;
 	private JLabel precio;
-	private JLabel warningIcon;
-	private JLabel alarm;
 	private FxButton confirmar;
 	private JLabel limitLabel;
 	private JLabel descripcion;
@@ -114,13 +107,6 @@ public class EditarOferta extends JPanel {
 		this.setBackground(Color.decode("#ffffff"));
 
 		String[] petStrings = { "Piso 1", "Piso 2", "Piso 3", "Piso 4", "Piso 5", };
-		ImageIcon image = null;
-		try {
-			image = new ImageIcon(
-					ImageIO.read(new File("res/img/fa-warning.png")).getScaledInstance(10, 10, Image.SCALE_SMOOTH));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 
 		Font font = new Font("Comic Sans", Font.PLAIN, 40);
 		Font descfont = new Font("Comic Sans", Font.PLAIN, 25);
@@ -140,8 +126,6 @@ public class EditarOferta extends JPanel {
 		descripcionTextBox = new JTextArea(new CustomDocument(limit));
 		limitLabel = new JLabel(String.format("%d restantes", limit));
 		confirmar = new FxButton(200, 100, "Confirmar");
-		alarm = new JLabel("No puedes añadir la misma oferta dos veces");
-		warningIcon = new JLabel(image);
 		checkBoxVacacional = new FxCheckBox(100, 20, "Vacacional");
 		checkBoxVivienda = new FxCheckBox(100, 20, "Vivienda");
 		precio = new JLabel("Precio");
@@ -179,8 +163,6 @@ public class EditarOferta extends JPanel {
 		this.add(descripcion);
 		this.add(descripcionTextBox);
 		this.add(confirmar);
-		this.add(alarm);
-		this.add(warningIcon);
 		this.add(checkBoxVacacional);
 		this.add(checkBoxVivienda);
 		this.add(limitLabel);
@@ -228,10 +210,6 @@ public class EditarOferta extends JPanel {
 		layout.putConstraint(SpringLayout.EAST, limitLabel, 0, SpringLayout.EAST, descripcionTextBox);
 		layout.putConstraint(SpringLayout.NORTH, confirmar, 40, SpringLayout.SOUTH, descripcionTextBox);
 		layout.putConstraint(SpringLayout.WEST, confirmar, 0, SpringLayout.WEST, descripcionTextBox);
-		layout.putConstraint(SpringLayout.WEST, alarm, 20, SpringLayout.WEST, confirmar);
-		layout.putConstraint(SpringLayout.SOUTH, alarm, -20, SpringLayout.NORTH, confirmar);
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, warningIcon, 0, SpringLayout.VERTICAL_CENTER, alarm);
-		layout.putConstraint(SpringLayout.EAST, warningIcon, -5, SpringLayout.WEST, alarm);
 		layout.putConstraint(SpringLayout.EAST, checkBoxVivienda, 0, SpringLayout.EAST, comboBoxInmueble);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, checkBoxVivienda, 0, SpringLayout.VERTICAL_CENTER,
 				aniadirOfertas);
