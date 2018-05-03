@@ -77,13 +77,24 @@ public class EditarOferta extends JPanel {
 			precioTextBox.setText(String.valueOf(c.ofertaGetPrecio(id)));
 			fianzaTextBox.setText(String.valueOf(c.ofertaGetFianza(id)));
 			descripcionTextBox.setText(c.ofertaGetDescripcion(id));
-			desdeDatePicker.setValue(c.ofertaGetFechaFin(id));
+			desdeDatePicker.setValue(c.ofertaGetFechaInicio(id));
 			LocalDate fechaFin = c.ofertaGetFechaFin(id);
+			comboBoxInmueble.addItem(c.ofertaGetDireccion(id));
+			comboBoxInmueble.setSelectedIndex(comboBoxInmueble.getItemCount() - 1);
+
 			if (fechaFin == null) {
-				checkBoxVivienda.fire();
+				checkBoxVivienda.setSelected(true);
+				checkBoxVacacional.setSelected(false);
+				hasta.setText("Meses");
+				hastaDatePicker.setVisible(false);
+				mesesTextField.setVisible(true);
 				mesesTextField.setText(String.valueOf(c.ofertaGetNumMeses(id)));
 			} else {
-				checkBoxVacacional.fire();
+				hasta.setText("Hasta");
+				checkBoxVacacional.setSelected(true);
+				checkBoxVivienda.setSelected(false);
+				hastaDatePicker.setVisible(true);
+				mesesTextField.setVisible(false);
 				hastaDatePicker.setValue(fechaFin);
 			}
 			checkBoxVacacional.setDisable(true);
@@ -228,26 +239,30 @@ public class EditarOferta extends JPanel {
 		mesesTextField.setOnlyInteger();
 
 		checkBoxVacacional.setOnAction(event -> {
-			if (checkBoxVacacional.isSelected()) {
-				checkBoxVivienda.setSelected(false);
-				hasta.setText("Hasta");
-				hastaDatePicker.setVisible(true);
-				mesesTextField.setVisible(false);
-			} else {
-				checkBoxVacacional.setSelected(true);
-			}
+			SwingUtilities.invokeLater(() -> {
+				if (checkBoxVacacional.isSelected()) {
+					checkBoxVivienda.setSelected(false);
+					hasta.setText("Hasta");
+					hastaDatePicker.setVisible(true);
+					mesesTextField.setVisible(false);
+				} else {
+					checkBoxVacacional.setSelected(true);
+				}
+			});
 		});
 
 		checkBoxVivienda.setOnAction(event -> {
-			if (checkBoxVivienda.isSelected()) {
-				checkBoxVacacional.setSelected(false);
-				hasta.setText("Meses");
-				hastaDatePicker.setVisible(false);
-				mesesTextField.setVisible(true);
+			SwingUtilities.invokeLater(() -> {
+				if (checkBoxVivienda.isSelected()) {
+					checkBoxVacacional.setSelected(false);
+					hasta.setText("Meses");
+					hastaDatePicker.setVisible(false);
+					mesesTextField.setVisible(true);
 
-			} else {
-				checkBoxVivienda.setSelected(true);
-			}
+				} else {
+					checkBoxVivienda.setSelected(true);
+				}
+			});
 		});
 
 		descripcionTextBox.getDocument().addDocumentListener(new DocumentListener() {
