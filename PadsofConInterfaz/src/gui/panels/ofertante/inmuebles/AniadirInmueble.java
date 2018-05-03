@@ -29,8 +29,7 @@ import gui.components.fx.FxTextField;
 import gui.controllers.Controller;
 import gui.panels.Header;
 import gui.panels.ofertante.caracteristicas.PanelCaracteristicas;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import gui.util.DialogFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -158,15 +157,8 @@ public class AniadirInmueble extends JPanel {
 
 		layout.putConstraint(SpringLayout.WEST, caracteristicas, 0, SpringLayout.EAST, separator);
 		layout.putConstraint(SpringLayout.NORTH, caracteristicas, 5, SpringLayout.NORTH, separator);
-		cpTextField.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (!newValue.matches("^\\d*\\d") && !newValue.isEmpty()) {
-					cpTextField.setText(oldValue);
-				}
-			}
-		});
 
+		cpTextField.setOnlyInteger();
 		confirmar.setOnAction(handler);
 	}
 
@@ -195,8 +187,7 @@ public class AniadirInmueble extends JPanel {
 					}
 
 					if (direccion.isEmpty()) {
-						JOptionPane.showMessageDialog(new JPanel(), "El campo direccion no puede estar vacio", "Error",
-								JOptionPane.ERROR_MESSAGE);
+						DialogFactory.emptyFieldError("direccion");
 						return;
 					}
 					direccion = direccion.trim() + " " + direccionExtra.trim();

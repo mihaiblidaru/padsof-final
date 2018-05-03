@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
@@ -37,7 +38,7 @@ public class MisInmuebles extends JLayeredPane {
 		this.setPreferredSize(new Dimension(995, 600));
 		// this.setBackground(Color.GREEN);
 		this.setName(NAME);
-		initialize();
+		SwingUtilities.invokeLater(() -> initialize());
 	}
 
 	private void initialize() {

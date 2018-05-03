@@ -29,9 +29,12 @@ public class PanelInmueble extends JPanel {
 
 	private JLabel numOfertas;
 
+	private final static int PANEL_HEIGTH = 140;
+	private final static int PANEL_WIDTH = 650;
+
 	public PanelInmueble(Gui gui) {
 		this.gui = gui;
-		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGTH));
 
 		setBorder(BorderFactory.createEtchedBorder());
 		layout = new SpringLayout();
@@ -39,7 +42,7 @@ public class PanelInmueble extends JPanel {
 		this.setBackground(Color.WHITE);
 
 		JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
-		separator.setPreferredSize(new Dimension(1, HEIGHT - 15));
+		separator.setPreferredSize(new Dimension(1, PANEL_HEIGTH - 15));
 		separator.setForeground(new Color(200, 200, 200));
 		this.add(separator);
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, separator, 0, SpringLayout.HORIZONTAL_CENTER, this);

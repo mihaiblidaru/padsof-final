@@ -50,7 +50,8 @@ public class FxCheckBox extends FxWrapper {
 	}
 
 	public void setText(String value) {
-		this.checkBox.setText(value);
+		Platform.runLater(() -> this.checkBox.setText(value));
+
 	}
 
 	public final boolean isSelected() {
@@ -58,11 +59,11 @@ public class FxCheckBox extends FxWrapper {
 	}
 
 	public final void setSelected(boolean value) {
-		checkBox.setSelected(value);
+		Platform.runLater(() -> checkBox.setSelected(value));
 	}
 
 	public final void setOnAction(EventHandler<ActionEvent> arg0) {
-		checkBox.setOnAction(arg0);
+		Platform.runLater(() -> checkBox.setOnAction(arg0));
 	}
 
 }

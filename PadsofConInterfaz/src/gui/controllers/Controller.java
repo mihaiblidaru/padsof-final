@@ -104,4 +104,14 @@ public class Controller {
 		return model.addInmueble(localidad, cp, direccion, claves, valores);
 	}
 
+	public Integer addOfertaVivienda(LocalDate fechaInicio, int n_meses, float precio, float fianza, String descripcion,
+			Integer idInmueble) throws UsuarioNoPermisoException {
+		return model.addOferta(fechaInicio, n_meses, precio, fianza, descripcion, idInmueble);
+	}
+
+	public Integer addOfertaVacacional(LocalDate fechaInicio, LocalDate fechaFin, float precio, float fianza,
+			String descripcion, Integer idInmueble) throws UsuarioNoPermisoException {
+		return model.addOferta(fechaInicio, fechaFin, precio, fianza, descripcion, idInmueble);
+	}
+
 }
