@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 
 import gui.Gui;
 import gui.panels.admin.ofertas.OfertasPendientes;
+import gui.panels.admin.usuarios.UsuariosBloqueados;
 import gui.util.Nombrable;
 
 public class AdminView extends JPanel implements Nombrable {
@@ -35,7 +36,7 @@ public class AdminView extends JPanel implements Nombrable {
 		ofertasPendientes = OfertasPendientes.getInstance(gui);
 		this.add(new ControlPanel(), ControlPanel.NAME);
 		this.add(ofertasPendientes, OfertasPendientes.NAME);
-		this.add(new UsuariosTab(), UsuariosTab.NAME);
+		this.add(new UsuariosBloqueados(gui), UsuariosBloqueados.NAME);
 		this.setBorder(new EmptyBorder(0, 0, 0, 0));
 		layout.first(this);
 

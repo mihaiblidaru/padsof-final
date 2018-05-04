@@ -16,8 +16,8 @@ import gui.Gui;
 import gui.components.fx.FxButton;
 import gui.panels.admin.AdminView;
 import gui.panels.admin.ControlPanel;
-import gui.panels.admin.UsuariosTab;
 import gui.panels.admin.ofertas.OfertasPendientes;
+import gui.panels.admin.usuarios.UsuariosBloqueados;
 import gui.panels.demandante.MisReservas;
 import gui.panels.ofertante.inmuebles.MisInmuebles;
 import gui.panels.ofertante.ofertas.MisOfertas;
@@ -211,7 +211,7 @@ public class Header extends JPanel implements Nombrable {
 
 		adminUsuarios.setOnAction(event -> {
 			SwingUtilities.invokeLater(() -> {
-				av.show(UsuariosTab.NAME);
+				av.show(UsuariosBloqueados.NAME);
 			});
 		});
 
