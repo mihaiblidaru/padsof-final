@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -21,7 +20,6 @@ import javax.swing.SwingUtilities;
 import gui.Gui;
 import gui.components.fx.FxButton;
 import gui.panels.Header;
-import gui.panels.oferta.PanelOferta;
 
 public class ContenedorOfertasInterno extends JPanel {
 
@@ -46,6 +44,8 @@ public class ContenedorOfertasInterno extends JPanel {
 
 	private JLabel labelNoRechazadas;
 
+	private FxButton anyadir;
+
 	private static final int SEPARACION_OFERTAS = 10;
 	private static final int SEPARACION_SECCIONES = 70;
 
@@ -57,6 +57,7 @@ public class ContenedorOfertasInterno extends JPanel {
 		labelActivas = new JLabel("Activas");
 		labelPendientes = new JLabel("Pendientes");
 		labelRechazadas = new JLabel("Rechazadas");
+		anyadir = new FxButton(120, 30, "Añadir Oferta");
 
 		labelActivas.setFont(font);
 		labelPendientes.setFont(font);
@@ -95,7 +96,31 @@ public class ContenedorOfertasInterno extends JPanel {
 		this.add(separatorActivas);
 		this.add(separatorPendientes);
 		this.add(separatorRechazadas);
+		this.add(anyadir);
 
+		anyadir.setOnAction(event -> {
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					if (gui.getController().getNumInmuebles() == 0) {
+
+						JOptionPane.showMessageDialog(new JPanel(),
+								"No tienes ningun inmueble registrado. Registra un inmueble e intentalo de nuevo",
+								"Error", JOptionPane.ERROR_MESSAGE);
+					} else {
+						gui.showOnly(Header.NAME, AniadirOferta.NAME);
+					}
+				}
+			});
+
+		});
+
+		setContraits();
+
+	}
+
+	private void setContraits() {
 		layout.putConstraint(SpringLayout.NORTH, labelActivas, 10, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, labelActivas, 10, SpringLayout.WEST, this);
 
@@ -125,30 +150,8 @@ public class ContenedorOfertasInterno extends JPanel {
 		layout.putConstraint(SpringLayout.NORTH, labelNoRechazadas, 5, SpringLayout.SOUTH, separatorRechazadas);
 		layout.putConstraint(SpringLayout.WEST, labelNoRechazadas, 0, SpringLayout.WEST, labelRechazadas);
 
-		FxButton anyadir = new FxButton(120, 30, "Añadir Oferta");
-
 		layout.putConstraint(SpringLayout.EAST, anyadir, -10, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.SOUTH, anyadir, -5, SpringLayout.NORTH, separatorActivas);
-		this.add(anyadir);
-
-		anyadir.setOnAction(event -> {
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					if (gui.getController().getNumInmuebles() == 0) {
-
-						JOptionPane.showMessageDialog(new JPanel(),
-								"No tienes ningun inmueble registrado. Registra un inmueble e intentalo de nuevo",
-								"Error", JOptionPane.ERROR_MESSAGE);
-					} else {
-						gui.showOnly(Header.NAME, AniadirOferta.NAME);
-					}
-				}
-			});
-
-		});
-
 	}
 
 	public Component addActiva(JComponent p) {
@@ -206,35 +209,24 @@ public class ContenedorOfertasInterno extends JPanel {
 	}
 
 	public void clearOfertas() {
-		for (Iterator<JComponent> iterator = activas.iterator(); iterator.hasNext();) {
-			JComponent component = iterator.next();
-			if (component instanceof PanelOferta) {
-				this.remove(component);
-				iterator.remove();
-			}
+		this.removeAll();
+		this.add(labelActivas);
+		this.add(labelPendientes);
+		this.add(labelRechazadas);
+		this.add(labelNoActivas);
+		this.add(labelNoPendientes);
+		this.add(labelNoRechazadas);
+		this.add(separatorActivas);
+		this.add(separatorPendientes);
+		this.add(separatorRechazadas);
+		this.add(anyadir);
+		activas.clear();
+		pendientes.clear();
+		rechazadas.clear();
+		activas.addAll(Arrays.asList(labelActivas, separatorActivas, labelNoActivas));
+		pendientes.addAll(Arrays.asList(labelPendientes, separatorPendientes, labelNoPendientes));
+		rechazadas.addAll(Arrays.asList(labelRechazadas, separatorRechazadas, labelNoRechazadas));
 
-		}
-
-		for (Iterator<JComponent> iterator = pendientes.iterator(); iterator.hasNext();) {
-			JComponent component = iterator.next();
-			if (component instanceof PanelOferta) {
-				this.remove(component);
-				iterator.remove();
-			}
-
-		}
-
-		for (Iterator<JComponent> iterator = rechazadas.iterator(); iterator.hasNext();) {
-			JComponent component = iterator.next();
-			if (component instanceof PanelOferta) {
-				this.remove(component);
-				iterator.remove();
-			}
-		}
-
-		addActiva(this.labelNoActivas);
-		addPendiente(this.labelNoPendientes);
-		addRechazada(this.labelNoRechazadas);
-
+		this.setContraits();
 	}
 }

@@ -14,6 +14,7 @@ import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.fx.FxButton;
+import gui.panels.demandante.MisReservas;
 import gui.panels.ofertante.inmuebles.MisInmuebles;
 import gui.panels.ofertante.ofertas.MisOfertas;
 import javafx.event.ActionEvent;
@@ -103,6 +104,11 @@ public class Header extends JPanel {
 				}
 			});
 		});
+
+		misReservasButton.setOnAction(event -> {
+			SwingUtilities.invokeLater(() -> gui.showOnly(MisReservas.NAME, Header.NAME));
+		});
+
 		placeButtons();
 
 	}

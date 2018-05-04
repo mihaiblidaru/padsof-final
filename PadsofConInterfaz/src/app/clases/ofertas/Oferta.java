@@ -275,15 +275,18 @@ public abstract class Oferta {
 		if (!this.estado.editable()) { /** Comprobamos si es editable */
 			throw new OfertaNoModificableException(this);
 		}
-		try {
-			DBManager.updateField(Tabla.OFERTA, Columna.OFERTA_FIANZA, this.id,
-					fianza); /** Actualizamos la fianza en la base de datos */
-			this.fianza = fianza;
-			return true;
-		} catch (SQLException e) {
-
+		if (this.fianza != fianza) {
+			try {
+				DBManager.updateField(Tabla.OFERTA, Columna.OFERTA_FIANZA, this.id,
+						fianza); /** Actualizamos la fianza en la base de datos */
+				this.fianza = fianza;
+				return true;
+			} catch (SQLException e) {
+				return false;
+			}
 		}
-		return false;
+		return true;
+
 	}
 
 	/**
@@ -312,15 +315,17 @@ public abstract class Oferta {
 		if (!this.estado.editable()) { /** Comprobamos si es editable */
 			throw new OfertaNoModificableException(this);
 		}
-		try {
-			DBManager.updateField(Tabla.OFERTA, Columna.OFERTA_DESCRIPCION, this.id,
-					descripcion); /** Actualizamos en la base de datos */
-			this.descripcion = descripcion;
-			return true;
-		} catch (SQLException e) {
-
+		if (!this.descripcion.equals(descripcion)) {
+			try {
+				DBManager.updateField(Tabla.OFERTA, Columna.OFERTA_DESCRIPCION, this.id,
+						descripcion); /** Actualizamos en la base de datos */
+				this.descripcion = descripcion;
+				return true;
+			} catch (SQLException e) {
+				return false;
+			}
 		}
-		return false;
+		return true;
 	}
 
 	protected void cargarOpiniones() throws SQLException {

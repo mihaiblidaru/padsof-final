@@ -26,7 +26,7 @@ import gui.components.fx.FxCheckBox;
 import gui.components.fx.FxDatePicker;
 import gui.components.fx.FxTextField;
 import gui.controllers.Controller;
-import gui.listeners.AniadirOfertaListener;
+import gui.listeners.EditarOfertaListener;
 
 public class EditarOferta extends JPanel {
 
@@ -231,7 +231,7 @@ public class EditarOferta extends JPanel {
 	}
 
 	private void setListeners() {
-		confirmar.setOnAction(new AniadirOfertaListener(gui, precioTextBox, fianzaTextBox, desdeDatePicker,
+		confirmar.setOnAction(new EditarOfertaListener(gui, precioTextBox, fianzaTextBox, desdeDatePicker,
 				hastaDatePicker, descripcionTextBox, mesesTextField, checkBoxVacacional, comboBoxInmueble, inmuebles));
 
 		precioTextBox.setOnlyFloat();

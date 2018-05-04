@@ -26,6 +26,7 @@ import gui.panels.ResultadosBusqueda;
 import gui.panels.SearchMenu;
 import gui.panels.SplashScreen;
 import gui.panels.admin.AdminView;
+import gui.panels.demandante.MisReservas;
 import gui.panels.ofertante.inmuebles.AniadirInmueble;
 import gui.panels.ofertante.inmuebles.MisInmuebles;
 import gui.panels.ofertante.ofertas.AniadirOferta;
@@ -137,6 +138,11 @@ public class Gui extends JFrame {
 		layout.putConstraint(SpringLayout.NORTH, misInmuebles, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, misInmuebles, 0, SpringLayout.WEST, contentPane);
 
+		MisReservas misReservas = MisReservas.getInstance(this);
+		contentPane.add(misReservas);
+		layout.putConstraint(SpringLayout.NORTH, misReservas, 0, SpringLayout.SOUTH, header);
+		layout.putConstraint(SpringLayout.WEST, misReservas, 0, SpringLayout.WEST, contentPane);
+
 		header.setVisible(true);
 		searchMenu.setVisible(true);
 		loginPanel.setVisible(false);
@@ -144,7 +150,7 @@ public class Gui extends JFrame {
 		adminView.setVisible(false);
 		aniadirVivienda.setVisible(false);
 		misOfertas.setVisible(false);
-		resBusqueda.setVisible(false);
+		resBusqueda.setVisible(true);
 		misInmuebles.setVisible(false);
 		editarOferta.setVisible(false);
 

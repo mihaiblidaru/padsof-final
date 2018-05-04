@@ -129,4 +129,13 @@ public class Controller {
 
 	}
 
+	public Integer demandanteGetOfertaReservada() {
+		return model.getDemandanteLogueado().getReservaActiva();
+
+	}
+
+	public List<Integer> demandanteGetOfertasContratadas() {
+		return model.getDemandanteLogueado().getOfertasContratadas();
+	}
+
 }

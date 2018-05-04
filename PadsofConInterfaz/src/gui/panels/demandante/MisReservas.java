@@ -1,4 +1,4 @@
-package gui.panels.ofertante.ofertas;
+package gui.panels.demandante;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,34 +8,33 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
-import app.clases.ofertas.Estado;
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
 import gui.controllers.Controller;
 import gui.panels.oferta.PanelOferta;
-import gui.panels.oferta.PanelOfertaEditable;
+import gui.panels.oferta.PanelOfertaReservadaInterno;
 
-public class MisOfertas extends JLayeredPane {
+public class MisReservas extends JLayeredPane {
 
 	private static final long serialVersionUID = -8320036169616362237L;
 
-	public static final String NAME = "MIS_OFERTAS";
+	public static final String NAME = "MIS_RESERVAS";
 
 	private Gui gui;
 
-	private ContenedorOfertasInterno coi;
+	private ContenedorReservasInterno cri;
 
-	private static MisOfertas instance = null;
+	private static MisReservas instance = null;
 
-	public static MisOfertas getInstance(Gui gui) {
+	public static MisReservas getInstance(Gui gui) {
 		if (instance == null) {
-			return (instance = new MisOfertas(gui));
+			return (instance = new MisReservas(gui));
 		} else {
 			return instance;
 		}
 	}
 
-	private MisOfertas(Gui gui) {
+	private MisReservas(Gui gui) {
 		this.gui = gui;
 		this.setPreferredSize(new Dimension(995, 600));
 		// this.setBackground(Color.GREEN);
@@ -47,9 +46,9 @@ public class MisOfertas extends JLayeredPane {
 		SpringLayout springLayout = new SpringLayout();
 		this.setLayout(springLayout);
 
-		coi = new ContenedorOfertasInterno(gui);
+		cri = new ContenedorReservasInterno(gui);
 
-		JScrollPane scrollPane = new JScrollPane(coi, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane scrollPane = new JScrollPane(cri, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUI(new ThinSolidScrollBarUi(7));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -62,27 +61,24 @@ public class MisOfertas extends JLayeredPane {
 	}
 
 	public void cargarOfertas() {
-		coi.clearOfertas();
+		cri.clearOfertas();
 		Controller c = gui.getController();
-		List<Integer> ofertas = c.ofertanteGetMisOfertas();
-		for (Integer id : ofertas) {
-			Estado estado = c.ofertaGetEstado(id);
-			if (estado == Estado.ACEPTADA || estado == Estado.CONTRATADA || estado == Estado.RESERVADA) {
-				PanelOferta oferta = new PanelOferta(gui, id);
-				coi.addActiva(oferta);
-			} else if (estado == Estado.PENDIENTE || estado == Estado.PENDIENTE_DE_CAMBIOS) {
-				PanelOferta oferta = new PanelOfertaEditable(gui, id);
-				coi.addPendiente(oferta);
-			} else if (estado == Estado.RETIRADA) {
-				PanelOferta oferta = new PanelOferta(gui, id);
-				coi.addRechazada(oferta);
-			}
+		Integer activa = c.demandanteGetOfertaReservada();
+		if (activa != null) {
+			cri.addReserva(new PanelOfertaReservadaInterno(gui, activa));
 		}
-		coi.repaint();
+
+		List<Integer> ofertas = c.demandanteGetOfertasContratadas();
+		for (Integer id : ofertas) {
+			PanelOferta oferta = new PanelOferta(gui, id);
+			cri.addContratada(oferta);
+
+		}
+		cri.repaint();
 	}
 
 	public void clearOfertas() {
-		coi.clearOfertas();
+		cri.clearOfertas();
 	}
 
 }

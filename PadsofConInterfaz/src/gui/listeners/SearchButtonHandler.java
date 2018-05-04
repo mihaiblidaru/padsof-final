@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.fx.FxCheckBox;
@@ -35,45 +36,47 @@ public class SearchButtonHandler implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent event) {
-		Controller controller = gui.getController();
-		String localidad = localidadOCPField.getText();
-		List<Integer> resultados;
-		if (localidad.isEmpty()) {
-			JOptionPane.showMessageDialog(new JPanel(), "El campo localidad no puede estar vacio", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		LocalDate desde = desdeDatePicker.getValue();
-
-		if (desde == null) {
-			JOptionPane.showMessageDialog(new JPanel(), "La fecha de inicio no puede estar vacia", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		String arg1 = null;
-		Integer arg2 = null;
-		if (localidad.matches(regexOnlyDigits)) {
-			arg2 = Integer.parseInt(localidad);
-		} else {
-			arg1 = localidad;
-		}
-
-		if (checkBoxVacacional.isSelected()) {
-			LocalDate hasta = hastaDatePicker.getValue();
-			if (hasta == null) {
-				JOptionPane.showMessageDialog(new JPanel(), "La fecha final no puede estar vacia", "Error",
+		SwingUtilities.invokeLater(() -> {
+			Controller controller = gui.getController();
+			String localidad = localidadOCPField.getText();
+			List<Integer> resultados;
+			if (localidad.isEmpty()) {
+				JOptionPane.showMessageDialog(new JPanel(), "El campo localidad no puede estar vacio", "Error",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			resultados = controller.buscarVacacional(arg1, arg2, desde, hasta);
-		} else {
 
-			resultados = controller.buscarViviendas(arg1, arg2, desde);
-		}
+			LocalDate desde = desdeDatePicker.getValue();
 
-		ResultadosBusqueda rb = (ResultadosBusqueda) gui.getComponent(ResultadosBusqueda.NAME);
-		rb.cargarResultados(resultados);
+			if (desde == null) {
+				JOptionPane.showMessageDialog(new JPanel(), "La fecha de inicio no puede estar vacia", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			String arg1 = null;
+			Integer arg2 = null;
+			if (localidad.matches(regexOnlyDigits)) {
+				arg2 = Integer.parseInt(localidad);
+			} else {
+				arg1 = localidad;
+			}
+
+			if (checkBoxVacacional.isSelected()) {
+				LocalDate hasta = hastaDatePicker.getValue();
+				if (hasta == null) {
+					JOptionPane.showMessageDialog(new JPanel(), "La fecha final no puede estar vacia", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				resultados = controller.buscarVacacional(arg1, arg2, desde, hasta);
+			} else {
+
+				resultados = controller.buscarViviendas(arg1, arg2, desde);
+			}
+
+			ResultadosBusqueda rb = (ResultadosBusqueda) gui.getComponent(ResultadosBusqueda.NAME);
+			rb.cargarResultados(resultados);
+		});
 	}
 }
