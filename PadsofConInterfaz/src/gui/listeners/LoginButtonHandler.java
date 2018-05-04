@@ -13,6 +13,7 @@ import gui.controllers.Controller;
 import gui.dialogs.EditUserDialog;
 import gui.panels.Header;
 import gui.panels.LoginPanel;
+import gui.panels.ResultadosBusqueda;
 import gui.panels.SearchMenu;
 import gui.panels.admin.AdminView;
 import gui.panels.ofertante.ofertas.MisOfertas;
@@ -58,31 +59,24 @@ public class LoginButtonHandler implements EventHandler<ActionEvent> {
 					} else {
 						gui.setVisiblePane(LoginPanel.NAME, false);
 						Header header = (Header) gui.getComponent(Header.NAME);
-						header.setButtonVisibility(Header.LOGIN, false);
-						header.setButtonVisibility(Header.LOGOUT, true);
 						gui.setVisiblePane(Header.NAME, true);
 						if (rol == Rol.D) {
-							gui.setVisiblePane(SearchMenu.NAME, true);
-							header.setButtonVisibility(Header.MIS_RESERVAS, true);
+							gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
+							ResultadosBusqueda rb = (ResultadosBusqueda) gui.getComponent(ResultadosBusqueda.NAME);
+							rb.actualizarBotones();
 						} else if (rol == Rol.OD) {
-							gui.setVisiblePane(SearchMenu.NAME, true);
-							header.setButtonVisibility(Header.MIS_RESERVAS, true);
-							header.setButtonVisibility(Header.MIS_INMUEBLES, true);
-							header.setButtonVisibility(Header.MIS_OFERTAS, true);
+							gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
+							header.verBotones(Header.BOTONES_OFERTANTE_DEMANDANTE);
 						} else if (rol == Rol.O) {
-							header.setButtonVisibility(Header.MIS_INMUEBLES, true);
-							header.setButtonVisibility(Header.MIS_OFERTAS, true);
+							header.verBotones(Header.BOTONES_OFERTANTE);
 							gui.setVisiblePane(MisOfertas.NAME, true);
 							MisOfertas panelOfertas = (MisOfertas) gui.getComponent(MisOfertas.NAME);
 							panelOfertas.cargarOfertas();
 						} else {
 							gui.setVisiblePane(AdminView.NAME, true);
-							header.setButtonVisibility(Header.PANEL_DE_CONTROL, true);
-							header.setButtonVisibility(Header.ADMIN_OFERTAS, true);
-							header.setButtonVisibility(Header.ADMIN_USUARIOS, true);
+							header.verBotones(Header.BOTONES_ADMIN);
 							header.appNameSetVisible(false);
 						}
-						header.placeUserButtons();
 					}
 				}
 			}

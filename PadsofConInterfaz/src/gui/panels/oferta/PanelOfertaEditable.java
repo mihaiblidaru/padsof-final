@@ -23,7 +23,7 @@ public class PanelOfertaEditable extends PanelOferta {
 
 	@Override
 	protected void addButtons() {
-		editar = new FxButton(110, 30, "EDITAR");
+		editar = new FxButton(110, 30, "Editar");
 		this.add(editar);
 		layout.putConstraint(SpringLayout.SOUTH, editar, -10, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.EAST, editar, -15, SpringLayout.EAST, this);
@@ -37,7 +37,6 @@ public class PanelOfertaEditable extends PanelOferta {
 				gui.showOnly(Header.NAME, EditarOferta.NAME);
 			});
 		});
-
 	}
 
 }

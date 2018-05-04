@@ -81,4 +81,8 @@ public class FxButton extends FxWrapper {
 		button.fire();
 	}
 
+	public void setText(String string) {
+		Platform.runLater(() -> button.setText(string));
+	}
+
 }

@@ -32,12 +32,14 @@ public class ContenedorUsuarios extends JPanel {
 	public Component addUsuario(UserCard p) {
 		this.add(p);
 		usuarios.put(p.getUserId(), p);
+
 		recalculateSize();
 		return p;
 	}
 
 	public void removeUsuario(Integer id) {
 		UserCard c = usuarios.remove(id);
+
 		this.remove(c);
 	}
 

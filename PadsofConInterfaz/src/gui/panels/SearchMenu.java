@@ -14,11 +14,12 @@ import gui.components.fx.FxDatePicker;
 import gui.components.fx.FxTextField;
 import gui.listeners.SearchButtonHandler;
 import gui.util.Nombrable;
+import gui.util.PanelInterfazPrincipal;
 
-public class SearchMenu extends JPanel implements Nombrable {
-	public final static String NAME = "SEARCH_MENU";
+public class SearchMenu extends JPanel implements Nombrable, PanelInterfazPrincipal {
+
 	private static final long serialVersionUID = 3588062913427566780L;
-
+	public final static String NAME = "SEARCH_MENU";
 	private static SearchMenu instance = null;
 
 	public static SearchMenu getInstance(Gui gui) {
@@ -29,18 +30,29 @@ public class SearchMenu extends JPanel implements Nombrable {
 		}
 	}
 
-	private SearchMenu(Gui gui) {
-		this.setPreferredSize(new Dimension(180, Gui.FRAME_HEIGHT));
-		SpringLayout layout = new SpringLayout();
-		this.setLayout(layout);
-		this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.LIGHT_GRAY));
+	private FxCheckBox checkBoxVacacional;
+	private FxCheckBox checkBoxVivienda;
+	private FxTextField localidad;
+	private FxDatePicker desde;
+	private FxDatePicker hasta;
+	private FxButton buscar;
+	private SpringLayout layout;
+	private Gui gui;
 
-		FxCheckBox checkBoxVacacional = new FxCheckBox(100, 20, "Vacacional");
-		FxCheckBox checkBoxVivienda = new FxCheckBox(100, 20, "Vivienda");
-		FxTextField localidad = new FxTextField(150, 25, "Localidad o CP");
-		FxDatePicker desde = new FxDatePicker(150, 25, "Desde");
-		FxDatePicker hasta = new FxDatePicker(150, 25, "Hasta");
-		FxButton buscar = new FxButton(150, 25, "Buscar");
+	private SearchMenu(Gui gui) {
+		this.gui = gui;
+		this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.LIGHT_GRAY));
+		initialize();
+	}
+
+	@Override
+	public void crearComponentes() {
+		checkBoxVacacional = new FxCheckBox(100, 20, "Vacacional");
+		checkBoxVivienda = new FxCheckBox(100, 20, "Vivienda");
+		localidad = new FxTextField(150, 25, "Localidad o CP");
+		desde = new FxDatePicker(150, 25, "Desde");
+		hasta = new FxDatePicker(150, 25, "Hasta");
+		buscar = new FxButton(150, 25, "Buscar");
 
 		this.add(checkBoxVacacional);
 		this.add(checkBoxVivienda);
@@ -49,6 +61,13 @@ public class SearchMenu extends JPanel implements Nombrable {
 		this.add(hasta);
 		this.add(buscar);
 
+		checkBoxVacacional.setSelected(true);
+	}
+
+	@Override
+	public void colocarComponentes() {
+		layout = new SpringLayout();
+		this.setLayout(layout);
 		layout.putConstraint(SpringLayout.NORTH, localidad, 70, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, localidad, 0, SpringLayout.HORIZONTAL_CENTER, this);
 
@@ -67,7 +86,10 @@ public class SearchMenu extends JPanel implements Nombrable {
 		layout.putConstraint(SpringLayout.WEST, checkBoxVacacional, 0, SpringLayout.WEST, checkBoxVivienda);
 		layout.putConstraint(SpringLayout.SOUTH, checkBoxVacacional, -10, SpringLayout.NORTH, checkBoxVivienda);
 
-		checkBoxVacacional.setSelected(true);
+	}
+
+	@Override
+	public void registrarEventos() {
 		checkBoxVacacional.setOnAction(event -> {
 			if (checkBoxVacacional.isSelected()) {
 				checkBoxVivienda.setSelected(false);
@@ -93,5 +115,10 @@ public class SearchMenu extends JPanel implements Nombrable {
 		});
 
 		buscar.setOnAction(new SearchButtonHandler(gui, localidad, desde, hasta, checkBoxVacacional));
+	}
+
+	@Override
+	public void setDimension() {
+		this.setPreferredSize(new Dimension(180, Gui.FRAME_HEIGHT));
 	}
 }

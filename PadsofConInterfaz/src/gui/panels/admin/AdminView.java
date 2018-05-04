@@ -3,7 +3,6 @@ package gui.panels.admin;
 import java.awt.CardLayout;
 
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import gui.Gui;
 import gui.panels.admin.ofertas.OfertasPendientes;
@@ -37,7 +36,6 @@ public class AdminView extends JPanel implements Nombrable {
 		this.add(new ControlPanel(), ControlPanel.NAME);
 		this.add(ofertasPendientes, OfertasPendientes.NAME);
 		this.add(new UsuariosBloqueados(gui), UsuariosBloqueados.NAME);
-		this.setBorder(new EmptyBorder(0, 0, 0, 0));
 		layout.first(this);
 
 	}

@@ -18,11 +18,6 @@ import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.PlainDocument;
 
 import gui.Gui;
 import gui.components.fx.FxButton;
@@ -31,64 +26,58 @@ import gui.components.fx.FxDatePicker;
 import gui.components.fx.FxTextField;
 import gui.controllers.Controller;
 import gui.listeners.AniadirOfertaListener;
+import gui.util.LimitCounter;
+import gui.util.LimitedDocument;
 import gui.util.Nombrable;
+import gui.util.PanelInterfazPrincipal;
 
-public class AniadirOferta extends JPanel implements Nombrable {
+public class AniadirOferta extends JPanel implements Nombrable, PanelInterfazPrincipal {
 
 	private static final long serialVersionUID = 2220134063340646027L;
 
 	public final static String NAME = "PANEL_ANIADIR_OFERTA";
 
-	private final Gui gui;
-	private FxTextField precioTextBox;
-	private FxTextField fianzaTextBox;
-	private FxDatePicker desdeDatePicker;
-	private FxDatePicker hastaDatePicker;
-	private JTextArea descripcionTextBox;
-	private FxTextField mesesTextField;
-	private FxCheckBox checkBoxVacacional;
+	protected final Gui gui;
+	protected FxTextField precioTextBox;
+	protected FxTextField fianzaTextBox;
+	protected FxDatePicker desdeDatePicker;
+	protected FxDatePicker hastaDatePicker;
+	protected JTextArea descripcionTextBox;
+	protected FxTextField mesesTextField;
+	protected FxCheckBox checkBoxVacacional;
+	protected FxCheckBox checkBoxVivienda;
 
-	private JComboBox<String> comboBoxInmueble;
-	private List<Integer> inmuebles = new ArrayList<>();
+	protected JComboBox<String> comboBoxInmueble;
+	protected List<Integer> inmuebles = new ArrayList<>();
 
-	private JLabel aniadirOfertas;
+	protected JLabel titulo;
 	private JLabel name;
 	private SpringLayout layout;
 	private JLabel fianza;
-	private JLabel hasta;
+	protected JLabel hasta;
 	private JLabel desde;
 
-	private FxCheckBox checkBoxVivienda;
 	private JLabel precio;
-	private JLabel warningIcon;
-	private JLabel alarm;
-	private FxButton confirmar;
-	private JLabel limitLabel;
+	protected JLabel warningIcon;
+	protected JLabel alarm;
+	protected FxButton confirmar;
+	JLabel limitLabel;
 	private JLabel descripcion;
 	protected int limit = 300;
 
-	private static AniadirOferta instance = null;
-
-	public static AniadirOferta getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new AniadirOferta(gui));
-		} else {
-			return instance;
-		}
-	}
-
-	private AniadirOferta(Gui gui) {
+	public AniadirOferta(Gui gui) {
 		this.gui = gui;
 		SwingUtilities.invokeLater(() -> initialize());
 
 	}
 
-	private void initialize() {
+	@Override
+	public void setDimension() {
 		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, Gui.FRAME_HEIGHT - 20));
-		layout = new SpringLayout();
-		this.setLayout(layout);
-		this.setBackground(Color.decode("#ffffff"));
+	}
 
+	@Override
+	public void crearComponentes() {
 		String[] petStrings = { "Piso 1", "Piso 2", "Piso 3", "Piso 4", "Piso 5", };
 		ImageIcon image = null;
 		try {
@@ -102,7 +91,7 @@ public class AniadirOferta extends JPanel implements Nombrable {
 		Font descfont = new Font("Comic Sans", Font.PLAIN, 25);
 		Font conffont = new Font("Comic Sans", Font.PLAIN, 25);
 
-		aniadirOfertas = new JLabel("Añadir Oferta");
+		titulo = new JLabel("Añadir Oferta");
 		name = new JLabel("Selecciona la vivienda que quieres ofertar");
 		precioTextBox = new FxTextField(70, 25, "321.33 €");
 		fianza = new JLabel("Fianza");
@@ -113,7 +102,7 @@ public class AniadirOferta extends JPanel implements Nombrable {
 		desdeDatePicker = new FxDatePicker(100, 25, "Desde");
 		desde = new JLabel("Desde");
 		descripcion = new JLabel("Descripcion");
-		descripcionTextBox = new JTextArea(new CustomDocument(limit));
+		descripcionTextBox = new JTextArea(new LimitedDocument(limit));
 		limitLabel = new JLabel(String.format("%d restantes", limit));
 		confirmar = new FxButton(200, 100, "Confirmar");
 		alarm = new JLabel("No puedes añadir la misma oferta dos veces");
@@ -123,7 +112,7 @@ public class AniadirOferta extends JPanel implements Nombrable {
 		precio = new JLabel("Precio");
 		comboBoxInmueble = new JComboBox<>(petStrings);
 
-		aniadirOfertas.setFont(font);
+		titulo.setFont(font);
 
 		comboBoxInmueble.setPreferredSize(new Dimension(415, 25));
 		comboBoxInmueble.setBackground(Color.WHITE);
@@ -140,6 +129,10 @@ public class AniadirOferta extends JPanel implements Nombrable {
 		confirmar.setFont(conffont);
 		confirmar.setFontScale(0.3);
 		checkBoxVacacional.setSelected(true);
+
+		precioTextBox.setOnlyFloat();
+		fianzaTextBox.setOnlyFloat();
+		mesesTextField.setOnlyInteger();
 
 		this.add(name);
 		this.add(precio);
@@ -160,17 +153,15 @@ public class AniadirOferta extends JPanel implements Nombrable {
 		this.add(checkBoxVivienda);
 		this.add(limitLabel);
 		this.add(comboBoxInmueble);
-		this.add(aniadirOfertas);
-
-		this.setContraits();
-		this.setListeners();
-
+		this.add(titulo);
 	}
 
-	private void setContraits() {
-		layout.putConstraint(SpringLayout.NORTH, aniadirOfertas, 30, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, aniadirOfertas, 30, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, name, 20, SpringLayout.SOUTH, aniadirOfertas);
+	public void colocarComponentes() {
+		layout = new SpringLayout();
+		this.setLayout(layout);
+		layout.putConstraint(SpringLayout.NORTH, titulo, 30, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, titulo, 30, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, name, 20, SpringLayout.SOUTH, titulo);
 		layout.putConstraint(SpringLayout.WEST, name, 30, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, comboBoxInmueble, 0, SpringLayout.VERTICAL_CENTER, name);
 		layout.putConstraint(SpringLayout.WEST, comboBoxInmueble, 10, SpringLayout.EAST, name);
@@ -208,21 +199,16 @@ public class AniadirOferta extends JPanel implements Nombrable {
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, warningIcon, 0, SpringLayout.VERTICAL_CENTER, alarm);
 		layout.putConstraint(SpringLayout.EAST, warningIcon, -5, SpringLayout.WEST, alarm);
 		layout.putConstraint(SpringLayout.EAST, checkBoxVivienda, 0, SpringLayout.EAST, comboBoxInmueble);
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, checkBoxVivienda, 0, SpringLayout.VERTICAL_CENTER,
-				aniadirOfertas);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, checkBoxVivienda, 0, SpringLayout.VERTICAL_CENTER, titulo);
 		layout.putConstraint(SpringLayout.EAST, checkBoxVacacional, -100, SpringLayout.WEST, checkBoxVivienda);
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, checkBoxVacacional, 0, SpringLayout.VERTICAL_CENTER,
-				aniadirOfertas);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, checkBoxVacacional, 0, SpringLayout.VERTICAL_CENTER, titulo);
 
 	}
 
-	private void setListeners() {
+	@Override
+	public void registrarEventos() {
 		confirmar.setOnAction(new AniadirOfertaListener(gui, precioTextBox, fianzaTextBox, desdeDatePicker,
 				hastaDatePicker, descripcionTextBox, mesesTextField, checkBoxVacacional, comboBoxInmueble, inmuebles));
-
-		precioTextBox.setOnlyFloat();
-		fianzaTextBox.setOnlyFloat();
-		mesesTextField.setOnlyInteger();
 
 		checkBoxVacacional.setOnAction(event -> {
 			if (checkBoxVacacional.isSelected()) {
@@ -247,28 +233,7 @@ public class AniadirOferta extends JPanel implements Nombrable {
 			}
 		});
 
-		descripcionTextBox.getDocument().addDocumentListener(new DocumentListener() {
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				updateLabel(e);
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				updateLabel(e);
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				updateLabel(e);
-			}
-
-			public void updateLabel(DocumentEvent e) {
-				limitLabel.setText(String.format("%d restantes", limit - e.getDocument().getLength()));
-			}
-
-		});
+		descripcionTextBox.getDocument().addDocumentListener(new LimitCounter(limitLabel, limit));
 
 	}
 
@@ -284,7 +249,6 @@ public class AniadirOferta extends JPanel implements Nombrable {
 			descripcionTextBox.setText("");
 			cargarListaInmuebles();
 		}
-
 	}
 
 	private void cargarListaInmuebles() {
@@ -293,29 +257,6 @@ public class AniadirOferta extends JPanel implements Nombrable {
 		inmuebles.clear();
 		inmuebles.addAll(c.ofertanteGetMisInmuebles());
 		inmuebles.stream().map(i -> c.inmuebleGetDireccionCompleta(i)).forEach(d -> comboBoxInmueble.addItem(d));
-	}
-
-	/**
-	 * Usado para limitar el número de caracteres dentro de un Documento de
-	 * textarea. Tampoco permite insertar nuevas lineas.
-	 */
-	private static class CustomDocument extends PlainDocument {
-
-		private static final long serialVersionUID = -3514808888826488252L;
-		private int max;
-
-		public CustomDocument(int max) {
-			this.max = max;
-		}
-
-		@Override
-		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-			str = str.replaceAll("\n", "");
-			if (getLength() + str.length() > max) {
-				str = str.substring(0, max - getLength());
-			}
-			super.insertString(offs, str, a);
-		}
 	}
 
 }

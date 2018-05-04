@@ -93,8 +93,8 @@ public class Gui extends JFrame {
 		AdminView adminView = AdminView.getInstance(this);
 		LoginPanel loginPanel = LoginPanel.getInstance(this);
 		SearchMenu searchMenu = SearchMenu.getInstance(this);
-		AniadirOferta aniadirOferta = AniadirOferta.getInstance(this);
-		EditarOferta editarOferta = EditarOferta.getInstance(this);
+		AniadirOferta aniadirOferta = new AniadirOferta(this);
+		EditarOferta editarOferta = new EditarOferta(this);
 		AniadirInmueble aniadirVivienda = AniadirInmueble.getInstance(this);
 		ResultadosBusqueda resBusqueda = ResultadosBusqueda.getInstance(this);
 		MisOfertas misOfertas = MisOfertas.getInstance(this);

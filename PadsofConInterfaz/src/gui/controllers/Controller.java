@@ -142,4 +142,8 @@ public class Controller {
 		return model.getOfertasPendientes();
 	}
 
+	public boolean tienePermisosDemandante() {
+		return model.getDemandanteLogueado() != null;
+	}
+
 }
