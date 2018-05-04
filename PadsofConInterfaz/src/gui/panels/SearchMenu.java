@@ -13,8 +13,9 @@ import gui.components.fx.FxCheckBox;
 import gui.components.fx.FxDatePicker;
 import gui.components.fx.FxTextField;
 import gui.listeners.SearchButtonHandler;
+import gui.util.Nombrable;
 
-public class SearchMenu extends JPanel {
+public class SearchMenu extends JPanel implements Nombrable {
 	public final static String NAME = "SEARCH_MENU";
 	private static final long serialVersionUID = 3588062913427566780L;
 
@@ -29,7 +30,6 @@ public class SearchMenu extends JPanel {
 	}
 
 	private SearchMenu(Gui gui) {
-		this.setName(NAME);
 		this.setPreferredSize(new Dimension(180, Gui.FRAME_HEIGHT));
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);

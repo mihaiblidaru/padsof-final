@@ -31,8 +31,9 @@ import gui.components.fx.FxDatePicker;
 import gui.components.fx.FxTextField;
 import gui.controllers.Controller;
 import gui.listeners.AniadirOfertaListener;
+import gui.util.Nombrable;
 
-public class AniadirOferta extends JPanel {
+public class AniadirOferta extends JPanel implements Nombrable {
 
 	private static final long serialVersionUID = 2220134063340646027L;
 
@@ -78,8 +79,6 @@ public class AniadirOferta extends JPanel {
 
 	private AniadirOferta(Gui gui) {
 		this.gui = gui;
-		this.setName(NAME);
-
 		SwingUtilities.invokeLater(() -> initialize());
 
 	}

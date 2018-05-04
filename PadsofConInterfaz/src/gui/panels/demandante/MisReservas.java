@@ -13,8 +13,9 @@ import gui.components.ThinSolidScrollBarUi;
 import gui.controllers.Controller;
 import gui.panels.oferta.PanelOferta;
 import gui.panels.oferta.PanelOfertaReservadaInterno;
+import gui.util.Nombrable;
 
-public class MisReservas extends JLayeredPane {
+public class MisReservas extends JLayeredPane implements Nombrable {
 
 	private static final long serialVersionUID = -8320036169616362237L;
 

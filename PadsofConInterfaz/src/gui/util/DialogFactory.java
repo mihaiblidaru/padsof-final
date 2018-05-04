@@ -10,4 +10,9 @@ public class DialogFactory {
 				JOptionPane.ERROR_MESSAGE);
 	}
 
+	public static void internalError(String motivo) {
+		JOptionPane.showMessageDialog(new JPanel(), "Se ha producido un error interno:" + motivo, "Error",
+				JOptionPane.ERROR_MESSAGE);
+	}
+
 }

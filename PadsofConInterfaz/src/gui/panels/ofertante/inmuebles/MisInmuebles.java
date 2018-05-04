@@ -12,8 +12,9 @@ import javax.swing.SwingUtilities;
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
 import gui.controllers.Controller;
+import gui.util.Nombrable;
 
-public class MisInmuebles extends JLayeredPane {
+public class MisInmuebles extends JLayeredPane implements Nombrable {
 
 	private static final long serialVersionUID = -8320036169616362237L;
 
@@ -36,8 +37,6 @@ public class MisInmuebles extends JLayeredPane {
 	private MisInmuebles(Gui gui) {
 		this.gui = gui;
 		this.setPreferredSize(new Dimension(995, 600));
-		// this.setBackground(Color.GREEN);
-		this.setName(NAME);
 		SwingUtilities.invokeLater(() -> initialize());
 	}
 

@@ -138,4 +138,8 @@ public class Controller {
 		return model.getDemandanteLogueado().getOfertasContratadas();
 	}
 
+	public List<Integer> adminGetOfertasPendientes() throws SQLException {
+		return model.getOfertasPendientes();
+	}
+
 }

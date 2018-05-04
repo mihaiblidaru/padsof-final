@@ -15,12 +15,13 @@ import gui.components.fx.FxButton;
 import gui.components.fx.FxPasswordField;
 import gui.components.fx.FxTextField;
 import gui.listeners.LoginButtonHandler;
+import gui.util.Nombrable;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class LoginPanel extends JPanel {
+public class LoginPanel extends JPanel implements Nombrable {
 
 	private static final long serialVersionUID = -3260581588702723617L;
 	public final static String NAME = "LOGIN_PANEL";

@@ -1,44 +1,46 @@
-package gui.panels.ofertante.ofertas;
+package gui.panels.admin.ofertas;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
-import app.clases.ofertas.Estado;
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
 import gui.controllers.Controller;
 import gui.panels.oferta.PanelOferta;
-import gui.panels.oferta.PanelOfertaEditable;
+import gui.util.DialogFactory;
 import gui.util.Nombrable;
 
-public class MisOfertas extends JLayeredPane implements Nombrable {
+public class OfertasPendientes extends JLayeredPane implements Nombrable {
 
 	private static final long serialVersionUID = -8320036169616362237L;
 
-	public static final String NAME = "MIS_OFERTAS";
+	public static final String NAME = "OFERTAS_PENDIENTES";
 
 	private Gui gui;
 
-	private ContenedorOfertasInterno coi;
+	private ContenedorOfertasPendientes coi;
 
-	private static MisOfertas instance = null;
+	private static OfertasPendientes instance = null;
 
-	public static MisOfertas getInstance(Gui gui) {
+	public static OfertasPendientes getInstance(Gui gui) {
 		if (instance == null) {
-			return (instance = new MisOfertas(gui));
+			return (instance = new OfertasPendientes(gui));
 		} else {
 			return instance;
 		}
 	}
 
-	private MisOfertas(Gui gui) {
+	private OfertasPendientes(Gui gui) {
 		this.gui = gui;
 		this.setPreferredSize(new Dimension(995, 600));
+		// this.setBackground(Color.GREEN);
+		this.setName(NAME);
 		initialize();
 	}
 
@@ -46,7 +48,7 @@ public class MisOfertas extends JLayeredPane implements Nombrable {
 		SpringLayout springLayout = new SpringLayout();
 		this.setLayout(springLayout);
 
-		coi = new ContenedorOfertasInterno(gui);
+		coi = new ContenedorOfertasPendientes(gui);
 
 		JScrollPane scrollPane = new JScrollPane(coi, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -63,25 +65,26 @@ public class MisOfertas extends JLayeredPane implements Nombrable {
 	public void cargarOfertas() {
 		coi.clearOfertas();
 		Controller c = gui.getController();
-		List<Integer> ofertas = c.ofertanteGetMisOfertas();
-		for (Integer id : ofertas) {
-			Estado estado = c.ofertaGetEstado(id);
-			if (estado == Estado.ACEPTADA || estado == Estado.CONTRATADA || estado == Estado.RESERVADA) {
+		List<Integer> ofertas;
+		try {
+			ofertas = c.adminGetOfertasPendientes();
+			for (Integer id : ofertas) {
 				PanelOferta oferta = new PanelOferta(gui, id);
-				coi.addActiva(oferta);
-			} else if (estado == Estado.PENDIENTE || estado == Estado.PENDIENTE_DE_CAMBIOS) {
-				PanelOferta oferta = new PanelOfertaEditable(gui, id);
-				coi.addPendiente(oferta);
-			} else if (estado == Estado.RETIRADA) {
-				PanelOferta oferta = new PanelOferta(gui, id);
-				coi.addRechazada(oferta);
+				coi.addOferta(oferta);
 			}
+			coi.repaint();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
 		}
-		coi.repaint();
 	}
 
 	public void clearOfertas() {
 		coi.clearOfertas();
+	}
+
+	@Override
+	public void setGlobalName() {
+		this.setName(NAME);
 	}
 
 }

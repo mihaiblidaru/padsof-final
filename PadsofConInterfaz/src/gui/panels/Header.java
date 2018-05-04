@@ -17,10 +17,11 @@ import gui.components.fx.FxButton;
 import gui.panels.demandante.MisReservas;
 import gui.panels.ofertante.inmuebles.MisInmuebles;
 import gui.panels.ofertante.ofertas.MisOfertas;
+import gui.util.Nombrable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-public class Header extends JPanel {
+public class Header extends JPanel implements Nombrable {
 
 	private static final long serialVersionUID = -5230943621476766861L;
 	public final static String NAME = "HEADER";

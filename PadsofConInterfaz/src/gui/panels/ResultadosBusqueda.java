@@ -13,8 +13,9 @@ import javax.swing.border.EmptyBorder;
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
 import gui.panels.oferta.PanelOferta;
+import gui.util.Nombrable;
 
-public class ResultadosBusqueda extends JPanel {
+public class ResultadosBusqueda extends JPanel implements Nombrable {
 
 	private static final long serialVersionUID = 8638372520699078390L;
 	private static ResultadosBusqueda instance = null;

@@ -30,10 +30,11 @@ import gui.controllers.Controller;
 import gui.panels.Header;
 import gui.panels.ofertante.caracteristicas.PanelCaracteristicas;
 import gui.util.DialogFactory;
+import gui.util.Nombrable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-public class AniadirInmueble extends JPanel {
+public class AniadirInmueble extends JPanel implements Nombrable {
 
 	private static final long serialVersionUID = -4230661380101910555L;
 

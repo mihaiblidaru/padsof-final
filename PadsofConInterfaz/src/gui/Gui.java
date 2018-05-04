@@ -32,6 +32,7 @@ import gui.panels.ofertante.inmuebles.MisInmuebles;
 import gui.panels.ofertante.ofertas.AniadirOferta;
 import gui.panels.ofertante.ofertas.EditarOferta;
 import gui.panels.ofertante.ofertas.MisOfertas;
+import gui.util.Nombrable;
 
 public class Gui extends JFrame {
 
@@ -89,56 +90,55 @@ public class Gui extends JFrame {
 
 	private void createPanels() {
 		Header header = Header.getInstance(this);
-		contentPane.add(header);
-		contentPane.setBackground(Color.WHITE);
+		AdminView adminView = new AdminView(this);
 		LoginPanel loginPanel = LoginPanel.getInstance(this);
-		contentPane.add(loginPanel);
+		SearchMenu searchMenu = SearchMenu.getInstance(this);
+		AniadirOferta aniadirOferta = AniadirOferta.getInstance(this);
+		EditarOferta editarOferta = EditarOferta.getInstance(this);
+		AniadirInmueble aniadirVivienda = AniadirInmueble.getInstance(this);
+		ResultadosBusqueda resBusqueda = ResultadosBusqueda.getInstance(this);
+		MisOfertas misOfertas = MisOfertas.getInstance(this);
+		MisInmuebles misInmuebles = MisInmuebles.getInstance(this);
+		MisReservas misReservas = MisReservas.getInstance(this);
 
+		contentPane.add(header);
+		contentPane.add(loginPanel);
+		header.setGlobalName();
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, loginPanel, 0, SpringLayout.HORIZONTAL_CENTER,
 				contentPane);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, loginPanel, 0, SpringLayout.VERTICAL_CENTER, contentPane);
 
-		SearchMenu searchMenu = SearchMenu.getInstance(this);
 		contentPane.add(searchMenu);
 		layout.putConstraint(SpringLayout.NORTH, searchMenu, 0, SpringLayout.SOUTH, header);
 
-		AdminView adminView = new AdminView(this);
 		contentPane.add(adminView);
 		layout.putConstraint(SpringLayout.NORTH, adminView, -25, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, adminView, -2, SpringLayout.WEST, header);
 
-		AniadirOferta aniadirOferta = AniadirOferta.getInstance(this);
 		contentPane.add(aniadirOferta);
 		layout.putConstraint(SpringLayout.NORTH, aniadirOferta, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, aniadirOferta, 0, SpringLayout.WEST, contentPane);
 
-		EditarOferta editarOferta = EditarOferta.getInstance(this);
 		contentPane.add(editarOferta);
 		layout.putConstraint(SpringLayout.NORTH, editarOferta, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, editarOferta, 0, SpringLayout.WEST, contentPane);
-
-		AniadirInmueble aniadirVivienda = AniadirInmueble.getInstance(this);
 
 		contentPane.add(aniadirVivienda);
 		layout.putConstraint(SpringLayout.NORTH, aniadirVivienda, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, aniadirVivienda, 0, SpringLayout.WEST, contentPane);
 
-		ResultadosBusqueda resBusqueda = ResultadosBusqueda.getInstance(this);
 		contentPane.add(resBusqueda);
 		layout.putConstraint(SpringLayout.NORTH, resBusqueda, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, resBusqueda, 0, SpringLayout.EAST, searchMenu);
 
-		MisOfertas misOfertas = MisOfertas.getInstance(this);
 		contentPane.add(misOfertas);
 		layout.putConstraint(SpringLayout.NORTH, misOfertas, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, misOfertas, 0, SpringLayout.WEST, contentPane);
 
-		MisInmuebles misInmuebles = MisInmuebles.getInstance(this);
 		contentPane.add(misInmuebles);
 		layout.putConstraint(SpringLayout.NORTH, misInmuebles, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, misInmuebles, 0, SpringLayout.WEST, contentPane);
 
-		MisReservas misReservas = MisReservas.getInstance(this);
 		contentPane.add(misReservas);
 		layout.putConstraint(SpringLayout.NORTH, misReservas, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, misReservas, 0, SpringLayout.WEST, contentPane);
@@ -154,10 +154,7 @@ public class Gui extends JFrame {
 		misInmuebles.setVisible(false);
 		editarOferta.setVisible(false);
 
-		// contentPane.moveToFront(misInmuebles);
-
-		// resBusqueda.setVisible(false);
-		// searchMenu.setVisible(false);
+		Stream.of(contentPane.getComponents()).forEach(c -> ((Nombrable) c).setGlobalName());
 
 	}
 
