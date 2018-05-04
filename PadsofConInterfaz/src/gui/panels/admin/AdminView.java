@@ -1,31 +1,52 @@
 package gui.panels.admin;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JTabbedPane;
+import java.awt.CardLayout;
+
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import gui.Gui;
+import gui.panels.admin.ofertas.OfertasPendientes;
 import gui.util.Nombrable;
 
-public class AdminView extends JTabbedPane implements Nombrable {
+public class AdminView extends JPanel implements Nombrable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6946331622568374988L;
 	public static String NAME = "ADMIN_PANEL";
 	private final Gui gui;
+	private CardLayout layout;
+	private OfertasPendientes ofertasPendientes;
 
-	public AdminView(Gui gui) {
-		super(JTabbedPane.TOP);
+	private static AdminView instance = null;
+
+	public static AdminView getInstance(Gui gui) {
+		if (instance == null) {
+			return (instance = new AdminView(gui));
+		} else {
+			return instance;
+		}
+	}
+
+	private AdminView(Gui gui) {
+		layout = new CardLayout();
+		this.setLayout(layout);
+
 		this.gui = gui;
-		Icon icon = new ImageIcon();
-		this.insertTab("Panel de control", icon, new ControlPanel(), "Panel de control", 0);
-		this.insertTab("Ofertas", icon, new OfertasTab(), "Panel de control", 1);
-		this.insertTab("Usuarios", icon, new UsuariosTab(), "Panel de control", 2);
+		ofertasPendientes = OfertasPendientes.getInstance(gui);
+		this.add(new ControlPanel(), ControlPanel.NAME);
+		this.add(ofertasPendientes, OfertasPendientes.NAME);
+		this.add(new UsuariosTab(), UsuariosTab.NAME);
 		this.setBorder(new EmptyBorder(0, 0, 0, 0));
+		layout.first(this);
 
+	}
+
+	public void show(String name) {
+		if (name == OfertasPendientes.NAME) {
+			ofertasPendientes.cargarOfertas();
+		}
+
+		layout.show(this, name);
 	}
 
 }

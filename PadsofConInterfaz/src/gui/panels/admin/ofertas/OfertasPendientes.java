@@ -12,7 +12,7 @@ import javax.swing.SpringLayout;
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
 import gui.controllers.Controller;
-import gui.panels.oferta.PanelOferta;
+import gui.panels.oferta.PanelOfertaAdmin;
 import gui.util.DialogFactory;
 import gui.util.Nombrable;
 
@@ -69,7 +69,7 @@ public class OfertasPendientes extends JLayeredPane implements Nombrable {
 		try {
 			ofertas = c.adminGetOfertasPendientes();
 			for (Integer id : ofertas) {
-				PanelOferta oferta = new PanelOferta(gui, id);
+				PanelOfertaAdmin oferta = new PanelOfertaAdmin(gui, id);
 				coi.addOferta(oferta);
 			}
 			coi.repaint();

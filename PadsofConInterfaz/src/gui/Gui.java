@@ -90,7 +90,7 @@ public class Gui extends JFrame {
 
 	private void createPanels() {
 		Header header = Header.getInstance(this);
-		AdminView adminView = new AdminView(this);
+		AdminView adminView = AdminView.getInstance(this);
 		LoginPanel loginPanel = LoginPanel.getInstance(this);
 		SearchMenu searchMenu = SearchMenu.getInstance(this);
 		AniadirOferta aniadirOferta = AniadirOferta.getInstance(this);
@@ -112,8 +112,8 @@ public class Gui extends JFrame {
 		layout.putConstraint(SpringLayout.NORTH, searchMenu, 0, SpringLayout.SOUTH, header);
 
 		contentPane.add(adminView);
-		layout.putConstraint(SpringLayout.NORTH, adminView, -25, SpringLayout.SOUTH, header);
-		layout.putConstraint(SpringLayout.WEST, adminView, -2, SpringLayout.WEST, header);
+		layout.putConstraint(SpringLayout.NORTH, adminView, 0, SpringLayout.SOUTH, header);
+		layout.putConstraint(SpringLayout.WEST, adminView, 0, SpringLayout.WEST, header);
 
 		contentPane.add(aniadirOferta);
 		layout.putConstraint(SpringLayout.NORTH, aniadirOferta, 0, SpringLayout.SOUTH, header);

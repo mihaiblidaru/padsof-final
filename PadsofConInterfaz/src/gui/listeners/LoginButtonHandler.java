@@ -77,8 +77,12 @@ public class LoginButtonHandler implements EventHandler<ActionEvent> {
 							panelOfertas.cargarOfertas();
 						} else {
 							gui.setVisiblePane(AdminView.NAME, true);
+							header.setButtonVisibility(Header.PANEL_DE_CONTROL, true);
+							header.setButtonVisibility(Header.ADMIN_OFERTAS, true);
+							header.setButtonVisibility(Header.ADMIN_USUARIOS, true);
+							header.appNameSetVisible(false);
 						}
-						header.placeButtons();
+						header.placeUserButtons();
 					}
 				}
 			}

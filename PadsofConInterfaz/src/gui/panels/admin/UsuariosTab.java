@@ -10,8 +10,8 @@ import gui.Gui;
 public class UsuariosTab extends JPanel {
 
 	private static final long serialVersionUID = 7615793439529902683L;
-	
-	
+	public static final String NAME = "USUARIOS_PROBLEMA_PAGO";
+
 	public UsuariosTab() {
 		this.setBackground(Color.BLUE);
 		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, 537));
