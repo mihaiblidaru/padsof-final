@@ -142,7 +142,11 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 		});
 
 		misReservasButton.setOnAction(event -> {
-			SwingUtilities.invokeLater(() -> gui.showOnly(MisReservas.NAME, Header.NAME));
+			SwingUtilities.invokeLater(() -> {
+				MisReservas misReservas = (MisReservas) gui.getComponent(MisReservas.NAME);
+				misReservas.cargarOfertas();
+				gui.showOnly(MisReservas.NAME, Header.NAME);
+			});
 		});
 
 		panelDeControl.setOnAction(event -> {

@@ -34,8 +34,8 @@ public class PanelOferta extends JPanel {
 
 	protected SpringLayout layout;
 
-	private final static int PANEL_HEIGHT = 160;
-	private final static int PANEL_WIDTH = 750;
+	public final static int PANEL_HEIGHT = 160;
+	public final static int PANEL_WIDTH = 750;
 
 	public PanelOferta(Gui gui, int idOferta) {
 		this.gui = gui;

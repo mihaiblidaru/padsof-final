@@ -3,9 +3,9 @@ package gui.util;
 public interface PanelInterfazPrincipal {
 
 	default void initialize() {
-		setDimension();
 		crearComponentes();
 		colocarComponentes();
+		setDimension();
 		registrarEventos();
 	}
 

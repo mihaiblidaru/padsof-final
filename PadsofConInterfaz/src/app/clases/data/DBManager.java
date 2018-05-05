@@ -11,9 +11,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mysql.jdbc.JDBC4Connection;
+import com.mysql.jdbc.NonRegisteringDriver;
 
 import app.clases.data.exceptions.TablaNoTieneColumnaException;
 import app.clases.data.exceptions.TiposNoCoincidenException;
@@ -72,7 +74,7 @@ public class DBManager {
 	 * Pool de conexiones. Usado para minimizar el coste de crear una nueva conexion
 	 * cada vez que se necesita un recurso de la base de datos.
 	 */
-	private static ComboPooledDataSource connectionPool = null;
+	//private static ComboPooledDataSource connectionPool = null;
 
 	/**
 	 * Inicializa el pool de conexiones
@@ -82,7 +84,21 @@ public class DBManager {
 	 *             conexiones
 	 */
 	private static void initializeConnectionPool() throws PropertyVetoException {
-		connectionPool = new ComboPooledDataSource();
+		/*connectionPool = new BasicDataSource();
+		connectionPool.setDriverClassName(JDBC_DRIVER);
+		connectionPool.setUrl(DB_URL);
+		connectionPool.setInitialSize(34);
+		connectionPool.setUsername(DB_USER);
+		connectionPool.setPassword(DB_PASS);
+		connectionPool.setMaxOpenPreparedStatements(100);
+		connectionPool.setMinIdle(89);
+		connectionPool.setMaxIdle(233);
+		connectionPool.setValidationQuery("SELECT 1");
+		connectionPool.setTestOnBorrow(true);
+		connectionPool.setTimeBetweenEvictionRunsMillis(34000);
+		connectionPool.setMinEvictableIdleTimeMillis(55000);*/
+
+		/*connectionPool = new ComboPooledDataSource();
 		connectionPool.setDriverClass(JDBC_DRIVER);
 		connectionPool.setJdbcUrl(DB_URL);
 		connectionPool.setUser(DB_USER);
@@ -95,8 +111,10 @@ public class DBManager {
 		connectionPool.setMaxIdleTime(50);
 		connectionPool.setTestConnectionOnCheckin(false);
 		connectionPool.setTestConnectionOnCheckout(false);
-		connectionPool.setPreferredTestQuery("SELECT 1");
+		connectionPool.setPreferredTestQuery("SELECT 1");*/
 	}
+
+	private static JDBC4Connection connection = null;
 
 	/**
 	 * Expresión regular usada para validar los datos leidos desde el fichero que
@@ -114,14 +132,29 @@ public class DBManager {
 	 *             ocurre cuando hay un error de conexion
 	 */
 	public static Connection openDbConnection() throws SQLException {
-		if (connectionPool == null) {
+		/*if (connectionPool == null) {
 			try {
 				initializeConnectionPool();
 			} catch (PropertyVetoException e) {
 				e.printStackTrace();
 			}
+		}*/
+
+		Properties prop = new Properties();
+		prop.setProperty(NonRegisteringDriver.PASSWORD_PROPERTY_KEY, DB_PASS);
+		prop.setProperty(NonRegisteringDriver.USER_PROPERTY_KEY, DB_USER);
+
+		if (connection == null) {
+			connection = new MyConnection(DB_HOST, DB_PORT, prop, DB_NAME, DB_URL);
+			return connection;
+		} else {
+			if (connection.isClosed()) {
+				connection = new MyConnection(DB_HOST, DB_PORT, prop, DB_NAME, DB_URL);
+			}
+			return connection;
 		}
-		return connectionPool.getConnection();
+
+		/*return connectionPool.getConnection();*/
 	}
 
 	/**

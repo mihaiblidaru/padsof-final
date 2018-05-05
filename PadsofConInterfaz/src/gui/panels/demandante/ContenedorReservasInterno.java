@@ -1,14 +1,12 @@
 package gui.panels.demandante;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -16,13 +14,17 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import gui.Gui;
+import gui.panels.oferta.PanelOferta;
+import gui.panels.oferta.PanelOfertaReservadaInterno;
+import gui.util.LimitedFlowLayout;
+import gui.util.PanelInterfazPrincipal;
 
-public class ContenedorReservasInterno extends JPanel {
+public class ContenedorReservasInterno extends JPanel implements PanelInterfazPrincipal {
 
 	private static final long serialVersionUID = -2138438771740403776L;
 
-	private List<JComponent> reservadas = new ArrayList<>();
-	private List<JComponent> contratadas = new ArrayList<>();
+	private Map<Integer, PanelOfertaReservadaInterno> reservadas = new HashMap<>();
+	private Map<Integer, PanelOferta> contratadas = new HashMap<>();
 
 	private SpringLayout layout;
 
@@ -33,123 +35,139 @@ public class ContenedorReservasInterno extends JPanel {
 
 	private JLabel labelNoReservadas;
 
-	private JLabel labelNoPendientes;
+	private JLabel labelNoContratadas;
+
+	private JPanel grupoReservadas;
+
+	private JPanel grupoContratadas;
+
+	private Gui gui;
 
 	private static final int SEPARACION_OFERTAS = 10;
-	private static final int SEPARACION_SECCIONES = 70;
+
+	private static final int PANEL_WIDTH = 990;
 
 	public ContenedorReservasInterno(Gui gui) {
+		this.gui = gui;
 		layout = new SpringLayout();
 		this.setLayout(layout);
+
+		initialize();
+
+	}
+
+	@Override
+	public void setDimension() {
+		double height = 100 + grupoReservadas.getPreferredSize().getHeight()
+				+ grupoContratadas.getPreferredSize().getHeight();
+
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, (int) height));
+
+	}
+
+	@Override
+	public void crearComponentes() {
 		Font font = new Font("Times New Roman", Font.PLAIN, 20);
 		Font fontinfo = new Font("Verdana", Font.PLAIN, 15);
 		labelReservadas = new JLabel("Reservada");
 		labelContratadas = new JLabel("Contratadas");
+		separatorReservadas = new JSeparator(SwingConstants.HORIZONTAL);
+		separatorContratadas = new JSeparator(SwingConstants.HORIZONTAL);
+
+		labelNoReservadas = new JLabel("No tienes ninguna oferta reservada");
+		labelNoContratadas = new JLabel("No tienes ninguna oferta contratada");
+		grupoContratadas = new JPanel(new LimitedFlowLayout(FlowLayout.LEFT, 0, 10, 800));
+		grupoReservadas = new JPanel(new LimitedFlowLayout(FlowLayout.LEFT, 0, 10, 800));
 
 		labelReservadas.setFont(font);
 		labelContratadas.setFont(font);
 
-		labelNoReservadas = new JLabel("No tienes ninguna oferta reservada");
-		labelNoPendientes = new JLabel("No tienes ninguna oferta contratada");
-
 		labelNoReservadas.setFont(fontinfo);
-		labelNoPendientes.setFont(fontinfo);
+		labelNoContratadas.setFont(fontinfo);
 
-		separatorReservadas = new JSeparator(SwingConstants.HORIZONTAL);
-		separatorContratadas = new JSeparator(SwingConstants.HORIZONTAL);
+		grupoReservadas.setPreferredSize(new Dimension(800, 170));
+		grupoContratadas.setPreferredSize(new Dimension(800, 170));
 
 		separatorReservadas.setPreferredSize(new Dimension(975, 1));
 		separatorContratadas.setPreferredSize(new Dimension(975, 1));
-
 		separatorReservadas.setForeground(Color.GRAY);
 		separatorContratadas.setForeground(Color.GRAY);
 
-		reservadas.addAll(Arrays.asList(labelReservadas, separatorReservadas, labelNoReservadas));
-		contratadas.addAll(Arrays.asList(labelContratadas, separatorContratadas, labelNoPendientes));
+		this.add(grupoReservadas);
+		this.add(grupoContratadas);
+
+		grupoReservadas.add(labelNoReservadas);
+		grupoContratadas.add(labelNoContratadas);
 
 		this.add(labelReservadas);
 		this.add(labelContratadas);
-		this.add(labelNoReservadas);
-		this.add(labelNoPendientes);
 		this.add(separatorReservadas);
 		this.add(separatorContratadas);
 
-		setContraits();
-
 	}
 
-	private void setContraits() {
+	@Override
+	public void colocarComponentes() {
 		layout.putConstraint(SpringLayout.NORTH, labelReservadas, 10, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, labelReservadas, 10, SpringLayout.WEST, this);
 
 		layout.putConstraint(SpringLayout.NORTH, separatorReservadas, 5, SpringLayout.SOUTH, labelReservadas);
 		layout.putConstraint(SpringLayout.WEST, separatorReservadas, -5, SpringLayout.WEST, labelReservadas);
 
-		layout.putConstraint(SpringLayout.NORTH, labelNoReservadas, 5, SpringLayout.SOUTH, separatorReservadas);
-		layout.putConstraint(SpringLayout.WEST, labelNoReservadas, 0, SpringLayout.WEST, labelReservadas);
+		layout.putConstraint(SpringLayout.NORTH, grupoReservadas, 5, SpringLayout.SOUTH, separatorReservadas);
+		layout.putConstraint(SpringLayout.WEST, grupoReservadas, 0, SpringLayout.WEST, labelReservadas);
 
-		layout.putConstraint(SpringLayout.NORTH, labelContratadas, SEPARACION_SECCIONES, SpringLayout.NORTH,
-				labelNoReservadas);
-		layout.putConstraint(SpringLayout.WEST, labelContratadas, 10, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, labelContratadas, 10, SpringLayout.SOUTH, grupoReservadas);
+		layout.putConstraint(SpringLayout.WEST, labelContratadas, 0, SpringLayout.WEST, labelReservadas);
 
 		layout.putConstraint(SpringLayout.NORTH, separatorContratadas, 5, SpringLayout.SOUTH, labelContratadas);
 		layout.putConstraint(SpringLayout.WEST, separatorContratadas, -5, SpringLayout.WEST, labelContratadas);
 
-		layout.putConstraint(SpringLayout.NORTH, labelNoPendientes, 5, SpringLayout.SOUTH, separatorContratadas);
-		layout.putConstraint(SpringLayout.WEST, labelNoPendientes, 0, SpringLayout.WEST, labelContratadas);
+		layout.putConstraint(SpringLayout.NORTH, grupoContratadas, 5, SpringLayout.SOUTH, separatorContratadas);
+		layout.putConstraint(SpringLayout.WEST, grupoContratadas, 0, SpringLayout.WEST, labelContratadas);
 
 	}
 
-	public Component addReserva(JComponent p) {
-		if (reservadas.get(reservadas.size() - 1) == labelNoReservadas) {
-			this.remove(reservadas.remove(reservadas.size() - 1));
+	public void addReserva(PanelOfertaReservadaInterno p) {
+		if (reservadas.isEmpty())
+			labelNoReservadas.setVisible(false);
+
+		if (!reservadas.containsKey(p.getIdOferta())) {
+			reservadas.put(p.getIdOferta(), p);
+			grupoReservadas.add(p);
 		}
 
-		this.add(p);
-		layout.putConstraint(SpringLayout.NORTH, p, SEPARACION_OFERTAS, SpringLayout.SOUTH,
-				reservadas.get(reservadas.size() - 1));
-		layout.putConstraint(SpringLayout.WEST, p, 10, SpringLayout.WEST, this);
-		reservadas.add(p);
-		JComponent next = contratadas.get(0);
-
-		layout.putConstraint(SpringLayout.NORTH, next, SEPARACION_SECCIONES, SpringLayout.SOUTH, p);
-		layout.putConstraint(SpringLayout.WEST, next, 10, SpringLayout.WEST, this);
-		recalculateSize();
-		return p;
+		grupoReservadas.setPreferredSize(new Dimension(800,
+				reservadas.size() * (PanelOferta.PANEL_HEIGHT + SEPARACION_OFERTAS) + SEPARACION_OFERTAS));
+		setDimension();
 	}
 
-	public Component addContratada(JComponent p) {
-		if (contratadas.get(contratadas.size() - 1) == labelNoPendientes) {
-			this.remove(contratadas.remove(contratadas.size() - 1));
+	public void addContratada(PanelOferta p) {
+		if (contratadas.isEmpty())
+			labelNoContratadas.setVisible(false);
+
+		if (!contratadas.containsKey(p.getIdOferta())) {
+			contratadas.put(p.getIdOferta(), p);
+			grupoContratadas.add(p);
 		}
 
-		this.add(p);
-		layout.putConstraint(SpringLayout.NORTH, p, SEPARACION_OFERTAS, SpringLayout.SOUTH,
-				contratadas.get(contratadas.size() - 1));
-		layout.putConstraint(SpringLayout.WEST, p, 10, SpringLayout.WEST, this);
-		contratadas.add(p);
-		recalculateSize();
-		return p;
+		grupoContratadas.setPreferredSize(new Dimension(800,
+				contratadas.size() * (PanelOferta.PANEL_HEIGHT + SEPARACION_OFERTAS) + SEPARACION_OFERTAS));
+		setDimension();
 	}
 
-	private void recalculateSize() {
-		layout.putConstraint(SpringLayout.SOUTH, this, 30, SpringLayout.SOUTH, contratadas.get(contratadas.size() - 1));
+	@Override
+	public void registrarEventos() {
+		// TODO Auto-generated method stub
+
 	}
 
-	public void clearOfertas() {
-		this.removeAll();
-		this.add(labelReservadas);
-		this.add(labelContratadas);
-		this.add(labelNoReservadas);
-		this.add(labelNoPendientes);
-		this.add(separatorReservadas);
-		this.add(separatorContratadas);
+	public void removeReserva(int idOferta) {
+		if (reservadas.containsKey(idOferta)) {
+			grupoReservadas.remove(reservadas.remove(idOferta));
+			if (reservadas.isEmpty())
+				labelNoReservadas.setVisible(true);
+		}
 
-		reservadas.clear();
-		contratadas.clear();
-		reservadas.addAll(Arrays.asList(labelReservadas, separatorReservadas, labelNoReservadas));
-		contratadas.addAll(Arrays.asList(labelContratadas, separatorContratadas, labelNoPendientes));
-
-		this.setContraits();
 	}
 }

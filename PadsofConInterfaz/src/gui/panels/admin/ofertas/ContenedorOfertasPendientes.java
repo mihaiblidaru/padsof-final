@@ -1,14 +1,14 @@
 package gui.panels.admin.ofertas;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -16,88 +16,124 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import gui.Gui;
+import gui.controllers.Controller;
+import gui.panels.oferta.PanelOferta;
+import gui.panels.oferta.PanelOfertaAdmin;
+import gui.panels.ofertante.inmuebles.PanelInmueble;
+import gui.util.PanelInterfazPrincipal;
 
-public class ContenedorOfertasPendientes extends JPanel {
+public class ContenedorOfertasPendientes extends JPanel implements PanelInterfazPrincipal {
 
-	private static final long serialVersionUID = -2138438771740403776L;
+	private static final long serialVersionUID = -213843877174040375L;
 
-	private List<JComponent> pendientes = new ArrayList<>();
+	private Map<Integer, PanelOfertaAdmin> ofertas = new HashMap<>();
+
+	private Gui gui;
 
 	private SpringLayout layout;
 
-	private JLabel labelActivas;
-	private JSeparator separatorActivas;
+	private JLabel labelOfertas;
+	private JSeparator separatorOfertas;
+	private JLabel labelNoOfertas;
 
-	private JLabel labelNoActivas;
+	private JPanel grupoOfertas;
 
-	private static final int SEPARACION_OFERTAS = 10;
+	private static final int SEPARACION_INMUEBLES = 10;
+	private static final int PANEL_WIDTH = 990;
 
 	public ContenedorOfertasPendientes(Gui gui) {
-		layout = new SpringLayout();
-		this.setLayout(layout);
-		Font font = new Font("Times New Roman", Font.PLAIN, 20);
-		Font fontinfo = new Font("Verdana", Font.PLAIN, 15);
-		labelActivas = new JLabel("Nuevas Ofertas Publicadas");
-
-		labelActivas.setFont(font);
-
-		labelNoActivas = new JLabel("No tienes ninguna oferta activa");
-
-		labelNoActivas.setFont(fontinfo);
-
-		separatorActivas = new JSeparator(SwingConstants.HORIZONTAL);
-
-		separatorActivas.setPreferredSize(new Dimension(975, 1));
-
-		separatorActivas.setForeground(Color.GRAY);
-
-		pendientes.addAll(Arrays.asList(labelActivas, separatorActivas, labelNoActivas));
-
-		this.add(labelActivas);
-		this.add(labelNoActivas);
-		this.add(separatorActivas);
-
-		setContraits();
-
+		this.gui = gui;
+		initialize();
 	}
 
-	private void setContraits() {
-		layout.putConstraint(SpringLayout.NORTH, labelActivas, 10, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, labelActivas, 10, SpringLayout.WEST, this);
+	public void cargarOfertas() {
+		Controller c = gui.getController();
+		List<Integer> resultados = null;
+		try {
+			resultados = c.adminGetOfertasPendientes();
+		} catch (SQLException e) {
 
-		layout.putConstraint(SpringLayout.NORTH, separatorActivas, 5, SpringLayout.SOUTH, labelActivas);
-		layout.putConstraint(SpringLayout.WEST, separatorActivas, -5, SpringLayout.WEST, labelActivas);
-
-		layout.putConstraint(SpringLayout.NORTH, labelNoActivas, 5, SpringLayout.SOUTH, separatorActivas);
-		layout.putConstraint(SpringLayout.WEST, labelNoActivas, 0, SpringLayout.WEST, labelActivas);
-
-	}
-
-	public Component addOferta(JComponent p) {
-		if (pendientes.get(pendientes.size() - 1) == labelNoActivas) {
-			this.remove(pendientes.remove(pendientes.size() - 1));
 		}
 
-		this.add(p);
-		layout.putConstraint(SpringLayout.NORTH, p, SEPARACION_OFERTAS, SpringLayout.SOUTH,
-				pendientes.get(pendientes.size() - 1));
-		layout.putConstraint(SpringLayout.WEST, p, 10, SpringLayout.WEST, this);
-		pendientes.add(p);
-		recalculateSize();
-		return p;
+		for (Integer id : ofertas.keySet()) {
+			if (!resultados.contains(id)) {
+				grupoOfertas.remove(ofertas.remove(id));
+			}
+		}
+
+		for (Integer id : resultados) {
+			this.addOferta(new PanelOfertaAdmin(gui, id));
+		}
 	}
 
-	private void recalculateSize() {
-		layout.putConstraint(SpringLayout.SOUTH, this, 30, SpringLayout.SOUTH, pendientes.get(pendientes.size() - 1));
+	@Override
+	public void setDimension() {
+		this.setPreferredSize(new Dimension(PANEL_WIDTH,
+				90 + SEPARACION_INMUEBLES + ofertas.size() * (PanelOferta.PANEL_HEIGHT + SEPARACION_INMUEBLES)));
+	}
+
+	@Override
+	public void crearComponentes() {
+		Font font = new Font("Times New Roman", Font.PLAIN, 20);
+		Font fontinfo = new Font("Verdana", Font.PLAIN, 15);
+		labelOfertas = new JLabel("Tus inmuebles");
+
+		labelNoOfertas = new JLabel("No tienes ninguna inmueble registrado");
+		separatorOfertas = new JSeparator(SwingConstants.HORIZONTAL);
+		labelOfertas.setFont(font);
+		labelNoOfertas.setFont(fontinfo);
+		separatorOfertas.setPreferredSize(new Dimension(975, 1));
+		separatorOfertas.setForeground(Color.GRAY);
+		grupoOfertas = new JPanel();
+		grupoOfertas.add(labelNoOfertas);
+		grupoOfertas.setPreferredSize(new Dimension(PanelInmueble.PANEL_WIDTH, 100));
+
+		this.add(labelOfertas);
+		this.add(separatorOfertas);
+		this.add(grupoOfertas);
+
+	}
+
+	@Override
+	public void colocarComponentes() {
+		layout = new SpringLayout();
+		this.setLayout(layout);
+		layout.putConstraint(SpringLayout.NORTH, labelOfertas, 10, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, labelOfertas, 10, SpringLayout.WEST, this);
+
+		layout.putConstraint(SpringLayout.NORTH, separatorOfertas, 5, SpringLayout.SOUTH, labelOfertas);
+		layout.putConstraint(SpringLayout.WEST, separatorOfertas, -5, SpringLayout.WEST, labelOfertas);
+
+		layout.putConstraint(SpringLayout.NORTH, grupoOfertas, 5, SpringLayout.SOUTH, separatorOfertas);
+		layout.putConstraint(SpringLayout.WEST, grupoOfertas, 0, SpringLayout.WEST, labelOfertas);
+
+		FlowLayout l1 = new FlowLayout(FlowLayout.LEFT, 0, SEPARACION_INMUEBLES);
+		grupoOfertas.setLayout(l1);
+
+	}
+
+	@Override
+	public void registrarEventos() {
+
+	}
+
+	public void addOferta(PanelOfertaAdmin panelOfertaAdmin) {
+		if (ofertas.isEmpty())
+			labelNoOfertas.setVisible(false);
+
+		int id = panelOfertaAdmin.getIdOferta();
+
+		if (!ofertas.containsKey(id)) {
+			grupoOfertas.add(panelOfertaAdmin);
+			ofertas.put(id, panelOfertaAdmin);
+			setDimension();
+			this.grupoOfertas.setPreferredSize(new Dimension(PanelOferta.PANEL_WIDTH,
+					ofertas.size() * (PanelOferta.PANEL_HEIGHT + SEPARACION_INMUEBLES)));
+		}
 	}
 
 	public void clearOfertas() {
-		this.removeAll();
-		this.add(labelActivas);
-		this.add(labelNoActivas);
-		this.add(separatorActivas);
-		pendientes.clear();
-		pendientes.addAll(Arrays.asList(labelActivas, separatorActivas, labelNoActivas));
-		this.setContraits();
+		grupoOfertas.removeAll();
+		ofertas.clear();
 	}
 }

@@ -4,11 +4,13 @@ import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import app.clases.ofertas.Estado;
 import gui.Gui;
 import gui.components.fx.FxButton;
 import gui.controllers.Controller;
+import gui.panels.ResultadosBusqueda;
 
 public class PanelOfertaBusqueda extends PanelOferta {
 
@@ -20,6 +22,17 @@ public class PanelOfertaBusqueda extends PanelOferta {
 	public PanelOfertaBusqueda(Gui gui, int idOferta) {
 		super(gui, idOferta);
 		setListeners();
+	}
+
+	private void setListeners() {
+		contratar.setOnAction(e -> {
+			SwingUtilities.invokeLater(() -> {
+				if (gui.getController().contratarOferta(this.getIdOferta())) {
+					ResultadosBusqueda resBusqueda = (ResultadosBusqueda) gui.getComponent(ResultadosBusqueda.NAME);
+					resBusqueda.removeOferta(this.getIdOferta());
+				}
+			});
+		});
 	}
 
 	@Override
@@ -38,10 +51,6 @@ public class PanelOfertaBusqueda extends PanelOferta {
 		this.add(contenedorBotones);
 		layout.putConstraint(SpringLayout.EAST, contenedorBotones, -10, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.SOUTH, contenedorBotones, -10, SpringLayout.SOUTH, this);
-
-	}
-
-	private void setListeners() {
 
 	}
 

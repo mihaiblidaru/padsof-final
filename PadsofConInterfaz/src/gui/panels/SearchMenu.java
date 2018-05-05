@@ -37,6 +37,11 @@ public class SearchMenu extends JPanel implements Nombrable, PanelInterfazPrinci
 	}
 
 	@Override
+	public void setDimension() {
+		this.setPreferredSize(new Dimension(180, Gui.FRAME_HEIGHT));
+	}
+
+	@Override
 	public void crearComponentes() {
 		checkBoxVacacional = new FxCheckBox(100, 20, "Vacacional");
 		checkBoxVivienda = new FxCheckBox(100, 20, "Vivienda");
@@ -108,8 +113,4 @@ public class SearchMenu extends JPanel implements Nombrable, PanelInterfazPrinci
 		buscar.setOnAction(new SearchButtonHandler(gui, localidad, desde, hasta, checkBoxVacacional));
 	}
 
-	@Override
-	public void setDimension() {
-		this.setPreferredSize(new Dimension(180, Gui.FRAME_HEIGHT));
-	}
 }

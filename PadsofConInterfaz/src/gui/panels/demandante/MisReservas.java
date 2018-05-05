@@ -52,7 +52,6 @@ public class MisReservas extends JLayeredPane implements Nombrable {
 	}
 
 	public void cargarOfertas() {
-		cri.clearOfertas();
 		Controller c = gui.getController();
 		Integer activa = c.demandanteGetOfertaReservada();
 		if (activa != null) {
@@ -68,8 +67,14 @@ public class MisReservas extends JLayeredPane implements Nombrable {
 		cri.repaint();
 	}
 
-	public void clearOfertas() {
-		cri.clearOfertas();
+	public void addContratada(int idOferta) {
+		cri.addContratada(new PanelOferta(gui, idOferta));
+		cri.repaint();
+	}
+
+	public void removeReserva(int idOferta) {
+		cri.removeReserva(idOferta);
+		cri.repaint();
 	}
 
 }

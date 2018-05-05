@@ -12,6 +12,7 @@ import app.clases.ofertas.Estado;
 import app.clases.ofertas.OfertaNoModificableException;
 import app.clases.users.Rol;
 import app.clases.users.UsuarioNoPermisoException;
+import es.uam.eps.padsof.telecard.OrderRejectedException;
 
 public class Controller {
 	private final MiVacaPiso model;
@@ -144,6 +145,29 @@ public class Controller {
 
 	public boolean tienePermisosDemandante() {
 		return model.getDemandanteLogueado() != null;
+	}
+
+	public boolean contratarOferta(int idOferta) {
+		try {
+			return model.contratar(idOferta);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UsuarioNoPermisoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OrderRejectedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OfertaNoModificableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean demandanteCancelarReserva() {
+		return model.cancelarReserva();
 	}
 
 }

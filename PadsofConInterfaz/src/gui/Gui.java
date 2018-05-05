@@ -153,7 +153,7 @@ public class Gui extends JFrame {
 		resBusqueda.setVisible(true);
 		misInmuebles.setVisible(false);
 		editarOferta.setVisible(false);
-
+		misReservas.setVisible(false);
 		Stream.of(contentPane.getComponents()).forEach(c -> ((Nombrable) c).setGlobalName());
 
 	}

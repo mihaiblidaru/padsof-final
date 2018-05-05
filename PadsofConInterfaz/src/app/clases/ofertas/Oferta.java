@@ -466,7 +466,8 @@ public abstract class Oferta {
 	 *             si los tipos de datos no coinciden
 	 */
 	public boolean setDemandante(Integer demandante) throws OfertaNoModificableException, SQLException {
-		if (this.estado == Estado.ACEPTADA) { /** Comprobamos que la oferta este en aceptada */
+		if (this.estado == Estado.ACEPTADA
+				|| this.estado == Estado.RESERVADA) { /** Comprobamos que la oferta este en aceptada */
 			try {
 				DBManager.updateField(Tabla.OFERTA, Columna.OFERTA_DEMANDANTE, this.id,
 						demandante); /** Actualizamos el demandante en la tabla de datos */

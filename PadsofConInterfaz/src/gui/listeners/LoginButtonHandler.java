@@ -60,13 +60,15 @@ public class LoginButtonHandler implements EventHandler<ActionEvent> {
 						gui.setVisiblePane(LoginPanel.NAME, false);
 						Header header = (Header) gui.getComponent(Header.NAME);
 						gui.setVisiblePane(Header.NAME, true);
+						ResultadosBusqueda rb = (ResultadosBusqueda) gui.getComponent(ResultadosBusqueda.NAME);
 						if (rol == Rol.D) {
 							gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
-							ResultadosBusqueda rb = (ResultadosBusqueda) gui.getComponent(ResultadosBusqueda.NAME);
+							header.verBotones(Header.BOTONES_DEMANDANTE);
 							rb.actualizarBotones();
 						} else if (rol == Rol.OD) {
 							gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
 							header.verBotones(Header.BOTONES_OFERTANTE_DEMANDANTE);
+							rb.actualizarBotones();
 						} else if (rol == Rol.O) {
 							header.verBotones(Header.BOTONES_OFERTANTE);
 							gui.setVisiblePane(MisOfertas.NAME, true);

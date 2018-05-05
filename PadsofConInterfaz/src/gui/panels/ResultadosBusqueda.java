@@ -107,6 +107,15 @@ public class ResultadosBusqueda extends JPanel implements Nombrable, PanelInterf
 		public void actualizarBotones() {
 			resultados.values().stream().forEach(c -> c.actualizarBotones());
 		}
+
+		public void removeOferta(int idOferta) {
+			this.remove(resultados.get(idOferta));
+		}
+	}
+
+	public void removeOferta(int idOferta) {
+		contenedor.removeOferta(idOferta);
+		this.repaint();
 	}
 
 }
