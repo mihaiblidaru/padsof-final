@@ -15,4 +15,8 @@ public class DialogFactory {
 				JOptionPane.ERROR_MESSAGE);
 	}
 
+	public static void simpleErrorMessage(String message) {
+		JOptionPane.showMessageDialog(new JPanel(), message, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
 }

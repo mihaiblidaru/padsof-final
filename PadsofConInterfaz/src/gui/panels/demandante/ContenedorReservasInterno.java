@@ -13,7 +13,6 @@ import javax.swing.JSeparator;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-import gui.Gui;
 import gui.panels.oferta.PanelOferta;
 import gui.panels.oferta.PanelOfertaReservadaInterno;
 import gui.util.LimitedFlowLayout;
@@ -41,14 +40,11 @@ public class ContenedorReservasInterno extends JPanel implements PanelInterfazPr
 
 	private JPanel grupoContratadas;
 
-	private Gui gui;
-
 	private static final int SEPARACION_OFERTAS = 10;
 
 	private static final int PANEL_WIDTH = 990;
 
-	public ContenedorReservasInterno(Gui gui) {
-		this.gui = gui;
+	public ContenedorReservasInterno() {
 		layout = new SpringLayout();
 		this.setLayout(layout);
 

@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.channels.OverlappingFileLockException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +37,7 @@ import gui.panels.ofertante.inmuebles.MisInmuebles;
 import gui.panels.ofertante.ofertas.AniadirOferta;
 import gui.panels.ofertante.ofertas.EditarOferta;
 import gui.panels.ofertante.ofertas.MisOfertas;
+import gui.util.DialogFactory;
 import gui.util.Nombrable;
 
 public class Gui extends JFrame {
@@ -49,26 +55,20 @@ public class Gui extends JFrame {
 	}
 
 	Stack<List<Component>> stack = new Stack<>();
-
-	private void initialize() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setBounds((int) (screenSize.getWidth() / 2 - FRAME_WIDTH / 2),
-				(int) (screenSize.getHeight() / 2 - FRAME_HEIGHT / 2), FRAME_WIDTH, FRAME_HEIGHT);
-		this.setResizable(false);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.contentPane = new JPanel();
-		this.setContentPane(this.contentPane);
-		this.contentPane.setOpaque(true);
-		contentPane.setBackground(Color.decode("#ffffff"));
-
-		this.layout = new SpringLayout();
-		getContentPane().setLayout(this.layout);
-	}
+	private FileLock lock;
+	private FileChannel channel;
+	private File file;
 
 	public static void main(String[] args) {
 		Gui gui = new Gui();
 		UIManager.put("Panel.background", Color.WHITE);
 		UIManager.put("OptionPane.background", Color.WHITE);
+
+		if (gui.isAppActive()) {
+			DialogFactory.simpleErrorMessage("Ya existe una instancia de la aplicacion");
+			System.exit(1);
+		}
+
 		SplashScreen splashScreen = new SplashScreen();
 		Controller controller = null;
 		try {
@@ -86,6 +86,21 @@ public class Gui extends JFrame {
 			splashScreen.dispose();
 		});
 
+	}
+
+	private void initialize() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setBounds((int) (screenSize.getWidth() / 2 - FRAME_WIDTH / 2),
+				(int) (screenSize.getHeight() / 2 - FRAME_HEIGHT / 2), FRAME_WIDTH, FRAME_HEIGHT);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.contentPane = new JPanel();
+		this.setContentPane(this.contentPane);
+		this.contentPane.setOpaque(true);
+		contentPane.setBackground(Color.decode("#ffffff"));
+
+		this.layout = new SpringLayout();
+		getContentPane().setLayout(this.layout);
 	}
 
 	private void createPanels() {
@@ -198,6 +213,56 @@ public class Gui extends JFrame {
 		List<Component> last = stack.pop();
 		Arrays.asList(this.contentPane.getComponents()).stream().forEach(c -> c.setVisible(false));
 		last.stream().forEach(c -> c.setVisible(true));
+	}
+
+	@SuppressWarnings("resource")
+	public boolean isAppActive() {
+		try {
+			file = new File("filelock.tmp");
+			channel = new RandomAccessFile(file, "rw").getChannel();
+
+			try {
+				lock = channel.tryLock();
+			} catch (OverlappingFileLockException e) {
+				closeLock();
+				return true;
+			}
+
+			if (lock == null) {
+				closeLock();
+				return true;
+			}
+
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				public void run() {
+					closeLock();
+					deleteFile();
+				}
+			});
+			return false;
+		} catch (Exception e) {
+			closeLock();
+			return true;
+		}
+	}
+
+	private void closeLock() {
+		try {
+			lock.release();
+		} catch (Exception e) {
+		}
+		try {
+			channel.close();
+		} catch (Exception e) {
+		}
+
+	}
+
+	private void deleteFile() {
+		try {
+			file.delete();
+		} catch (Exception e) {
+		}
 	}
 
 }

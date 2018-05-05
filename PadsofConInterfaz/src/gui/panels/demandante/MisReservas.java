@@ -37,7 +37,7 @@ public class MisReservas extends JLayeredPane implements Nombrable {
 		SpringLayout springLayout = new SpringLayout();
 		this.setLayout(springLayout);
 
-		cri = new ContenedorReservasInterno(gui);
+		cri = new ContenedorReservasInterno();
 
 		JScrollPane scrollPane = new JScrollPane(cri, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
