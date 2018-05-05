@@ -26,17 +26,7 @@ public class MisOfertas extends JLayeredPane implements Nombrable {
 
 	private ContenedorOfertasInterno coi;
 
-	private static MisOfertas instance = null;
-
-	public static MisOfertas getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new MisOfertas(gui));
-		} else {
-			return instance;
-		}
-	}
-
-	private MisOfertas(Gui gui) {
+	public MisOfertas(Gui gui) {
 		this.gui = gui;
 		this.setPreferredSize(new Dimension(995, 600));
 		initialize();

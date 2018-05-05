@@ -89,17 +89,17 @@ public class Gui extends JFrame {
 	}
 
 	private void createPanels() {
-		Header header = Header.getInstance(this);
-		AdminView adminView = AdminView.getInstance(this);
-		LoginPanel loginPanel = LoginPanel.getInstance(this);
-		SearchMenu searchMenu = SearchMenu.getInstance(this);
+		Header header = new Header(this);
+		AdminView adminView = new AdminView(this);
+		LoginPanel loginPanel = new LoginPanel(this);
+		SearchMenu searchMenu = new SearchMenu(this);
 		AniadirOferta aniadirOferta = new AniadirOferta(this);
 		EditarOferta editarOferta = new EditarOferta(this);
-		AniadirInmueble aniadirVivienda = AniadirInmueble.getInstance(this);
-		ResultadosBusqueda resBusqueda = ResultadosBusqueda.getInstance(this);
-		MisOfertas misOfertas = MisOfertas.getInstance(this);
-		MisInmuebles misInmuebles = MisInmuebles.getInstance(this);
-		MisReservas misReservas = MisReservas.getInstance(this);
+		AniadirInmueble aniadirVivienda = new AniadirInmueble(this);
+		ResultadosBusqueda resBusqueda = new ResultadosBusqueda(this);
+		MisOfertas misOfertas = new MisOfertas(this);
+		MisInmuebles misInmuebles = new MisInmuebles(this);
+		MisReservas misReservas = new MisReservas(this);
 
 		contentPane.add(header);
 		contentPane.add(loginPanel);

@@ -42,17 +42,7 @@ public class AniadirInmueble extends JPanel implements Nombrable {
 
 	private final Gui gui;
 
-	private static AniadirInmueble instance = null;
-
-	public static AniadirInmueble getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new AniadirInmueble(gui));
-		} else {
-			return instance;
-		}
-	}
-
-	private AniadirInmueble(Gui gui) {
+	public AniadirInmueble(Gui gui) {
 		this.gui = gui;
 		this.setName(NAME);
 		initialize();

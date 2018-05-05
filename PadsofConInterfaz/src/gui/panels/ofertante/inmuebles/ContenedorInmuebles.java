@@ -1,13 +1,12 @@
 package gui.panels.ofertante.inmuebles;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -19,59 +18,99 @@ import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.fx.FxButton;
+import gui.controllers.Controller;
 import gui.panels.Header;
+import gui.util.PanelInterfazPrincipal;
 
-public class ContenedorInmuebles extends JPanel {
+public class ContenedorInmuebles extends JPanel implements PanelInterfazPrincipal {
 
 	private static final long serialVersionUID = -2138438771740403776L;
 
-	private List<JComponent> inmuebles = new ArrayList<>();
+	private Map<Integer, JComponent> inmuebles = new HashMap<>();
+
+	private Gui gui;
 
 	private SpringLayout layout;
 
 	private JLabel labelInmuebles;
 	private JSeparator separatorInmuebles;
 	private JLabel labelNoInmuebles;
+	private FxButton anyadir;
+
+	private JPanel grupoInmuebles;
 
 	private static final int SEPARACION_INMUEBLES = 10;
+	private static final int PANEL_WIDTH = 990;
 
 	public ContenedorInmuebles(Gui gui) {
-		this.setBackground(Color.GREEN);
-		layout = new SpringLayout();
-		this.setLayout(layout);
+		this.gui = gui;
+		initialize();
+	}
+
+	public void cargarInmuebles() {
+		Controller c = gui.getController();
+		List<Integer> resultados = c.ofertanteGetMisInmuebles();
+		inmuebles.keySet().stream().filter(k -> !resultados.contains(k))
+				.forEach(k -> grupoInmuebles.remove(inmuebles.remove(k)));
+
+		for (Integer id : resultados) {
+			this.addInmueble(new PanelInmueble(gui, id));
+		}
+	}
+
+	@Override
+	public void setDimension() {
+		this.setPreferredSize(new Dimension(PANEL_WIDTH,
+				90 + SEPARACION_INMUEBLES + inmuebles.size() * (PanelInmueble.PANEL_HEIGHT + SEPARACION_INMUEBLES)));
+	}
+
+	@Override
+	public void crearComponentes() {
 		Font font = new Font("Times New Roman", Font.PLAIN, 20);
 		Font fontinfo = new Font("Verdana", Font.PLAIN, 15);
 		labelInmuebles = new JLabel("Tus inmuebles");
-		labelInmuebles.setFont(font);
 
 		labelNoInmuebles = new JLabel("No tienes ninguna inmueble registrado");
-		labelNoInmuebles.setFont(fontinfo);
-
 		separatorInmuebles = new JSeparator(SwingConstants.HORIZONTAL);
+		labelInmuebles.setFont(font);
+		labelNoInmuebles.setFont(fontinfo);
 		separatorInmuebles.setPreferredSize(new Dimension(975, 1));
 		separatorInmuebles.setForeground(Color.GRAY);
-
-		inmuebles.addAll(Arrays.asList(labelInmuebles, separatorInmuebles, labelNoInmuebles));
+		anyadir = new FxButton(150, 30, "Añadir Inmueble");
+		grupoInmuebles = new JPanel();
+		grupoInmuebles.add(labelNoInmuebles);
+		grupoInmuebles.setPreferredSize(new Dimension(PanelInmueble.PANEL_WIDTH, 100));
 
 		this.add(labelInmuebles);
-		this.add(labelNoInmuebles);
 		this.add(separatorInmuebles);
+		this.add(grupoInmuebles);
 
+		this.add(anyadir);
+	}
+
+	@Override
+	public void colocarComponentes() {
+		layout = new SpringLayout();
+		this.setLayout(layout);
 		layout.putConstraint(SpringLayout.NORTH, labelInmuebles, 10, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, labelInmuebles, 10, SpringLayout.WEST, this);
 
 		layout.putConstraint(SpringLayout.NORTH, separatorInmuebles, 5, SpringLayout.SOUTH, labelInmuebles);
 		layout.putConstraint(SpringLayout.WEST, separatorInmuebles, -5, SpringLayout.WEST, labelInmuebles);
 
-		layout.putConstraint(SpringLayout.NORTH, labelNoInmuebles, 5, SpringLayout.SOUTH, separatorInmuebles);
-		layout.putConstraint(SpringLayout.WEST, labelNoInmuebles, 0, SpringLayout.WEST, labelInmuebles);
-
-		FxButton anyadir = new FxButton(150, 30, "Añadir Inmueble");
-
 		layout.putConstraint(SpringLayout.EAST, anyadir, -10, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.SOUTH, anyadir, -5, SpringLayout.NORTH, separatorInmuebles);
-		this.add(anyadir);
 
+		layout.putConstraint(SpringLayout.NORTH, grupoInmuebles, 5, SpringLayout.SOUTH, separatorInmuebles);
+		layout.putConstraint(SpringLayout.WEST, grupoInmuebles, 0, SpringLayout.WEST, labelInmuebles);
+
+		FlowLayout l1 = new FlowLayout(FlowLayout.LEFT, 0, SEPARACION_INMUEBLES);
+		grupoInmuebles.setLayout(l1);
+
+	}
+
+	@Override
+	public void registrarEventos() {
 		anyadir.setOnAction(event -> {
 			SwingUtilities.invokeLater(new Runnable() {
 
@@ -82,34 +121,25 @@ public class ContenedorInmuebles extends JPanel {
 			});
 
 		});
-
 	}
 
-	public Component addInmueble(JComponent p) {
-		if (inmuebles.get(inmuebles.size() - 1) == labelNoInmuebles) {
-			this.remove(inmuebles.remove(inmuebles.size() - 1));
+	public void addInmueble(PanelInmueble p) {
+		if (inmuebles.isEmpty())
+			labelNoInmuebles.setVisible(false);
+
+		int id = p.getIdInmuebles();
+
+		if (!inmuebles.containsKey(id)) {
+			grupoInmuebles.add(p);
+			inmuebles.put(id, p);
+			setDimension();
+			this.grupoInmuebles.setPreferredSize(new Dimension(PanelInmueble.PANEL_WIDTH,
+					inmuebles.size() * (PanelInmueble.PANEL_HEIGHT + SEPARACION_INMUEBLES)));
 		}
-
-		this.add(p);
-		layout.putConstraint(SpringLayout.NORTH, p, SEPARACION_INMUEBLES, SpringLayout.SOUTH,
-				inmuebles.get(inmuebles.size() - 1));
-		layout.putConstraint(SpringLayout.WEST, p, 10, SpringLayout.WEST, this);
-		inmuebles.add(p);
-
-		this.setPreferredSize(new Dimension(WIDTH, 30 + inmuebles.size() * p.getPreferredSize().height));
-		return p;
 	}
 
 	public void clearInmuebles() {
-		inmuebles.stream().filter(c -> c instanceof PanelInmueble).forEach(c -> this.remove(c));
-		for (Iterator<JComponent> iterator = inmuebles.iterator(); iterator.hasNext();) {
-			JComponent jComponent = iterator.next();
-			if (jComponent instanceof PanelInmueble) {
-				iterator.remove();
-			}
-
-		}
-
+		grupoInmuebles.removeAll();
+		inmuebles.clear();
 	}
-
 }

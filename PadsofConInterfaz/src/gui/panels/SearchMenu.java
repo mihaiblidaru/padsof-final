@@ -20,15 +20,6 @@ public class SearchMenu extends JPanel implements Nombrable, PanelInterfazPrinci
 
 	private static final long serialVersionUID = 3588062913427566780L;
 	public final static String NAME = "SEARCH_MENU";
-	private static SearchMenu instance = null;
-
-	public static SearchMenu getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new SearchMenu(gui));
-		} else {
-			return instance;
-		}
-	}
 
 	private FxCheckBox checkBoxVacacional;
 	private FxCheckBox checkBoxVivienda;
@@ -39,7 +30,7 @@ public class SearchMenu extends JPanel implements Nombrable, PanelInterfazPrinci
 	private SpringLayout layout;
 	private Gui gui;
 
-	private SearchMenu(Gui gui) {
+	public SearchMenu(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.LIGHT_GRAY));
 		initialize();

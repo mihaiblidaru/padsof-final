@@ -2,7 +2,6 @@ package gui.panels.ofertante.inmuebles;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.List;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
@@ -11,10 +10,10 @@ import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
-import gui.controllers.Controller;
 import gui.util.Nombrable;
+import gui.util.PanelInterfazPrincipal;
 
-public class MisInmuebles extends JLayeredPane implements Nombrable {
+public class MisInmuebles extends JLayeredPane implements Nombrable, PanelInterfazPrincipal {
 
 	private static final long serialVersionUID = -8320036169616362237L;
 
@@ -24,26 +23,18 @@ public class MisInmuebles extends JLayeredPane implements Nombrable {
 
 	private ContenedorInmuebles coi;
 
-	private static MisInmuebles instance = null;
-
-	public static MisInmuebles getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new MisInmuebles(gui));
-		} else {
-			return instance;
-		}
-	}
-
-	private MisInmuebles(Gui gui) {
+	public MisInmuebles(Gui gui) {
 		this.gui = gui;
-		this.setPreferredSize(new Dimension(995, 600));
 		SwingUtilities.invokeLater(() -> initialize());
 	}
 
-	private void initialize() {
-		SpringLayout springLayout = new SpringLayout();
-		this.setLayout(springLayout);
+	@Override
+	public void setDimension() {
+		this.setPreferredSize(new Dimension(995, 600));
+	}
 
+	@Override
+	public void crearComponentes() {
 		coi = new ContenedorInmuebles(gui);
 
 		JScrollPane scrollPane = new JScrollPane(coi, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -59,6 +50,13 @@ public class MisInmuebles extends JLayeredPane implements Nombrable {
 	}
 
 	@Override
+	public void colocarComponentes() {
+		SpringLayout springLayout = new SpringLayout();
+		this.setLayout(springLayout);
+
+	}
+
+	@Override
 	public void setVisible(boolean flag) {
 		super.setVisible(flag);
 		if (flag) {
@@ -66,16 +64,13 @@ public class MisInmuebles extends JLayeredPane implements Nombrable {
 		}
 	}
 
+	@Override
+	public void registrarEventos() {
+
+	}
+
 	private void cargarInmuebles() {
-		coi.clearInmuebles();
-		Controller c = gui.getController();
-		List<Integer> inmuebles = c.ofertanteGetMisInmuebles();
-		for (Integer id : inmuebles) {
-			PanelInmueble p = new PanelInmueble(gui);
-			p.cargarDatos(id);
-			coi.addInmueble(p);
-		}
-		coi.repaint();
+		coi.cargarInmuebles();
 	}
 
 }

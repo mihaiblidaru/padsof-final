@@ -25,17 +25,7 @@ public class MisReservas extends JLayeredPane implements Nombrable {
 
 	private ContenedorReservasInterno cri;
 
-	private static MisReservas instance = null;
-
-	public static MisReservas getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new MisReservas(gui));
-		} else {
-			return instance;
-		}
-	}
-
-	private MisReservas(Gui gui) {
+	public MisReservas(Gui gui) {
 		this.gui = gui;
 		this.setPreferredSize(new Dimension(995, 600));
 		// this.setBackground(Color.GREEN);

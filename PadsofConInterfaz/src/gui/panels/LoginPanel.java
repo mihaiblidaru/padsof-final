@@ -41,17 +41,7 @@ public class LoginPanel extends JPanel implements Nombrable, PanelInterfazPrinci
 	private FxButton volverBtn;
 	private JPanel grupoBotones;
 
-	private static LoginPanel instance = null;
-
-	public static LoginPanel getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new LoginPanel(gui));
-		} else {
-			return instance;
-		}
-	}
-
-	private LoginPanel(Gui gui) {
+	public LoginPanel(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createEtchedBorder());
 		this.initialize();

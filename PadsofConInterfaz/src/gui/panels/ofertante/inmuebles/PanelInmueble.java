@@ -28,13 +28,15 @@ public class PanelInmueble extends JPanel {
 	protected SpringLayout layout;
 
 	private JLabel numOfertas;
+	private Integer idInmueble;
 
-	private final static int PANEL_HEIGTH = 140;
-	private final static int PANEL_WIDTH = 650;
+	public final static int PANEL_HEIGHT = 140;
+	public final static int PANEL_WIDTH = 650;
 
-	public PanelInmueble(Gui gui) {
+	public PanelInmueble(Gui gui, Integer id) {
 		this.gui = gui;
-		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGTH));
+		this.idInmueble = id;
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
 		setBorder(BorderFactory.createEtchedBorder());
 		layout = new SpringLayout();
@@ -42,7 +44,7 @@ public class PanelInmueble extends JPanel {
 		this.setBackground(Color.WHITE);
 
 		JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
-		separator.setPreferredSize(new Dimension(1, PANEL_HEIGTH - 15));
+		separator.setPreferredSize(new Dimension(1, PANEL_HEIGHT - 15));
 		separator.setForeground(new Color(200, 200, 200));
 		this.add(separator);
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, separator, 0, SpringLayout.HORIZONTAL_CENTER, this);
@@ -63,16 +65,17 @@ public class PanelInmueble extends JPanel {
 		layout.putConstraint(SpringLayout.EAST, numOfertas, -10, SpringLayout.WEST, separator);
 		layout.putConstraint(SpringLayout.SOUTH, numOfertas, -15, SpringLayout.SOUTH, this);
 
-		this.addButtons();
-	}
-
-	protected void addButtons() {
+		this.cargarDatos(id);
 	}
 
 	public void cargarDatos(Integer id) {
 		Controller c = this.gui.getController();
 		this.direccion.setText(c.inmuebleGetDireccionCompleta(id));
 		this.numOfertas.setText(String.format("%d ofertas activas", c.inmuebleGetNumOfertas(id)));
+	}
+
+	public int getIdInmuebles() {
+		return idInmueble;
 	}
 
 }

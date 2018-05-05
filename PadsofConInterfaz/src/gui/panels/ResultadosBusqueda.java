@@ -24,20 +24,11 @@ public class ResultadosBusqueda extends JPanel implements Nombrable, PanelInterf
 	private static final int PANEL_HEIGHT = 562;
 	private static final int PANEL_WIDTH = 815;
 	private static final long serialVersionUID = 8638372520699078390L;
-	private static ResultadosBusqueda instance = null;
 	public final static String NAME = "RESULTADOS_BUSQUEDA";
 	private final Gui gui;
 	private ContenedorOfertas contenedor;
 
-	public static ResultadosBusqueda getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new ResultadosBusqueda(gui));
-		} else {
-			return instance;
-		}
-	}
-
-	private ResultadosBusqueda(Gui gui) {
+	public ResultadosBusqueda(Gui gui) {
 		this.gui = gui;
 		initialize();
 	}

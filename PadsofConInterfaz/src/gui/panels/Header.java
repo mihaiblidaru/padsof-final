@@ -53,21 +53,15 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 	private JPanel grupoBotonesUsuario;
 	private JPanel grupoBotonesAdmin;
 
-	private static Header instance = null;
-
-	public static Header getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new Header(gui));
-		} else {
-			return instance;
-		}
-	}
-
-	private Header(Gui gui) {
+	public Header(Gui gui) {
 		this.gui = gui;
-		this.setBackground(Color.decode("#fefffe"));
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
 		this.initialize();
+	}
+
+	@Override
+	public void setDimension() {
+		this.setPreferredSize(new Dimension(PANEL_WIDTH - 6, PANEL_HEIGHT));
 	}
 
 	@Override
@@ -123,7 +117,7 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 		layout.putConstraint(SpringLayout.WEST, grupoBotonesAdmin, 10, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, grupoBotonesAdmin, 0, SpringLayout.VERTICAL_CENTER, this);
 
-		layout.putConstraint(SpringLayout.EAST, grupoBotonesUsuario, -10, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.EAST, grupoBotonesUsuario, 0, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, grupoBotonesUsuario, 0, SpringLayout.VERTICAL_CENTER, this);
 
 	}
@@ -150,21 +144,24 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 		misReservasButton.setOnAction(event -> {
 			SwingUtilities.invokeLater(() -> gui.showOnly(MisReservas.NAME, Header.NAME));
 		});
-		AdminView av = AdminView.getInstance(gui);
+
 		panelDeControl.setOnAction(event -> {
 			SwingUtilities.invokeLater(() -> {
+				AdminView av = (AdminView) gui.getComponent(AdminView.NAME);
 				av.show(ControlPanel.NAME);
 			});
 		});
 
 		adminOfertas.setOnAction(event -> {
 			SwingUtilities.invokeLater(() -> {
+				AdminView av = (AdminView) gui.getComponent(AdminView.NAME);
 				av.show(OfertasPendientes.NAME);
 			});
 		});
 
 		adminUsuarios.setOnAction(event -> {
 			SwingUtilities.invokeLater(() -> {
+				AdminView av = (AdminView) gui.getComponent(AdminView.NAME);
 				av.show(UsuariosBloqueados.NAME);
 			});
 		});
@@ -190,11 +187,6 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 
 	public void appNameSetVisible(boolean state) {
 		appName.setVisible(state);
-	}
-
-	@Override
-	public void setDimension() {
-		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 	}
 
 	public void verBotones(int grupoBotones) {

@@ -17,17 +17,7 @@ public class AdminView extends JPanel implements Nombrable {
 	private CardLayout layout;
 	private OfertasPendientes ofertasPendientes;
 
-	private static AdminView instance = null;
-
-	public static AdminView getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new AdminView(gui));
-		} else {
-			return instance;
-		}
-	}
-
-	private AdminView(Gui gui) {
+	public AdminView(Gui gui) {
 		layout = new CardLayout();
 		this.setLayout(layout);
 
