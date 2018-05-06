@@ -1,11 +1,8 @@
 package gui.listeners;
 
-import java.sql.SQLException;
-
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import app.clases.users.Rol;
 import gui.Gui;
 import gui.components.fx.FxPasswordField;
 import gui.components.fx.FxTextField;
@@ -16,7 +13,10 @@ import gui.panels.LoginPanel;
 import gui.panels.ResultadosBusqueda;
 import gui.panels.SearchMenu;
 import gui.panels.admin.AdminView;
+import gui.panels.admin.ControlPanel;
 import gui.panels.ofertante.ofertas.MisOfertas;
+import gui.util.DialogFactory;
+import gui.util.GuiConstants;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -44,14 +44,9 @@ public class LoginButtonHandler implements EventHandler<ActionEvent> {
 				if (user.isEmpty() || password.isEmpty()) {
 					// directamente no llama al controllador
 				} else {
-					Rol rol = null;
-					try {
-						rol = controller.login(user, password);
-					} catch (SQLException e) {
-						// popup;
-					}
+					String rol = controller.login(user, password);
 
-					if (rol == null) {
+					if (rol.equals(GuiConstants.ROL_NO_REGISTRADO)) {
 
 						final JFrame dialog = new EditUserDialog(gui);
 
@@ -61,23 +56,29 @@ public class LoginButtonHandler implements EventHandler<ActionEvent> {
 						Header header = (Header) gui.getComponent(Header.NAME);
 						gui.setVisiblePane(Header.NAME, true);
 						ResultadosBusqueda rb = (ResultadosBusqueda) gui.getComponent(ResultadosBusqueda.NAME);
-						if (rol == Rol.D) {
+						if (rol.equals(GuiConstants.ROL_DEMANTANDTE)) {
 							gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
 							header.verBotones(Header.BOTONES_DEMANDANTE);
-							rb.actualizarBotones();
-						} else if (rol == Rol.OD) {
+							rb.actualizarOfertas();
+						} else if (rol.equals(GuiConstants.ROL_OFERTANTE_DEMANDANTE)) {
 							gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
 							header.verBotones(Header.BOTONES_OFERTANTE_DEMANDANTE);
-							rb.actualizarBotones();
-						} else if (rol == Rol.O) {
+							MisOfertas panelOfertas = (MisOfertas) gui.getComponent(MisOfertas.NAME);
+							panelOfertas.cargarOfertas();
+							rb.actualizarOfertas();
+						} else if (rol.equals(GuiConstants.ROL_OFERTANTE)) {
 							header.verBotones(Header.BOTONES_OFERTANTE);
 							gui.setVisiblePane(MisOfertas.NAME, true);
 							MisOfertas panelOfertas = (MisOfertas) gui.getComponent(MisOfertas.NAME);
 							panelOfertas.cargarOfertas();
-						} else {
+						} else if (rol.equals(GuiConstants.ROL_ADMIN)) {
 							gui.setVisiblePane(AdminView.NAME, true);
 							header.verBotones(Header.BOTONES_ADMIN);
+							AdminView av = (AdminView) gui.getComponent(AdminView.NAME);
+							av.show(ControlPanel.NAME);
 							header.appNameSetVisible(false);
+						} else if (rol.equals(GuiConstants.ROL_DESCONOCIDO)) {
+							DialogFactory.internalError("Rol del usuario desconocido");
 						}
 					}
 				}

@@ -7,15 +7,18 @@ import javax.swing.SwingUtilities;
 import gui.Gui;
 import gui.controllers.Controller;
 import gui.listeners.EditarOfertaListener;
+import gui.panels.oferta.PanelOferta;
 import gui.util.LimitCounter;
 import gui.util.Nombrable;
-import gui.util.PanelInterfazPrincipal;
+import gui.util.ParameterReference;
 
-public class EditarOferta extends AniadirOferta implements Nombrable, PanelInterfazPrincipal {
+public class EditarOferta extends AniadirOferta implements Nombrable {
 
 	private static final long serialVersionUID = 2220134063340646027L;
 
 	public final static String NAME = "PANEL_EDITAR_OFERTA";
+
+	private ParameterReference<PanelOferta> panelOferta = new ParameterReference<>();
 
 	public EditarOferta(Gui gui) {
 		super(gui);
@@ -34,8 +37,9 @@ public class EditarOferta extends AniadirOferta implements Nombrable, PanelInter
 		this.alarm.setVisible(false);
 	}
 
-	public void cargarDatos(int id) {
+	public void cargarDatos(PanelOferta panel) {
 		SwingUtilities.invokeLater(() -> {
+			int id = panel.getIdOferta();
 			Controller c = gui.getController();
 			precioTextBox.setText(String.valueOf(c.ofertaGetPrecio(id)));
 			fianzaTextBox.setText(String.valueOf(c.ofertaGetFianza(id)));
@@ -65,17 +69,17 @@ public class EditarOferta extends AniadirOferta implements Nombrable, PanelInter
 			checkBoxVacacional.setDisable(true);
 			checkBoxVivienda.setDisable(true);
 			comboBoxInmueble.setEnabled(false);
+			this.panelOferta.setValue(panel);
 
 		});
 	}
 
 	@Override
 	public void registrarEventos() {
-		confirmar.setOnAction(new EditarOfertaListener(gui, precioTextBox, fianzaTextBox, desdeDatePicker,
-				hastaDatePicker, descripcionTextBox, mesesTextField, checkBoxVacacional, comboBoxInmueble, inmuebles));
+		confirmar.setOnAction(new EditarOfertaListener(gui, panelOferta, precioTextBox, fianzaTextBox, desdeDatePicker,
+				hastaDatePicker, descripcionTextBox, mesesTextField, checkBoxVacacional));
 
 		descripcionTextBox.getDocument().addDocumentListener(new LimitCounter(limitLabel, limit));
-
 	}
 
 }

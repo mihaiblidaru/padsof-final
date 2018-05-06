@@ -13,10 +13,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 
 import gui.Gui;
@@ -29,9 +27,9 @@ import gui.listeners.AniadirOfertaListener;
 import gui.util.LimitCounter;
 import gui.util.LimitedDocument;
 import gui.util.Nombrable;
-import gui.util.PanelInterfazPrincipal;
+import gui.util.PanelInterfaz;
 
-public class AniadirOferta extends JPanel implements Nombrable, PanelInterfazPrincipal {
+public class AniadirOferta extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = 2220134063340646027L;
 
@@ -67,7 +65,6 @@ public class AniadirOferta extends JPanel implements Nombrable, PanelInterfazPri
 
 	public AniadirOferta(Gui gui) {
 		this.gui = gui;
-		SwingUtilities.invokeLater(() -> initialize());
 
 	}
 
@@ -119,6 +116,7 @@ public class AniadirOferta extends JPanel implements Nombrable, PanelInterfazPri
 
 		mesesTextField.setVisible(false);
 		mesesTextField.setOnlyInteger();
+		mesesTextField.setCharLimit(3);
 
 		descripcion.setFont(descfont);
 		descripcionTextBox.setFont(new Font("Courier New", Font.PLAIN, 15));
@@ -131,8 +129,10 @@ public class AniadirOferta extends JPanel implements Nombrable, PanelInterfazPri
 		checkBoxVacacional.setSelected(true);
 
 		precioTextBox.setOnlyFloat();
+		precioTextBox.setCharLimit(9);
+
 		fianzaTextBox.setOnlyFloat();
-		mesesTextField.setOnlyInteger();
+		fianzaTextBox.setCharLimit(9);
 
 		this.add(name);
 		this.add(precio);

@@ -20,9 +20,20 @@ public class LimitedDocument extends PlainDocument {
 	@Override
 	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 		str = str.replaceAll("\n", "");
+		str = str.replaceAll("\t", "");
+
+		if (offs == 0) {
+			while (str.startsWith(" ")) {
+				str = str.substring(1);
+			}
+			if (!str.isEmpty())
+				str = str.substring(0, 1).toUpperCase() + str.substring(1);
+		}
+
 		if (getLength() + str.length() > max) {
 			str = str.substring(0, max - getLength());
 		}
+
 		super.insertString(offs, str, a);
 	}
 }

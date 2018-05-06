@@ -10,11 +10,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.swing.JFrame;
@@ -32,6 +28,7 @@ import gui.panels.SearchMenu;
 import gui.panels.SplashScreen;
 import gui.panels.admin.AdminView;
 import gui.panels.demandante.MisReservas;
+import gui.panels.demandante.VerOferta;
 import gui.panels.ofertante.inmuebles.AniadirInmueble;
 import gui.panels.ofertante.inmuebles.MisInmuebles;
 import gui.panels.ofertante.ofertas.AniadirOferta;
@@ -54,7 +51,6 @@ public class Gui extends JFrame {
 		this.controller = controller;
 	}
 
-	Stack<List<Component>> stack = new Stack<>();
 	private FileLock lock;
 	private FileChannel channel;
 	private File file;
@@ -72,7 +68,7 @@ public class Gui extends JFrame {
 		SplashScreen splashScreen = new SplashScreen();
 		Controller controller = null;
 		try {
-			controller = new Controller();
+			controller = new Controller(gui);
 		} catch (SQLException e) {
 			JOptionPane.showInputDialog(gui, "SQL ERROR", null);
 		}
@@ -115,6 +111,7 @@ public class Gui extends JFrame {
 		MisOfertas misOfertas = new MisOfertas(this);
 		MisInmuebles misInmuebles = new MisInmuebles(this);
 		MisReservas misReservas = new MisReservas(this);
+		VerOferta verOferta = new VerOferta(this);
 
 		contentPane.add(header);
 		contentPane.add(loginPanel);
@@ -158,6 +155,10 @@ public class Gui extends JFrame {
 		layout.putConstraint(SpringLayout.NORTH, misReservas, 0, SpringLayout.SOUTH, header);
 		layout.putConstraint(SpringLayout.WEST, misReservas, 0, SpringLayout.WEST, contentPane);
 
+		contentPane.add(verOferta);
+		layout.putConstraint(SpringLayout.NORTH, verOferta, 0, SpringLayout.SOUTH, header);
+		layout.putConstraint(SpringLayout.WEST, verOferta, 0, SpringLayout.WEST, contentPane);
+
 		header.setVisible(true);
 		searchMenu.setVisible(true);
 		loginPanel.setVisible(false);
@@ -169,6 +170,7 @@ public class Gui extends JFrame {
 		misInmuebles.setVisible(false);
 		editarOferta.setVisible(false);
 		misReservas.setVisible(false);
+		verOferta.setVisible(false);
 		Stream.of(contentPane.getComponents()).forEach(c -> ((Nombrable) c).setGlobalName());
 
 	}
@@ -202,17 +204,6 @@ public class Gui extends JFrame {
 			}
 		}
 		return res;
-	}
-
-	public void pushVisible() {
-		stack.push(Arrays.asList(this.contentPane.getComponents()).stream().filter(c -> c.isVisible())
-				.collect(Collectors.toList()));
-	}
-
-	public void popVisible() {
-		List<Component> last = stack.pop();
-		Arrays.asList(this.contentPane.getComponents()).stream().forEach(c -> c.setVisible(false));
-		last.stream().forEach(c -> c.setVisible(true));
 	}
 
 	@SuppressWarnings("resource")

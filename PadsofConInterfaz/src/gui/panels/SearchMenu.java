@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 import gui.Gui;
@@ -14,9 +13,9 @@ import gui.components.fx.FxDatePicker;
 import gui.components.fx.FxTextField;
 import gui.listeners.SearchButtonHandler;
 import gui.util.Nombrable;
-import gui.util.PanelInterfazPrincipal;
+import gui.util.PanelInterfaz;
 
-public class SearchMenu extends JPanel implements Nombrable, PanelInterfazPrincipal {
+public class SearchMenu extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = 3588062913427566780L;
 	public final static String NAME = "SEARCH_MENU";
@@ -33,7 +32,6 @@ public class SearchMenu extends JPanel implements Nombrable, PanelInterfazPrinci
 	public SearchMenu(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.LIGHT_GRAY));
-		initialize();
 	}
 
 	@Override

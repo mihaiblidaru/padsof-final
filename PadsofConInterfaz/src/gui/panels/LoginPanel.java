@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.fx.FxButton;
@@ -16,13 +17,13 @@ import gui.components.fx.FxPasswordField;
 import gui.components.fx.FxTextField;
 import gui.listeners.LoginButtonHandler;
 import gui.util.Nombrable;
-import gui.util.PanelInterfazPrincipal;
+import gui.util.PanelInterfaz;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class LoginPanel extends JPanel implements Nombrable, PanelInterfazPrincipal {
+public class LoginPanel extends PanelInterfaz implements Nombrable {
 
 	private static final int PANEL_HEIGHT = 180;
 	private static final int PANEL_WIDTH = 300;
@@ -44,7 +45,6 @@ public class LoginPanel extends JPanel implements Nombrable, PanelInterfazPrinci
 	public LoginPanel(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createEtchedBorder());
-		this.initialize();
 	}
 
 	@Override
@@ -115,7 +115,11 @@ public class LoginPanel extends JPanel implements Nombrable, PanelInterfazPrinci
 	public void registrarEventos() {
 		loginBtn.setOnAction(new LoginButtonHandler(gui, textUsuario, textPassword));
 
-		volverBtn.setOnAction(event -> gui.popVisible());
+		volverBtn.setOnAction(event -> {
+			SwingUtilities.invokeLater(() -> {
+				gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
+			});
+		});
 
 		EventHandler<KeyEvent> handler = (event) -> {
 			if (event.getCode() == KeyCode.ENTER) {

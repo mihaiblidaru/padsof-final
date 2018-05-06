@@ -21,17 +21,7 @@ public class OfertasPendientes extends JLayeredPane implements Nombrable {
 
 	private ContenedorOfertasPendientes coi;
 
-	private static OfertasPendientes instance = null;
-
-	public static OfertasPendientes getInstance(Gui gui) {
-		if (instance == null) {
-			return (instance = new OfertasPendientes(gui));
-		} else {
-			return instance;
-		}
-	}
-
-	private OfertasPendientes(Gui gui) {
+	public OfertasPendientes(Gui gui) {
 		this.gui = gui;
 		this.setPreferredSize(new Dimension(995, 600));
 		this.setName(NAME);
@@ -58,5 +48,10 @@ public class OfertasPendientes extends JLayeredPane implements Nombrable {
 
 	public void cargarOfertas() {
 		coi.cargarOfertas();
+	}
+
+	public void removeOferta(int id) {
+		coi.removeOferta(id);
+		this.revalidate();
 	}
 }

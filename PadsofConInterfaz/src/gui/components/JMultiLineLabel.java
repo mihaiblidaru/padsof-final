@@ -1,26 +1,42 @@
 package gui.components;
 
-import javax.swing.JLabel;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 
-public class JMultiLineLabel extends JLabel {
+import javax.swing.JTextArea;
+
+public class JMultiLineLabel extends JTextArea {
+
+	public JMultiLineLabel(String string, int width, int height) {
+		super(string);
+		setLineWrap(true);
+		setWrapStyleWord(true);
+		this.setEditable(false);
+		this.setPreferredSize(new Dimension(width, height));
+		this.setOpaque(false);
+		this.setHighlighter(null);
+		setMaximumSize(getPreferredSize());
+	}
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	private static final String html1 = "<html><body style='width: ";
-	private static final String html2 = "px'>";
-	private static final String html3 = "</body></html>";
+	private static final long serialVersionUID = -3350083011830553008L;
 
-	private int width;
-
-	public JMultiLineLabel(String text, int maxWidth) {
-		super(html1 + maxWidth + html2 + text + html3);
-		this.width = maxWidth;
+	@Override
+	public int getLineCount() {
+		Font font = this.getFont();
+		FontMetrics fontMetrics = this.getFontMetrics(font);
+		int fontHeight = fontMetrics.getHeight();
+		int lineCount;
+		try {
+			int height = this.modelToView(this.getDocument().getEndPosition().getOffset() - 1).y;
+			lineCount = height / fontHeight + 1;
+		} catch (Exception e) {
+			lineCount = 0;
+		}
+		return lineCount;
 	}
-
-	/*
-	 * @Override public void setText(String text) { super.setText(html1 + width +
-	 * html2 + text + html3); }
-	 */
 
 }

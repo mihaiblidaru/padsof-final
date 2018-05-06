@@ -17,9 +17,9 @@ import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
 import gui.panels.oferta.PanelOfertaBusqueda;
 import gui.util.Nombrable;
-import gui.util.PanelInterfazPrincipal;
+import gui.util.PanelInterfaz;
 
-public class ResultadosBusqueda extends JPanel implements Nombrable, PanelInterfazPrincipal {
+public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 
 	private static final int PANEL_HEIGHT = 562;
 	private static final int PANEL_WIDTH = 815;
@@ -30,7 +30,6 @@ public class ResultadosBusqueda extends JPanel implements Nombrable, PanelInterf
 
 	public ResultadosBusqueda(Gui gui) {
 		this.gui = gui;
-		initialize();
 	}
 
 	public void cargarResultados(List<Integer> resultados) {
@@ -38,8 +37,8 @@ public class ResultadosBusqueda extends JPanel implements Nombrable, PanelInterf
 		this.revalidate();
 	}
 
-	public void actualizarBotones() {
-		contenedor.actualizarBotones();
+	public void actualizarOfertas() {
+		contenedor.actualizarOfertas();
 	}
 
 	@Override
@@ -104,17 +103,19 @@ public class ResultadosBusqueda extends JPanel implements Nombrable, PanelInterf
 			this.revalidate();
 		}
 
-		public void actualizarBotones() {
+		public void actualizarOfertas() {
 			resultados.values().stream().forEach(c -> c.actualizarBotones());
 		}
 
 		public void removeOferta(int idOferta) {
-			this.remove(resultados.get(idOferta));
+			this.remove(resultados.remove(idOferta));
+			this.repaint();
 		}
 	}
 
 	public void removeOferta(int idOferta) {
 		contenedor.removeOferta(idOferta);
+		this.revalidate();
 		this.repaint();
 	}
 

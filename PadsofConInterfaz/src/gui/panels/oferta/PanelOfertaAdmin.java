@@ -1,15 +1,15 @@
 package gui.panels.oferta;
 
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.fx.FxButton;
+import gui.controllers.Controller;
+import gui.panels.admin.AdminView;
 
 public class PanelOfertaAdmin extends PanelOferta {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5513253061378866849L;
 	private FxButton rechazar;
 	private FxButton aceptar;
@@ -17,11 +17,11 @@ public class PanelOfertaAdmin extends PanelOferta {
 
 	public PanelOfertaAdmin(Gui gui, int idOferta) {
 		super(gui, idOferta);
-		setListeners();
 	}
 
 	@Override
-	protected void addButtons() {
+	protected void crearComponentes() {
+		super.crearComponentes();
 		rechazar = new FxButton(100, 25, "Rechazar");
 		pedirCambios = new FxButton(120, 25, "Pedir Cambios");
 		aceptar = new FxButton(100, 25, "Aceptar");
@@ -29,6 +29,11 @@ public class PanelOfertaAdmin extends PanelOferta {
 		this.add(rechazar);
 		this.add(aceptar);
 		this.add(pedirCambios);
+	}
+
+	@Override
+	protected void colocarComponentes() {
+		super.colocarComponentes();
 		layout.putConstraint(SpringLayout.SOUTH, rechazar, -10, SpringLayout.SOUTH, this);
 		layout.putConstraint(SpringLayout.EAST, rechazar, -7, SpringLayout.EAST, this);
 
@@ -37,19 +42,28 @@ public class PanelOfertaAdmin extends PanelOferta {
 
 		layout.putConstraint(SpringLayout.SOUTH, aceptar, 0, SpringLayout.SOUTH, pedirCambios);
 		layout.putConstraint(SpringLayout.EAST, aceptar, -7, SpringLayout.WEST, pedirCambios);
-
 	}
 
-	private void setListeners() {
-		/*
+	@Override
+	protected void registrarEventos() {
+		super.registrarEventos();
 		aceptar.setOnAction(e -> {
 			SwingUtilities.invokeLater(() -> {
-				EditarOferta eo = (EditarOferta) gui.getComponent(EditarOferta.NAME);
-				eo.cargarDatos(this.getIdOferta());
-				gui.showOnly(Header.NAME, EditarOferta.NAME);
+				Controller c = gui.getController();
+				c.aceptarOferta(this.getIdOferta());
+				AdminView av = (AdminView) gui.getComponent(AdminView.NAME);
+				av.getOfertasPendientesTab().removeOferta(this.getIdOferta());
+
 			});
-		});*/
+		});
 
+		rechazar.setOnAction(e -> {
+			SwingUtilities.invokeLater(() -> {
+				Controller c = gui.getController();
+				c.rechazarOferta(this.getIdOferta());
+				AdminView av = (AdminView) gui.getComponent(AdminView.NAME);
+				av.getOfertasPendientesTab().removeOferta(this.getIdOferta());
+			});
+		});
 	}
-
 }

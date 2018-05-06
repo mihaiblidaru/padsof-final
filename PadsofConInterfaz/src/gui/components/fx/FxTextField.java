@@ -80,4 +80,17 @@ public class FxTextField extends FxWrapper {
 		});
 	}
 
+	public void setCharLimit(int limit) {
+		Platform.runLater(() -> {
+			textfield.textProperty().addListener(new ChangeListener<String>() {
+				@Override
+				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+					if (newValue.length() > limit) {
+						textfield.setText(oldValue);
+					}
+				}
+			});
+		});
+	}
+
 }

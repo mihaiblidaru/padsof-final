@@ -19,4 +19,15 @@ public class DialogFactory {
 		JOptionPane.showMessageDialog(new JPanel(), message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
+	public static void invalidValueError(String string) {
+		JOptionPane.showMessageDialog(new JPanel(), "El valor del campo '" + string + "' es inválido", "Error",
+				JOptionPane.ERROR_MESSAGE);
+
+	}
+
+	public static void noPermisionError() {
+		JOptionPane.showMessageDialog(new JPanel(), "No tienes permiso para realizar esta accion", "Error",
+				JOptionPane.ERROR_MESSAGE);
+	}
+
 }

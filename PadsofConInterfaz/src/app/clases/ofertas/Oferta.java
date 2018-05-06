@@ -8,9 +8,9 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import app.clases.data.Columna;
 import app.clases.data.DBManager;
@@ -111,7 +111,7 @@ public abstract class Oferta {
 	/**
 	 * El conjunto de opiniones de la Oferta
 	 */
-	private Map<Integer, Opinion> opiniones = new HashMap<>();
+	private Map<Integer, Opinion> opiniones = new TreeMap<>();
 
 	/**
 	 * Cambia el id de la reserva activa
@@ -193,8 +193,7 @@ public abstract class Oferta {
 	 *             si la oferta no es modificable
 	 * @return true si se cambia correctamente si no false
 	 */
-	public boolean setFechaInicio(LocalDate fechaInicio)
-			throws OfertaNoModificableException, TablaNoTieneColumnaException, TiposNoCoincidenException {
+	public boolean setFechaInicio(LocalDate fechaInicio) throws OfertaNoModificableException {
 		if (!this.estado.editable()) { /** Con esto comprobamos si podemos editar la oferta */
 			throw new OfertaNoModificableException(this);
 		}
@@ -339,6 +338,7 @@ public abstract class Oferta {
 			Integer valor = rs.getInt(Columna.OPINION_VALOR.toString());
 			String texto = rs.getString(Columna.OPINION_COMENTARIO.toString());
 			Integer padre = rs.getInt(Columna.OPINION_PADRE.toString());
+			padre = padre < 1 ? null : padre;
 			Integer usuario = rs.getInt(Columna.OPINION_USUARIO.toString());
 			LocalDate fecha = rs.getDate(Columna.OPINION_FECHA.toString()).toLocalDate();
 			if (texto != null) {

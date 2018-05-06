@@ -7,13 +7,14 @@ import java.util.List;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
-import app.clases.ofertas.Estado;
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
 import gui.controllers.Controller;
 import gui.panels.oferta.PanelOferta;
 import gui.panels.oferta.PanelOfertaEditable;
+import gui.util.GuiConstants;
 import gui.util.Nombrable;
 
 public class MisOfertas extends JLayeredPane implements Nombrable {
@@ -25,6 +26,8 @@ public class MisOfertas extends JLayeredPane implements Nombrable {
 	private Gui gui;
 
 	private ContenedorOfertasInterno coi;
+
+	private JScrollPane scrollPane;
 
 	public MisOfertas(Gui gui) {
 		this.gui = gui;
@@ -38,7 +41,7 @@ public class MisOfertas extends JLayeredPane implements Nombrable {
 
 		coi = new ContenedorOfertasInterno(gui);
 
-		JScrollPane scrollPane = new JScrollPane(coi, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		scrollPane = new JScrollPane(coi, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUI(new ThinSolidScrollBarUi(7));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -55,19 +58,27 @@ public class MisOfertas extends JLayeredPane implements Nombrable {
 		Controller c = gui.getController();
 		List<Integer> ofertas = c.ofertanteGetMisOfertas();
 		for (Integer id : ofertas) {
-			Estado estado = c.ofertaGetEstado(id);
-			if (estado == Estado.ACEPTADA || estado == Estado.CONTRATADA || estado == Estado.RESERVADA) {
+			String estado = c.ofertaGetEstado(id);
+			if (estado.equals(GuiConstants.ESTADO_ACEPTADA) || estado.equals(GuiConstants.ESTADO_CONTRATADA)
+					|| estado.equals(GuiConstants.ESTADO_RESERVADA)) {
 				PanelOferta oferta = new PanelOferta(gui, id);
 				coi.addActiva(oferta);
-			} else if (estado == Estado.PENDIENTE || estado == Estado.PENDIENTE_DE_CAMBIOS) {
+			} else if (estado.equals(GuiConstants.ESTADO_PENDIENTE) || estado.equals(GuiConstants.ESTADO_PENDIENTE)) {
 				PanelOferta oferta = new PanelOfertaEditable(gui, id);
 				coi.addPendiente(oferta);
-			} else if (estado == Estado.RETIRADA) {
+			} else if (estado.equals(GuiConstants.ESTADO_RETIRADA)) {
 				PanelOferta oferta = new PanelOferta(gui, id);
 				coi.addRechazada(oferta);
 			}
 		}
+
 		coi.repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				scrollPane.getHorizontalScrollBar().setValue(0);
+				scrollPane.getVerticalScrollBar().setValue(0);
+			}
+		});
 	}
 
 	public void clearOfertas() {

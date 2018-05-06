@@ -21,11 +21,11 @@ import gui.panels.demandante.MisReservas;
 import gui.panels.ofertante.inmuebles.MisInmuebles;
 import gui.panels.ofertante.ofertas.MisOfertas;
 import gui.util.Nombrable;
-import gui.util.PanelInterfazPrincipal;
+import gui.util.PanelInterfaz;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal {
+public class Header extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = -5230943621476766861L;
 	public final static String NAME = "HEADER";
@@ -52,11 +52,11 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 	private SpringLayout layout;
 	private JPanel grupoBotonesUsuario;
 	private JPanel grupoBotonesAdmin;
+	private FxButton botonBusqueda;
 
 	public Header(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
-		this.initialize();
 	}
 
 	@Override
@@ -75,6 +75,8 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 		this.adminOfertas = new FxButton(80, 25, "Ofertas");
 		this.adminUsuarios = new FxButton(90, 25, "Usuarios");
 		this.appName = new JLabel("TuVacaPiso");
+		this.botonBusqueda = new FxButton(90, 25, "Busqueda");
+
 		this.grupoBotonesUsuario = new JPanel();
 		this.grupoBotonesAdmin = new JPanel();
 		Font font = new Font("Courier New", Font.BOLD, 15);
@@ -83,6 +85,7 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 		this.add(appName);
 		this.add(grupoBotonesAdmin);
 		this.add(grupoBotonesUsuario);
+		this.add(botonBusqueda);
 		grupoBotonesAdmin.add(panelDeControl);
 		grupoBotonesAdmin.add(adminOfertas);
 		grupoBotonesAdmin.add(adminUsuarios);
@@ -98,6 +101,8 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 		this.misOfertasButton.setVisible(false);
 		this.misInmueblesButton.setVisible(false);
 		this.misReservasButton.setVisible(false);
+		this.botonBusqueda.setVisible(false);
+
 	}
 
 	@Override
@@ -114,30 +119,36 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 		FlowLayout l2 = new FlowLayout(FlowLayout.RIGHT, 5, 0);
 		this.grupoBotonesUsuario.setLayout(l2);
 
+		layout.putConstraint(SpringLayout.WEST, botonBusqueda, 30, SpringLayout.EAST, appName);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, botonBusqueda, 0, SpringLayout.VERTICAL_CENTER, this);
+
 		layout.putConstraint(SpringLayout.WEST, grupoBotonesAdmin, 10, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, grupoBotonesAdmin, 0, SpringLayout.VERTICAL_CENTER, this);
 
 		layout.putConstraint(SpringLayout.EAST, grupoBotonesUsuario, 0, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, grupoBotonesUsuario, 0, SpringLayout.VERTICAL_CENTER, this);
-
 	}
 
 	@Override
 	public void registrarEventos() {
+		botonBusqueda.setOnAction(e -> {
+			SwingUtilities.invokeLater(() -> {
+				gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
+			});
+		});
+
 		logoutButton.setOnAction(logoutButtonHandler);
 		loginButton.setOnAction(event -> {
-			gui.pushVisible();
 			gui.showOnly(LoginPanel.NAME);
 		});
 
-		misOfertasButton.setOnAction(event -> gui.showOnly(Header.NAME, MisOfertas.NAME));
-		misInmueblesButton.setOnAction(event -> {
-			SwingUtilities.invokeLater(new Runnable() {
+		misOfertasButton.setOnAction(event -> {
+			gui.showOnly(Header.NAME, MisOfertas.NAME);
+		});
 
-				@Override
-				public void run() {
-					gui.showOnly(Header.NAME, MisInmuebles.NAME);
-				}
+		misInmueblesButton.setOnAction(event -> {
+			SwingUtilities.invokeLater(() -> {
+				gui.showOnly(Header.NAME, MisInmuebles.NAME);
 			});
 		});
 
@@ -182,6 +193,9 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 
 				MisOfertas mo = (MisOfertas) gui.getComponent(MisOfertas.NAME);
 				mo.clearOfertas();
+
+				ResultadosBusqueda rb = (ResultadosBusqueda) gui.getComponent(ResultadosBusqueda.NAME);
+				rb.actualizarOfertas();
 				gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
 
 			});
@@ -206,19 +220,24 @@ public class Header extends JPanel implements Nombrable, PanelInterfazPrincipal 
 			misReservasButton.setVisible(true);
 			misOfertasButton.setVisible(true);
 			misInmueblesButton.setVisible(true);
+			botonBusqueda.setVisible(true);
 			break;
 		case BOTONES_OFERTANTE:
+			botonBusqueda.setVisible(false);
 			misOfertasButton.setVisible(true);
 			misInmueblesButton.setVisible(true);
 			break;
 		case BOTONES_DEMANDANTE:
 			misReservasButton.setVisible(true);
+			botonBusqueda.setVisible(true);
 			break;
 		case BOTONES_NO_REGISTRADO:
 			loginButton.setVisible(true);
+			botonBusqueda.setVisible(false);
 			break;
 		case BOTONES_ADMIN:
 			grupoBotonesAdmin.setVisible(true);
+			botonBusqueda.setVisible(false);
 			break;
 		}
 		if (grupoBotones != BOTONES_NO_REGISTRADO) {

@@ -16,9 +16,9 @@ import javax.swing.SwingConstants;
 import gui.panels.oferta.PanelOferta;
 import gui.panels.oferta.PanelOfertaReservadaInterno;
 import gui.util.LimitedFlowLayout;
-import gui.util.PanelInterfazPrincipal;
+import gui.util.PanelInterfaz;
 
-public class ContenedorReservasInterno extends JPanel implements PanelInterfazPrincipal {
+public class ContenedorReservasInterno extends PanelInterfaz {
 
 	private static final long serialVersionUID = -2138438771740403776L;
 
@@ -47,8 +47,6 @@ public class ContenedorReservasInterno extends JPanel implements PanelInterfazPr
 	public ContenedorReservasInterno() {
 		layout = new SpringLayout();
 		this.setLayout(layout);
-
-		initialize();
 
 	}
 

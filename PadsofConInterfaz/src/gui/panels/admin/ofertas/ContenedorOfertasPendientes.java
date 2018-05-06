@@ -20,9 +20,9 @@ import gui.controllers.Controller;
 import gui.panels.oferta.PanelOferta;
 import gui.panels.oferta.PanelOfertaAdmin;
 import gui.panels.ofertante.inmuebles.PanelInmueble;
-import gui.util.PanelInterfazPrincipal;
+import gui.util.PanelInterfaz;
 
-public class ContenedorOfertasPendientes extends JPanel implements PanelInterfazPrincipal {
+public class ContenedorOfertasPendientes extends PanelInterfaz {
 
 	private static final long serialVersionUID = -213843877174040375L;
 
@@ -43,7 +43,6 @@ public class ContenedorOfertasPendientes extends JPanel implements PanelInterfaz
 
 	public ContenedorOfertasPendientes(Gui gui) {
 		this.gui = gui;
-		initialize();
 	}
 
 	public void cargarOfertas() {
@@ -76,9 +75,9 @@ public class ContenedorOfertasPendientes extends JPanel implements PanelInterfaz
 	public void crearComponentes() {
 		Font font = new Font("Times New Roman", Font.PLAIN, 20);
 		Font fontinfo = new Font("Verdana", Font.PLAIN, 15);
-		labelOfertas = new JLabel("Tus inmuebles");
+		labelOfertas = new JLabel("Ofertas pendientes");
 
-		labelNoOfertas = new JLabel("No tienes ninguna inmueble registrado");
+		labelNoOfertas = new JLabel("No hay ninguna oferta pendiente en este momento");
 		separatorOfertas = new JSeparator(SwingConstants.HORIZONTAL);
 		labelOfertas.setFont(font);
 		labelNoOfertas.setFont(fontinfo);
@@ -112,11 +111,6 @@ public class ContenedorOfertasPendientes extends JPanel implements PanelInterfaz
 
 	}
 
-	@Override
-	public void registrarEventos() {
-
-	}
-
 	public void addOferta(PanelOfertaAdmin panelOfertaAdmin) {
 		if (ofertas.isEmpty())
 			labelNoOfertas.setVisible(false);
@@ -135,5 +129,13 @@ public class ContenedorOfertasPendientes extends JPanel implements PanelInterfaz
 	public void clearOfertas() {
 		grupoOfertas.removeAll();
 		ofertas.clear();
+	}
+
+	public void removeOferta(int id) {
+		grupoOfertas.remove(ofertas.remove(id));
+		if (ofertas.isEmpty()) {
+			labelNoOfertas.setVisible(true);
+		}
+		this.revalidate();
 	}
 }

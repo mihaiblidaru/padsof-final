@@ -22,12 +22,16 @@ public class AdminView extends JPanel implements Nombrable {
 		this.setLayout(layout);
 
 		this.gui = gui;
-		ofertasPendientes = OfertasPendientes.getInstance(gui);
+		ofertasPendientes = new OfertasPendientes(gui);
 		this.add(new ControlPanel(), ControlPanel.NAME);
 		this.add(ofertasPendientes, OfertasPendientes.NAME);
 		this.add(new UsuariosBloqueados(gui), UsuariosBloqueados.NAME);
 		layout.first(this);
 
+	}
+
+	public OfertasPendientes getOfertasPendientesTab() {
+		return ofertasPendientes;
 	}
 
 	public void show(String name) {

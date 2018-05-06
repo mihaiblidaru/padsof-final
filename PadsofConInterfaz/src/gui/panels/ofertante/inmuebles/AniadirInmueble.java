@@ -20,8 +20,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import app.clases.inmueble.InmuebleDuplicadoException;
-import app.clases.users.UsuarioNoPermisoException;
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
 import gui.components.fx.FxButton;
@@ -45,7 +43,6 @@ public class AniadirInmueble extends JPanel implements Nombrable {
 	public AniadirInmueble(Gui gui) {
 		this.gui = gui;
 		this.setName(NAME);
-		initialize();
 	}
 
 	private FxTextField localidadTextField;
@@ -188,11 +185,8 @@ public class AniadirInmueble extends JPanel implements Nombrable {
 					try {
 						c.addInmueble(localidad, Integer.parseInt(cp), direccion, claves, valores);
 						gui.showOnly(Header.NAME, MisInmuebles.NAME);
-					} catch (NumberFormatException | UsuarioNoPermisoException e) {
+					} catch (NumberFormatException e) {
 
-					} catch (InmuebleDuplicadoException e) {
-						JOptionPane.showMessageDialog(new JPanel(), "Ya tienes un inmueble con estos datos", "Error",
-								JOptionPane.ERROR_MESSAGE);
 					}
 
 				}

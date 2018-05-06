@@ -3,17 +3,15 @@ package gui.panels.ofertante.inmuebles;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
 import gui.util.Nombrable;
-import gui.util.PanelInterfazPrincipal;
+import gui.util.PanelInterfaz;
 
-public class MisInmuebles extends JLayeredPane implements Nombrable, PanelInterfazPrincipal {
+public class MisInmuebles extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = -8320036169616362237L;
 
@@ -25,7 +23,6 @@ public class MisInmuebles extends JLayeredPane implements Nombrable, PanelInterf
 
 	public MisInmuebles(Gui gui) {
 		this.gui = gui;
-		SwingUtilities.invokeLater(() -> initialize());
 	}
 
 	@Override
@@ -45,7 +42,6 @@ public class MisInmuebles extends JLayeredPane implements Nombrable, PanelInterf
 		scrollPane.setBackground(Color.BLUE);
 
 		this.add(scrollPane);
-		this.setLayer(scrollPane, 1);
 
 	}
 

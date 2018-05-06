@@ -131,16 +131,13 @@ public class MiVacaPiso {
 	 * @param id
 	 *            id de la oferta
 	 * @return La oferta con ese id o null si no existe una oferta asociada a ese id
+	 * @throws SQLException
 	 */
-	public Oferta getOfertaById(int id) {
+	public Oferta getOfertaById(int id) throws SQLException {
 		if (!this.listaOfertas.containsKey(id)) {
-			Oferta oferta = null;
-			try {
-				oferta = Oferta.cargarOferta(id);
-				this.listaOfertas.put(id, oferta);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			Oferta oferta = Oferta.cargarOferta(id);
+			this.listaOfertas.put(id, oferta);
+
 			return oferta;
 		}
 		return this.listaOfertas.get(id);
@@ -155,16 +152,13 @@ public class MiVacaPiso {
 	 *            id del inmueble
 	 * @return El inmueble con ese id o null si no existe un inmueble asociado a ese
 	 *         id
+	 * @throws SQLException
 	 */
-	public Inmueble getInmuebleById(int id) {
+	public Inmueble getInmuebleById(int id) throws SQLException {
 		if (!this.listaInmuebles.containsKey(id)) {
-			Inmueble inmueble = null;
-			try {
-				inmueble = Inmueble.cargarInmueble(id);
-				this.listaInmuebles.put(id, inmueble);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			Inmueble inmueble = Inmueble.cargarInmueble(id);
+			this.listaInmuebles.put(id, inmueble);
+
 			return inmueble;
 		}
 		return this.listaInmuebles.get(id);
@@ -178,14 +172,11 @@ public class MiVacaPiso {
 	 * @param id
 	 *            el id del cliente
 	 * @return El cliente que tiene asociado ese id
+	 * @throws SQLException
 	 */
-	public Cliente getClienteById(int id) {
+	public Cliente getClienteById(int id) throws SQLException {
 		if (!this.listaUsuarios.containsKey(id)) {
-			try {
-				this.listaUsuarios.put(id, Cliente.cargarCliente(id));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			this.listaUsuarios.put(id, Cliente.cargarCliente(id));
 		}
 		return this.listaUsuarios.get(id);
 	}
@@ -197,16 +188,12 @@ public class MiVacaPiso {
 	 *            el id de la reserva
 	 * @return La reserva que tiene ese id o null si no existe una reserva con ese
 	 *         id
+	 * @throws SQLException
 	 */
-	public Reserva getReservaById(Integer id) {
+	public Reserva getReservaById(Integer id) throws SQLException {
 		if (!this.listaReservas.containsKey(id)) {
-			Reserva reserva = null;
-			try {
-				reserva = Reserva.cargarReserva(id);
-				this.listaReservas.put(id, reserva);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			Reserva reserva = Reserva.cargarReserva(id);
+			this.listaReservas.put(id, reserva);
 			return reserva;
 		}
 		return this.listaReservas.get(id);
@@ -565,9 +552,10 @@ public class MiVacaPiso {
 	 *             si el usuario no es un ofertante
 	 * @throws InmuebleDuplicadoException
 	 *             si el ya existe ese inmueble
+	 * @throws SQLException
 	 */
 	public Integer addInmueble(String localidad, int cp, String direccion, List<String> claves, List<String> valores)
-			throws UsuarioNoPermisoException, InmuebleDuplicadoException {
+			throws UsuarioNoPermisoException, InmuebleDuplicadoException, SQLException {
 		if (ofertanteLogueado == null) {
 			throw new UsuarioNoPermisoException("se necesitan permisos de ofertante");
 		}
@@ -590,35 +578,29 @@ public class MiVacaPiso {
 		}
 
 		int idInmueble = -1;
-		try {
-			idInmueble = DBManager.insertRow(
-					Tabla.INMUEBLE, Arrays.asList(Columna.INMUEBLE_LOCALIDAD, Columna.INMUEBLE_CP,
-							Columna.INMUEBLE_DIRECCION, Columna.INMUEBLE_CLIENTE),
-					localidad, cp, direccion, this.ofertanteLogueado.getId());
-		} catch (SQLException e) {
 
-		}
+		idInmueble = DBManager.insertRow(
+				Tabla.INMUEBLE, Arrays.asList(Columna.INMUEBLE_LOCALIDAD, Columna.INMUEBLE_CP,
+						Columna.INMUEBLE_DIRECCION, Columna.INMUEBLE_CLIENTE),
+				localidad, cp, direccion, this.ofertanteLogueado.getId());
 
 		System.out.println("ID del inmueble añadido=" + idInmueble);
 
 		List<Caracteristica> caracteristicas = new ArrayList<>();
 
 		for (int i = 0; i < claves.size(); i++) {
-			try {
-				String clave = claves.get(i);
-				String valor = valores.get(i);
 
-				int idCaracteristica = DBManager
-						.insertRow(
-								Tabla.CARACTERISTICA, Arrays.asList(Columna.CARACTERISTICA_CLAVE,
-										Columna.CARACTERISTICA_VALOR, Columna.CARACTERISTICA_INMUEBLE),
-								claves.get(i), valores.get(i), idInmueble);
+			String clave = claves.get(i);
+			String valor = valores.get(i);
 
-				caracteristicas.add(new Caracteristica(idCaracteristica, clave, valor));
+			int idCaracteristica = DBManager
+					.insertRow(
+							Tabla.CARACTERISTICA, Arrays.asList(Columna.CARACTERISTICA_CLAVE,
+									Columna.CARACTERISTICA_VALOR, Columna.CARACTERISTICA_INMUEBLE),
+							claves.get(i), valores.get(i), idInmueble);
 
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			caracteristicas.add(new Caracteristica(idCaracteristica, clave, valor));
+
 		}
 
 		Inmueble inmueble = new Inmueble(idInmueble, localidad, cp, direccion, this.ofertanteLogueado.getId(),
@@ -663,14 +645,9 @@ public class MiVacaPiso {
 		con.close();
 
 		int newId = -1;
-		try {
-			newId = DBManager.insertRow(Tabla.OPINION,
-					Arrays.asList(Columna.OPINION_VALOR, Columna.OPINION_USUARIO, Columna.OPINION_OFERTA), valor,
-					this.demandanteLogueado.getId(), idOferta);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+		newId = DBManager.insertRow(Tabla.OPINION,
+				Arrays.asList(Columna.OPINION_VALOR, Columna.OPINION_USUARIO, Columna.OPINION_OFERTA), valor,
+				this.demandanteLogueado.getId(), idOferta);
 
 		Numerica com = new Numerica(newId, FechaSimulada.getHoy(), demandanteLogueado.getId(), valor);
 
@@ -691,8 +668,10 @@ public class MiVacaPiso {
 	 * @return true si se añade correctamente, si no false
 	 * @throws UsuarioNoPermisoException
 	 *             si el usuario no es demandante
+	 * @throws SQLException
 	 */
-	public boolean addComentario(int idOferta, String comentario, Integer idPadre) throws UsuarioNoPermisoException {
+	public boolean addComentario(int idOferta, String comentario, Integer idPadre)
+			throws UsuarioNoPermisoException, SQLException {
 		if (demandanteLogueado == null) {
 			throw new UsuarioNoPermisoException("se necesitan permisos de demandante");
 		}
@@ -702,38 +681,33 @@ public class MiVacaPiso {
 
 		int newId = -1;
 		Comentario com = null;
-		try {
-			if (idPadre == null) {
-				newId = DBManager.insertRow(
-						Tabla.OPINION, Arrays.asList(Columna.OPINION_COMENTARIO, Columna.OPINION_USUARIO,
-								Columna.OPINION_OFERTA, Columna.OPINION_FECHA),
-						comentario, this.demandanteLogueado.getId(), idOferta, fecha);
+		if (idPadre == null) {
+			newId = DBManager.insertRow(
+					Tabla.OPINION, Arrays.asList(Columna.OPINION_COMENTARIO, Columna.OPINION_USUARIO,
+							Columna.OPINION_OFERTA, Columna.OPINION_FECHA),
+					comentario, this.demandanteLogueado.getId(), idOferta, fecha);
 
-			} else {
-				Map<Integer, Opinion> ops = oferta.getOpiniones();
-				boolean padreExiste = false;
-				for (Opinion op : ops.values()) {
-					if (op instanceof Comentario) {
-						if (op.getId() == idPadre) {
-							padreExiste = true;
-							break;
-						}
+		} else {
+			Map<Integer, Opinion> ops = oferta.getOpiniones();
+			boolean padreExiste = false;
+			for (Opinion op : ops.values()) {
+				if (op instanceof Comentario) {
+					if (op.getId() == idPadre) {
+						padreExiste = true;
+						break;
 					}
 				}
-				if (!padreExiste) {
-					throw new IllegalArgumentException("No existe un comentario con ese id padre");
-				}
-
-				newId = DBManager.insertRow(Tabla.OPINION,
-						Arrays.asList(Columna.OPINION_COMENTARIO, Columna.OPINION_USUARIO, Columna.OPINION_OFERTA,
-								Columna.OPINION_PADRE, Columna.OPINION_FECHA),
-						comentario, this.demandanteLogueado.getId(), idOferta, idPadre, fecha);
 			}
-			com = new Comentario(newId, fecha, demandanteLogueado.getId(), comentario, idPadre);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			if (!padreExiste) {
+				throw new IllegalArgumentException("No existe un comentario con ese id padre");
+			}
+
+			newId = DBManager.insertRow(Tabla.OPINION,
+					Arrays.asList(Columna.OPINION_COMENTARIO, Columna.OPINION_USUARIO, Columna.OPINION_OFERTA,
+							Columna.OPINION_PADRE, Columna.OPINION_FECHA),
+					comentario, this.demandanteLogueado.getId(), idOferta, idPadre, fecha);
 		}
+		com = new Comentario(newId, fecha, demandanteLogueado.getId(), comentario, idPadre);
 
 		oferta.addOpinion(com);
 
@@ -784,7 +758,9 @@ public class MiVacaPiso {
 		String ccard_demandante = demandanteLogueado.getCcard();
 
 		//Comprobar que la oferta este en uno de los estados en los que se pueda contratar
-		Reserva reserva = this.getReservaById(oferta.getReservaActiva());
+
+		Integer idReserva = oferta.getReservaActiva();
+		Reserva reserva = idReserva == null ? null : this.getReservaById(idReserva);
 		if (oferta.getEstado() != Estado.RESERVADA && oferta.getEstado() != Estado.ACEPTADA) {
 			return false;
 		} else {
@@ -952,11 +928,12 @@ public class MiVacaPiso {
 		return listaUsuarios;
 	}
 
-	public boolean cancelarReserva() {
+	public boolean cancelarReserva() throws SQLException {
 		int idReserva = this.demandanteLogueado.getReservaActiva();
 		Reserva res = this.getReservaById(idReserva);
 		Oferta of = this.getOfertaById(res.getOferta());
 		of.setEstado(Estado.ACEPTADA);
+		of.setReserva(null);
 		this.demandanteLogueado.setReservaActiva(null);
 		res.setFechaCaducar(FechaSimulada.getHoy());
 		listaReservas.remove(idReserva);

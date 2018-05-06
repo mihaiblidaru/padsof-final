@@ -59,11 +59,22 @@ public class AniadirOfertaListener implements EventHandler<ActionEvent> {
 			int index = comboBoxInmuebles.getSelectedIndex();
 			int idInmueble = inmuebles.get(index);
 
+			Float precioAsNum = Float.parseFloat(precio);
+			Float fianzaAsNum = Float.parseFloat(fianza);
+
 			if (precio.isEmpty()) {
 				DialogFactory.emptyFieldError("precio");
 				return;
+			} else if (precioAsNum.isInfinite() || precioAsNum.isNaN() || precioAsNum.compareTo(0.00001f) < 0) {
+				DialogFactory.invalidValueError("precio");
+				precioTextBox.setText("");
+				return;
 			} else if (fianza.isEmpty()) {
 				DialogFactory.emptyFieldError("fianza");
+				return;
+			} else if (fianzaAsNum.isInfinite() || fianzaAsNum.isNaN() || fianzaAsNum.compareTo(0.00001f) < 0) {
+				DialogFactory.invalidValueError("fianza");
+				fianzaTextBox.setText("");
 				return;
 			} else if (descripcion.isEmpty()) {
 				DialogFactory.emptyFieldError("descripcion");
@@ -78,30 +89,46 @@ public class AniadirOfertaListener implements EventHandler<ActionEvent> {
 				if (hasta == null) {
 					DialogFactory.emptyFieldError("hasta");
 					return;
+				} else if (desde.compareTo(hasta) > 0) {
+					DialogFactory.simpleErrorMessage("La fecha final no puede ser anterior a la fecha de inicio");
+					hastaDatePicker.setValue(null);
+					return;
 				}
 				try {
-					c.addOfertaVacacional(desde, hasta, Float.parseFloat(precio), Float.parseFloat(fianza), descripcion,
-							idInmueble);
+					c.addOfertaVacacional(desde, hasta, precioAsNum, fianzaAsNum, descripcion, idInmueble);
 					gui.showOnly(Header.NAME, MisOfertas.NAME);
 				} catch (NumberFormatException | UsuarioNoPermisoException e) {
 					e.printStackTrace();
 				}
 			} else {
 				String numMeses = mesesTextField.getText();
+
 				if (numMeses.isEmpty()) {
 					DialogFactory.emptyFieldError("Meses");
 					return;
 				}
+				Integer mesesAsNum = null;
 				try {
-					c.addOfertaVivienda(desde, Integer.parseInt(numMeses), Float.parseFloat(precio),
-							Float.parseFloat(fianza), descripcion, idInmueble);
+					mesesAsNum = Integer.parseInt(numMeses);
+				} catch (NumberFormatException e) {
+					DialogFactory.invalidValueError("meses");
+					mesesTextField.setText("");
+					return;
+				}
+
+				if (mesesAsNum < 1) {
+					DialogFactory.invalidValueError("meses");
+					mesesTextField.setText("");
+					return;
+				}
+
+				try {
+					c.addOfertaVivienda(desde, mesesAsNum, precioAsNum, fianzaAsNum, descripcion, idInmueble);
 					gui.showOnly(Header.NAME, MisOfertas.NAME);
-				} catch (NumberFormatException | UsuarioNoPermisoException e) {
+				} catch (UsuarioNoPermisoException e) {
 					e.printStackTrace();
 				}
 			}
-
 		});
 	}
-
 }

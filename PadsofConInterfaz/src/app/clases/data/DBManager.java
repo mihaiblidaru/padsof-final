@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Properties;
@@ -35,8 +36,8 @@ public class DBManager {
 	/**
 	 * Host de la base de datos
 	 */
-	private static final String DB_HOST = "mivacapiso.chkzdm30xkln.us-east-1.rds.amazonaws.com";
-	// private static final String DB_HOST = "localhost";
+	//private static final String DB_HOST = "mivacapiso.chkzdm30xkln.us-east-1.rds.amazonaws.com";
+	private static final String DB_HOST = "localhost";
 
 	/**
 	 * Puerto de la base de datos
@@ -51,14 +52,14 @@ public class DBManager {
 	/**
 	 * Usuario de la base de datos
 	 */
-	private static final String DB_USER = "padsof";
-	// private static final String DB_USER = "root";
+	//private static final String DB_USER = "padsof";
+	private static final String DB_USER = "root";
 
 	/**
 	 * Contraseña de la base de datos
 	 */
-	private static final String DB_PASS = "12345678";
-	// private static final String DB_PASS = "";
+	//private static final String DB_PASS = "12345678";
+	private static final String DB_PASS = "";
 
 	/**
 	 * Ruta del script que se encarga de crear las tablas dentro de la base de datos
@@ -323,7 +324,7 @@ public class DBManager {
 		if (id < 0) {
 			return false;
 		}
-		if (!column.matchTypes(obj)) {
+		if (obj != null && !column.matchTypes(obj)) {
 			throw new TiposNoCoincidenException(column, obj);
 		}
 
@@ -359,17 +360,36 @@ public class DBManager {
 			throws SQLException {
 		Class<?> ctype = col.getType();
 		if (ctype == Integer.class) {
-			pstmt.setInt(i, (Integer) obj);
-		}
-		if (ctype == Boolean.class) {
-			pstmt.setBoolean(i, (Boolean) obj);
+			if (obj == null) {
+				pstmt.setNull(i, Types.INTEGER);
+			} else {
+				pstmt.setInt(i, (Integer) obj);
+			}
+		} else if (ctype == Boolean.class) {
+			if (obj == null) {
+				pstmt.setNull(i, Types.BOOLEAN);
+			} else {
+				pstmt.setBoolean(i, (Boolean) obj);
+			}
 		} else if (ctype == String.class) {
-			pstmt.setString(i, (String) obj);
+			if (obj == null) {
+				pstmt.setNull(i, Types.VARCHAR);
+			} else {
+				pstmt.setString(i, (String) obj);
+			}
 		} else if (ctype == Float.class) {
-			pstmt.setFloat(i, (Float) obj);
+			if (obj == null) {
+				pstmt.setNull(i, Types.FLOAT);
+			} else {
+				pstmt.setFloat(i, (Float) obj);
+			}
 		} else if (ctype == LocalDate.class) {
-			Date date = Date.valueOf((LocalDate) obj);
-			pstmt.setDate(i, date);
+			if (obj == null) {
+				pstmt.setNull(i, Types.DATE);
+			} else {
+				Date date = Date.valueOf((LocalDate) obj);
+				pstmt.setDate(i, date);
+			}
 		}
 	}
 

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 
-import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
@@ -14,8 +13,9 @@ import gui.controllers.Controller;
 import gui.panels.oferta.PanelOferta;
 import gui.panels.oferta.PanelOfertaReservadaInterno;
 import gui.util.Nombrable;
+import gui.util.PanelInterfaz;
 
-public class MisReservas extends JLayeredPane implements Nombrable {
+public class MisReservas extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = -8320036169616362237L;
 
@@ -27,16 +27,15 @@ public class MisReservas extends JLayeredPane implements Nombrable {
 
 	public MisReservas(Gui gui) {
 		this.gui = gui;
-		this.setPreferredSize(new Dimension(995, 600));
-		// this.setBackground(Color.GREEN);
-		this.setName(NAME);
-		initialize();
 	}
 
-	private void initialize() {
-		SpringLayout springLayout = new SpringLayout();
-		this.setLayout(springLayout);
+	@Override
+	public void setDimension() {
+		this.setPreferredSize(new Dimension(995, 600));
+	}
 
+	@Override
+	public void crearComponentes() {
 		cri = new ContenedorReservasInterno();
 
 		JScrollPane scrollPane = new JScrollPane(cri, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -47,8 +46,13 @@ public class MisReservas extends JLayeredPane implements Nombrable {
 		scrollPane.setBackground(Color.BLUE);
 
 		this.add(scrollPane);
-		this.setLayer(scrollPane, 1);
 
+	}
+
+	@Override
+	public void colocarComponentes() {
+		SpringLayout springLayout = new SpringLayout();
+		this.setLayout(springLayout);
 	}
 
 	public void cargarOfertas() {
@@ -76,5 +80,4 @@ public class MisReservas extends JLayeredPane implements Nombrable {
 		cri.removeReserva(idOferta);
 		cri.repaint();
 	}
-
 }

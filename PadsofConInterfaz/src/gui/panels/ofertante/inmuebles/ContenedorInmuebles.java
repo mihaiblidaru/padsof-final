@@ -20,9 +20,9 @@ import gui.Gui;
 import gui.components.fx.FxButton;
 import gui.controllers.Controller;
 import gui.panels.Header;
-import gui.util.PanelInterfazPrincipal;
+import gui.util.PanelInterfaz;
 
-public class ContenedorInmuebles extends JPanel implements PanelInterfazPrincipal {
+public class ContenedorInmuebles extends PanelInterfaz {
 
 	private static final long serialVersionUID = -2138438771740403776L;
 
@@ -44,7 +44,6 @@ public class ContenedorInmuebles extends JPanel implements PanelInterfazPrincipa
 
 	public ContenedorInmuebles(Gui gui) {
 		this.gui = gui;
-		initialize();
 	}
 
 	public void cargarInmuebles() {
