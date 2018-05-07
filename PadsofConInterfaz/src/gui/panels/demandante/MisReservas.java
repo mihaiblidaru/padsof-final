@@ -15,26 +15,52 @@ import gui.panels.oferta.PanelOfertaReservadaInterno;
 import gui.util.Nombrable;
 import gui.util.PanelInterfaz;
 
+/**
+ * Esta es nuestra clase que sirve para ver nuestras reservas
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class MisReservas extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = -8320036169616362237L;
 
+	/**
+	 * Nombre del panel
+	 */
 	public static final String NAME = "MIS_RESERVAS";
 
+	/**
+	 * Interfaz grafica
+	 */
 	private Gui gui;
 
+	/**
+	 * Contenedor interno de reservas
+	 */
 	private ContenedorReservasInterno cri;
 
+	/**
+	 * Constructor de MisReservas
+	 * @param gui interfaz grafica
+	 */
 	public MisReservas(Gui gui) {
 		this.gui = gui;
 		initialize();
 	}
 
+	/**
+	 * Cambia la dimension del contenedor
+	 */
 	@Override
 	public void setDimension() {
 		this.setPreferredSize(new Dimension(995, 600));
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	public void crearComponentes() {
 		cri = new ContenedorReservasInterno();
@@ -50,12 +76,18 @@ public class MisReservas extends PanelInterfaz implements Nombrable {
 
 	}
 
+	/**
+	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 */
 	@Override
 	public void colocarComponentes() {
 		SpringLayout springLayout = new SpringLayout();
 		this.setLayout(springLayout);
 	}
 
+	/**
+	 * Esta funcion carga las ofertas para el panel
+	 */
 	public void cargarOfertas() {
 		Controller c = gui.getController();
 		Integer activa = c.demandanteGetOfertaReservada();
@@ -72,11 +104,19 @@ public class MisReservas extends PanelInterfaz implements Nombrable {
 		cri.repaint();
 	}
 
+	/**
+	 * Añade una contratacion a una oferta
+	 * @param idOferta id de la oferta
+	 */
 	public void addContratada(int idOferta) {
 		cri.addContratada(new PanelOferta(gui, idOferta));
 		cri.repaint();
 	}
 
+	/**
+	 * Quita la reserva de una oferta
+	 * @param idOferta id de la oferta
+	 */
 	public void removeReserva(int idOferta) {
 		cri.removeReserva(idOferta);
 		cri.repaint();

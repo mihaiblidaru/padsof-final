@@ -29,10 +29,18 @@ public class PanelOfertaAdmin extends PanelOferta {
 	 */
 	private FxButton aceptar;
 
+	/**
+	 * Constructor de PanelOfertaAdmin
+	 * @param gui interfaz grafica
+	 * @param idOferta id de la oferta
+	 */
 	public PanelOfertaAdmin(Gui gui, int idOferta) {
 		super(gui, idOferta);
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	protected void crearComponentes() {
 		super.crearComponentes();
@@ -43,6 +51,9 @@ public class PanelOfertaAdmin extends PanelOferta {
 		this.add(aceptar);
 	}
 
+	/**
+	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 */
 	@Override
 	protected void colocarComponentes() {
 		super.colocarComponentes();
@@ -53,6 +64,9 @@ public class PanelOfertaAdmin extends PanelOferta {
 		layout.putConstraint(SpringLayout.EAST, aceptar, -7, SpringLayout.WEST, rechazar);
 	}
 
+	/**
+	 * Esta funcion registra los eventos que ocurren en la interfaz
+	 */
 	@Override
 	protected void registrarEventos() {
 		super.registrarEventos();

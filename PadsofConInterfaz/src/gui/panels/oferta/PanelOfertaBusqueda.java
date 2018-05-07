@@ -14,18 +14,49 @@ import gui.panels.ResultadosBusqueda;
 import gui.panels.demandante.VerOferta;
 import gui.util.GuiConstants;
 
+/**
+ * Esta es nuestra clase que sirve como panel de busqueda de ofertas
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class PanelOfertaBusqueda extends PanelOferta {
 
 	private static final long serialVersionUID = -5513253061378866849L;
+	
+	/**
+	 * Boton para rechazar
+	 */
 	private FxButton contratar;
+	
+	/**
+	 * Boton para resevar
+	 */
 	private FxButton reservar;
+	
+	/**
+	 * Boton para ver una oferta
+	 */
 	private FxButton ver;
+	
+	/**
+	 * El contenedor de botones
+	 */
 	private JPanel contenedorBotones;
 
+	/**
+	 * Constructor de PanelOfertaBusqueda
+	 * @param gui interfaz grafica
+	 * @param idOferta id de la oferta
+	 */
 	public PanelOfertaBusqueda(Gui gui, int idOferta) {
 		super(gui, idOferta);
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	protected void crearComponentes() {
 		super.crearComponentes();
@@ -43,6 +74,9 @@ public class PanelOfertaBusqueda extends PanelOferta {
 		this.add(contenedorBotones);
 	}
 
+	/**
+	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 */
 	@Override
 	protected void colocarComponentes() {
 		super.colocarComponentes();
@@ -50,6 +84,9 @@ public class PanelOfertaBusqueda extends PanelOferta {
 		layout.putConstraint(SpringLayout.SOUTH, contenedorBotones, -10, SpringLayout.SOUTH, this);
 	}
 
+	/**
+	 * Esta funcion registra los eventos que ocurren en la interfaz
+	 */
 	@Override
 	protected void registrarEventos() {
 		contratar.setOnAction(e -> {
@@ -79,12 +116,19 @@ public class PanelOfertaBusqueda extends PanelOferta {
 		});
 	}
 
+	/**
+	 * Esta funcion carga los datos de la ofert con el id dado
+	 * @param id id de la oferta
+	 */
 	@Override
 	public void cargarDatos(Integer id) {
 		super.cargarDatos(id);
 		actualizarBotones();
 	}
 
+	/**
+	 * Esta funcion actualiza los botones dependiendo de los permisos del usuario
+	 */
 	public void actualizarBotones() {
 		Controller c = this.gui.getController();
 		if (c.tienePermisosDemandante()) {
