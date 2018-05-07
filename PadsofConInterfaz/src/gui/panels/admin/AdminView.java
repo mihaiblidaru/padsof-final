@@ -13,33 +13,38 @@ public class AdminView extends JPanel implements Nombrable {
 
 	private static final long serialVersionUID = 6946331622568374988L;
 	public static String NAME = "ADMIN_PANEL";
-	private final Gui gui;
 	private CardLayout layout;
 	private OfertasPendientes ofertasPendientes;
+	private UsuariosBloqueados usuariosBloqueados;
 
 	public AdminView(Gui gui) {
 		layout = new CardLayout();
 		this.setLayout(layout);
 
-		this.gui = gui;
 		ofertasPendientes = new OfertasPendientes(gui);
-		this.add(new ControlPanel(gui), ControlPanel.NAME);
+		usuariosBloqueados = new UsuariosBloqueados(gui);
 		this.add(ofertasPendientes, OfertasPendientes.NAME);
-		this.add(new UsuariosBloqueados(gui), UsuariosBloqueados.NAME);
+		this.add(usuariosBloqueados, UsuariosBloqueados.NAME);
 		layout.first(this);
 
-	}
-
-	public OfertasPendientes getOfertasPendientesTab() {
-		return ofertasPendientes;
 	}
 
 	public void show(String name) {
 		if (name == OfertasPendientes.NAME) {
 			ofertasPendientes.cargarOfertas();
+		} else if (name == UsuariosBloqueados.NAME) {
+			usuariosBloqueados.cargarUsuarios();
 		}
 
 		layout.show(this, name);
+	}
+
+	public UsuariosBloqueados getUsuariosBloqueadosTab() {
+		return usuariosBloqueados;
+	}
+
+	public OfertasPendientes getOfertasPendientesTab() {
+		return ofertasPendientes;
 	}
 
 }

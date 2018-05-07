@@ -869,4 +869,26 @@ public class Controller {
 		}
 		return false;
 	}
+
+	public boolean cambiarTarjeta(Integer idUsuario, String text) {
+		try {
+			model.getClienteById(idUsuario).setCcard(text);
+		} catch (UsuarioNoPermisoException e) {
+			DialogFactory.noPermisionError();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		return false;
+	}
+
+	public String usuarioGetNombre(Integer id) {
+		try {
+			return model.getClienteById(id).getNombre();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		return null;
+	}
 }

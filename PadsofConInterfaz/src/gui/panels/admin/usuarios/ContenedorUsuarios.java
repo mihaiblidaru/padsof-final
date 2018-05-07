@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import gui.Gui;
-import gui.panels.admin.UserCard;
+import gui.controllers.Controller;
 
 public class ContenedorUsuarios extends JPanel {
 
@@ -18,10 +18,12 @@ public class ContenedorUsuarios extends JPanel {
 	private FlowLayout layout;
 
 	private static final int SEPARACION = 20;
+	private Gui gui;
 
 	Map<Integer, UserCard> usuarios = new HashMap<>();
 
 	public ContenedorUsuarios(Gui gui) {
+		this.gui = gui;
 		layout = new FlowLayout(FlowLayout.LEFT);
 		this.setLayout(layout);
 		this.setPreferredSize(new Dimension(700, 500));
@@ -51,7 +53,17 @@ public class ContenedorUsuarios extends JPanel {
 		this.setPreferredSize(original);
 	}
 
-	public void clearOfertas() {
-		this.removeAll();
+	public void cargarUsuarios() {
+		Controller c = gui.getController();
+		Map<Integer, String> users = c.adminGetUsuariosProblemaPagos();
+
+		for (Integer i : users.keySet()) {
+			UserCard card = new UserCard(gui, i, users.get(i));
+			this.addUsuario(card);
+		}
+
+		this.revalidate();
+		this.repaint();
+
 	}
 }

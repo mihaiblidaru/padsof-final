@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 import gui.Gui;
 import gui.components.fx.FxButton;
 import gui.panels.admin.AdminView;
-import gui.panels.admin.ControlPanel;
 import gui.panels.admin.ofertas.OfertasPendientes;
 import gui.panels.admin.usuarios.UsuariosBloqueados;
 import gui.panels.demandante.MisReservas;
@@ -41,7 +40,6 @@ public class Header extends PanelInterfaz implements Nombrable {
 	private static final int PANEL_WIDTH = Gui.FRAME_WIDTH;
 
 	private JLabel appName;
-	private FxButton panelDeControl;
 	private FxButton adminOfertas;
 	private FxButton adminUsuarios;
 	private FxButton misReservasButton;
@@ -72,7 +70,6 @@ public class Header extends PanelInterfaz implements Nombrable {
 		this.misReservasButton = new FxButton(100, 25, "Mis reservas");
 		this.misOfertasButton = new FxButton(100, 25, "Mis ofertas");
 		this.misInmueblesButton = new FxButton(100, 25, "Mis viviendas");
-		this.panelDeControl = new FxButton(140, 25, "Panel de Control");
 		this.adminOfertas = new FxButton(80, 25, "Ofertas");
 		this.adminUsuarios = new FxButton(90, 25, "Usuarios");
 		this.appName = new JLabel("TuVacaPiso");
@@ -87,7 +84,6 @@ public class Header extends PanelInterfaz implements Nombrable {
 		this.add(grupoBotonesAdmin);
 		this.add(grupoBotonesUsuario);
 		this.add(botonBusqueda);
-		grupoBotonesAdmin.add(panelDeControl);
 		grupoBotonesAdmin.add(adminOfertas);
 		grupoBotonesAdmin.add(adminUsuarios);
 
@@ -158,13 +154,6 @@ public class Header extends PanelInterfaz implements Nombrable {
 				MisReservas misReservas = (MisReservas) gui.getComponent(MisReservas.NAME);
 				misReservas.cargarOfertas();
 				gui.showOnly(MisReservas.NAME, Header.NAME);
-			});
-		});
-
-		panelDeControl.setOnAction(event -> {
-			SwingUtilities.invokeLater(() -> {
-				AdminView av = (AdminView) gui.getComponent(AdminView.NAME);
-				av.show(ControlPanel.NAME);
 			});
 		});
 

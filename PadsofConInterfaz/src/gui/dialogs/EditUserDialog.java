@@ -1,140 +1,137 @@
 package gui.dialogs;
 
-import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.FlowLayout;
+import java.awt.Point;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import gui.Gui;
-import gui.components.fx.FxButton;
-import gui.components.fx.FxTextField;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
+import gui.controllers.Controller;
+import gui.panels.admin.usuarios.UserCard;
+import gui.util.DialogFactory;
+import gui.util.IconLoader;
 
-public class EditUserDialog extends JFrame {
-	
-	private static final long serialVersionUID = 1L;
-	private final static int FRAME_WIDTH = 350;
-	private final static int FRAME_HEIGHT = 200;
-	private final Gui gui;
-	private final JFrame frame;
-	public EditUserDialog(Gui gui) {
-		frame=this;
+public class EditUserDialog extends JDialog {
+
+	private static final long serialVersionUID = -889156607009791316L;
+	private JButton btnOk;
+	private JButton btnCancel;
+	private int limit = 200;
+	private JLabel limitLabel;
+
+	private Gui gui;
+	private boolean value;
+	private Integer idUsuario;
+	private JTextField tarjeta;
+
+	public EditUserDialog(Gui gui, Integer idUsuario, UserCard c) {
+		super(gui, "Introduce tu comentario", true);
 		this.gui = gui;
-		this.setName("Editar Usuario");
-		this.setContentPane(buildPanel());
-		this.setAlwaysOnTop(true);
-		this.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		this.idUsuario = idUsuario;
+
+		Point pLoc = gui.getLocation();
+		this.setLocation(pLoc.x + 350, pLoc.y + 211);
+
 		this.setResizable(false);
-		this.setBounds((int) (screenSize.getWidth()/2 - FRAME_WIDTH/2) , (int) (screenSize.getHeight()/2 - FRAME_HEIGHT/2), FRAME_WIDTH, FRAME_HEIGHT);
-		this.pack();
-		gui.setEnabled(false);
-		registerWindowListeners();
-	}
-	
-	
-	private void registerWindowListeners() {
-		
-	    WindowAdapter adapter = new WindowAdapter() {
-	            @Override
-	            public void windowClosing(WindowEvent we) {//overrode to show message
-	                super.windowClosing(we);
-	                gui.setEnabled(true);
-	            }
-
-	            @Override
-	            public void windowIconified(WindowEvent we) {
-	            	((JFrame)we.getSource()).setState(JFrame.NORMAL);
-	            }
-	        };
-	    
-	        this.addWindowListener(adapter);	
-	}
-
-
-	private JPanel buildPanel() {
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.decode("#ffffff"));
-		panel.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		SpringLayout layout = new SpringLayout();
-		panel.setLayout(layout);
-				
-		JLabel dni = new JLabel("<html><h1 class='big'>1234567X</h1></html>");
-		dni.validate();
-		panel.add(dni);
-		
-		layout.putConstraint(SpringLayout.WEST, dni, 20, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, dni, 20, SpringLayout.NORTH, panel);
-		BufferedImage phoneIcon = null;
-		try {
-			phoneIcon = ImageIO.read(new File("res/img/fa-phone-square.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	
-		JLabel phoneIconLabel = new JLabel(new ImageIcon(phoneIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
-		
-		panel.add(phoneIconLabel);
-		layout.putConstraint(SpringLayout.WEST, phoneIconLabel, 20, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, phoneIconLabel, 20, SpringLayout.NORTH, dni);
-		
-		
-		BufferedImage ccIcon = null;
-		try {
-			ccIcon = ImageIO.read(new File("res/img/fa-cc-visa.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		JLabel ccIconLabel = new JLabel(new ImageIcon(ccIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
-		
-		panel.add(ccIconLabel);
-		layout.putConstraint(SpringLayout.WEST, ccIconLabel, 20, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, ccIconLabel, 10, SpringLayout.SOUTH, phoneIconLabel);
-		
-		
-		FxTextField ccField = new FxTextField(250, 25, "Tarjeta de credito");
-		
-		panel.add(ccField);
-		layout.putConstraint(SpringLayout.NORTH, ccField, 0, SpringLayout.NORTH, ccIconLabel);
-		layout.putConstraint(SpringLayout.WEST, ccField, 20, SpringLayout.EAST, ccIconLabel);
-		
-		FxButton okButton = new FxButton(40, 25, "OK");
-		
-		panel.add(okButton);
-		layout.putConstraint(SpringLayout.NORTH, okButton, 25, SpringLayout.SOUTH, ccField);
-		layout.putConstraint(SpringLayout.WEST, okButton, 50, SpringLayout.WEST, ccField);
-		
-		FxButton cancelButton = new FxButton(80, 25, "Cancelar");
-		
-		panel.add(cancelButton);
-		layout.putConstraint(SpringLayout.NORTH, cancelButton, 0, SpringLayout.NORTH, okButton);
-		layout.putConstraint(SpringLayout.WEST, cancelButton, 20, SpringLayout.EAST, okButton);
-		
-		cancelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		JPanel panel = new JPanel(layout);
+		this.setContentPane(panel);
 
-			@Override
-			public void handle(MouseEvent arg0) {
-				frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-			}
-			
+		panel.setPreferredSize(new Dimension(300, 200));
+
+		JPanel intPanel = new JPanel();
+		intPanel.setPreferredSize(new Dimension(200, 140));
+		BoxLayout l = new BoxLayout(intPanel, BoxLayout.Y_AXIS);
+		intPanel.setLayout(l);
+
+		JLabel userName = new JLabel("12345670X");
+		JLabel tipo = new JLabel("Ofertante");
+		JPanel filaTelefono = new JPanel();
+		JPanel filaTarjeta = new JPanel();
+
+		userName.setAlignmentX(Component.LEFT_ALIGNMENT);
+		tipo.setAlignmentX(Component.LEFT_ALIGNMENT);
+		filaTelefono.setAlignmentX(Component.LEFT_ALIGNMENT);
+		filaTarjeta.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+		intPanel.add(Box.createRigidArea(new Dimension(1, 15)));
+		intPanel.add(userName);
+		intPanel.add(Box.createRigidArea(new Dimension(10, 3)));
+		intPanel.add(tipo);
+		intPanel.add(Box.createRigidArea(new Dimension(10, 10)));
+		intPanel.add(filaTelefono);
+		intPanel.add(Box.createRigidArea(new Dimension(10, 10)));
+		intPanel.add(filaTarjeta);
+		intPanel.add(Box.createRigidArea(new Dimension(10, 10)));
+
+		JLabel imgTel = new JLabel(IconLoader.load("res/img/fa-phone-square.png", 20, 20));
+		JLabel telefono = new JLabel("603 296 012");
+
+		JLabel imgTarjeta = new JLabel(IconLoader.load("res/img/fa-cc-visa.png", 20, 20));
+		tarjeta = new JTextField(16);
+		tarjeta.setPreferredSize(new Dimension(tarjeta.getPreferredSize().width, 25));
+		tarjeta.setMaximumSize(tarjeta.getPreferredSize());
+		filaTelefono.add(imgTel);
+		filaTelefono.add(Box.createRigidArea(new Dimension(5, 1)));
+		filaTelefono.add(telefono);
+
+		filaTarjeta.add(imgTarjeta);
+		filaTarjeta.add(Box.createRigidArea(new Dimension(5, 1)));
+		filaTarjeta.add(tarjeta);
+
+		panel.add(intPanel);
+		JPanel contenedorBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+		panel.add(contenedorBotones);
+
+		JButton okBtn = new JButton("OK");
+		JButton cancelarBtn = new JButton("Cancelar");
+
+		okBtn.setPreferredSize(cancelarBtn.getPreferredSize());
+		contenedorBotones.add(okBtn);
+		contenedorBotones.add(cancelarBtn);
+
+		filaTelefono.setLayout(new BoxLayout(filaTelefono, BoxLayout.X_AXIS));
+		filaTarjeta.setLayout(new BoxLayout(filaTarjeta, BoxLayout.X_AXIS));
+		layout.putConstraint(SpringLayout.NORTH, intPanel, 5, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, intPanel, 0, SpringLayout.HORIZONTAL_CENTER, panel);
+		layout.putConstraint(SpringLayout.NORTH, contenedorBotones, 10, SpringLayout.SOUTH, intPanel);
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, contenedorBotones, 10, SpringLayout.HORIZONTAL_CENTER,
+				panel);
+
+		cancelarBtn.addActionListener((e) -> this.dispose());
+
+		okBtn.addActionListener(e -> {
+			cambiarTarjeta();
 		});
-		
-		
-		return panel;
+
+		pack();
+	}
+
+	private void cambiarTarjeta() {
+		if (tarjeta.getText().length() > 16) {
+			DialogFactory.invalidValueError("Tarjeta");
+		} else if (tarjeta.getText().isEmpty()) {
+			DialogFactory.emptyFieldError("Tarjeta");
+		} else {
+			Controller c = gui.getController();
+			if (c.cambiarTarjeta(idUsuario, tarjeta.getText())) {
+				this.value = true;
+				this.dispose();
+			}
+		}
+	}
+
+	public boolean getValue() {
+		return value;
 	}
 
 }

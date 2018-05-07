@@ -14,7 +14,6 @@ import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
 import gui.components.fx.FxButton;
 import gui.components.fx.FxTextField;
-import gui.panels.admin.UserCard;
 
 public class UsuariosBloqueados extends JPanel {
 
@@ -22,6 +21,7 @@ public class UsuariosBloqueados extends JPanel {
 	public static final String NAME = "USUARIOS_PROBLEMA_PAGO";
 
 	private final Gui gui;
+	private ContenedorUsuarios cu;
 
 	public UsuariosBloqueados(Gui gui) {
 		this.gui = gui;
@@ -47,7 +47,7 @@ public class UsuariosBloqueados extends JPanel {
 				this);
 		layout.putConstraint(SpringLayout.NORTH, contenedorBusqurda, 40, SpringLayout.NORTH, this);
 
-		ContenedorUsuarios cu = new ContenedorUsuarios(gui);
+		cu = new ContenedorUsuarios(gui);
 
 		JScrollPane scrollPane = new JScrollPane(cu, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -60,14 +60,21 @@ public class UsuariosBloqueados extends JPanel {
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollPane, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.NORTH, scrollPane, 10, SpringLayout.SOUTH, contenedorBusqurda);
 
-		cu.addUsuario(new UserCard(1));
-		cu.addUsuario(new UserCard(2));
-		cu.addUsuario(new UserCard(3));
-		cu.addUsuario(new UserCard(4));
-		cu.addUsuario(new UserCard(5));
-		cu.addUsuario(new UserCard(6));
-		cu.addUsuario(new UserCard(9));
-		cu.addUsuario(new UserCard(8));
+		cu.addUsuario(new UserCard(gui, 1, "od"));
+		cu.addUsuario(new UserCard(gui, 2, "od"));
+		cu.addUsuario(new UserCard(gui, 3, "od"));
+		cu.addUsuario(new UserCard(gui, 4, "od"));
+		cu.addUsuario(new UserCard(gui, 5, "od"));
+		cu.addUsuario(new UserCard(gui, 6, "od"));
+		cu.addUsuario(new UserCard(gui, 7, "od"));
+		cu.addUsuario(new UserCard(gui, 8, "od"));
+
+	}
+
+	public void cargarUsuarios() {
+		cu.cargarUsuarios();
+		this.revalidate();
+		this.repaint();
 	}
 
 }

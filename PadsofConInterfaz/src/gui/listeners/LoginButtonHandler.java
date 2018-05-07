@@ -1,19 +1,17 @@
 package gui.listeners;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.fx.FxPasswordField;
 import gui.components.fx.FxTextField;
 import gui.controllers.Controller;
-import gui.dialogs.EditUserDialog;
 import gui.panels.Header;
 import gui.panels.LoginPanel;
 import gui.panels.ResultadosBusqueda;
 import gui.panels.SearchMenu;
 import gui.panels.admin.AdminView;
-import gui.panels.admin.ControlPanel;
+import gui.panels.admin.ofertas.OfertasPendientes;
 import gui.panels.ofertante.ofertas.MisOfertas;
 import gui.util.DialogFactory;
 import gui.util.GuiConstants;
@@ -47,10 +45,8 @@ public class LoginButtonHandler implements EventHandler<ActionEvent> {
 					String rol = controller.login(user, password);
 
 					if (rol.equals(GuiConstants.ROL_NO_REGISTRADO)) {
+						DialogFactory.simpleErrorMessage("Nombre de usuario o contraseña incorrectos");
 
-						final JFrame dialog = new EditUserDialog(gui);
-
-						dialog.setVisible(true);
 					} else {
 						gui.setVisiblePane(LoginPanel.NAME, false);
 						Header header = (Header) gui.getComponent(Header.NAME);
@@ -75,9 +71,8 @@ public class LoginButtonHandler implements EventHandler<ActionEvent> {
 							gui.setVisiblePane(AdminView.NAME, true);
 							header.verBotones(Header.BOTONES_ADMIN);
 							AdminView av = (AdminView) gui.getComponent(AdminView.NAME);
-							av.show(ControlPanel.NAME);
+							av.show(OfertasPendientes.NAME);
 							header.appNameSetVisible(false);
-
 						} else if (rol.equals(GuiConstants.ROL_DESCONOCIDO)) {
 							DialogFactory.internalError("Rol del usuario desconocido");
 						}
