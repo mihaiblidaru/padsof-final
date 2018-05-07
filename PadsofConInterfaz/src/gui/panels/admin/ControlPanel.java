@@ -127,6 +127,8 @@ public class ControlPanel extends PanelInterfaz {
 		title = BorderFactory.createTitledBorder( ofertas.size() +" Ofertas nuevas");
 		this.ofertaPendiente.setBorder(title);
 		
+		while
+		
 
 	}
 }
