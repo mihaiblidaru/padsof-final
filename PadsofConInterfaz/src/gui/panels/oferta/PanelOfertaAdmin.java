@@ -8,11 +8,30 @@ import gui.components.fx.FxButton;
 import gui.controllers.Controller;
 import gui.panels.admin.AdminView;
 
+/**
+ * Esta es nuestra clase que sirve como panel de ofertas para el admin
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class PanelOfertaAdmin extends PanelOferta {
 
 	private static final long serialVersionUID = -5513253061378866849L;
+	
+	/**
+	 * Boton para rechazar
+	 */
 	private FxButton rechazar;
+	
+	/**
+	 * Boton para aceptar
+	 */
 	private FxButton aceptar;
+	
+	/**
+	 * Boton para pedir 
+	 */
 	private FxButton pedirCambios;
 
 	public PanelOfertaAdmin(Gui gui, int idOferta) {

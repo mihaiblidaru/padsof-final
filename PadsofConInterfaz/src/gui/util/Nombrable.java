@@ -5,7 +5,17 @@ import java.lang.reflect.Modifier;
 
 import javax.swing.JComponent;
 
+/**
+ * Esta es nuestra interfaz que llama a setname de los paneles de la interfaz para ayudar en la busqueda
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public interface Nombrable {
+	/**
+	 * Funcion que define el nombre de los paneles para ayudar en la busqueda
+	 */
 	public default void setGlobalName() {
 		JComponent c = ((JComponent) this);
 		Field[] fields = c.getClass().getDeclaredFields();

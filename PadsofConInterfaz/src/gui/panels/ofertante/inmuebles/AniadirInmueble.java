@@ -29,40 +29,122 @@ import gui.util.PanelInterfaz;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+/**
+ * Esta es nuestra clase que sirve para aniadir ofertas
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = -4230661380101910555L;
 
+	/**
+	 * El nombre del panel
+	 */
 	public static final String NAME = "ANIADIR_INMUEBLE";
 
+	/**
+	 * La interfaz grafica
+	 */
 	private final Gui gui;
 
+	/**
+	 * Constructor de AniadirInmueble
+	 * @param gui interfaz grafica
+	 */
 	public AniadirInmueble(Gui gui) {
 		this.gui = gui;
 		initialize();
 	}
 
+	/**
+	 * Para añadir la localidad
+	 */
 	private FxTextField localidadTextField;
+	
+	/**
+	 * Para añadir el codigo postal
+	 */
 	private FxTextField cpTextField;
+	
+	/**
+	 * Para añadir la direccion
+	 */
 	private FxTextField direccionTextField;
+	
+	/**
+	 * Para añadir la direccion, es un extra
+	 */
 	private FxTextField direccionExtraTextField;
+	
+	/**
+	 * El panel de caracteristicas
+	 */
 	private PanelCaracteristicas pc;
+	
+	/**
+	 * El jlabel que imprime la etiqueta
+	 */
 	private JLabel etiqueta;
+	
+	/**
+	 * El jlabel que imprime la localidad
+	 */
 	private JLabel localidad;
+	
+	/**
+	 * El jlabel que imprime el codigo postal
+	 */
 	private JLabel codigoPostal;
+	
+	/**
+	 * El jlabel que imprime la direccion
+	 */
 	private JLabel direccionLabel;
+	
+	/**
+	 * El  segundo jlabel que imprime la direccion
+	 */
 	private JLabel direccionLabel2;
+	
+	/**
+	 * El jlabel que imprime simbolo de advertencia
+	 */
 	private JLabel warningIcon;
+	
+	/**
+	 * El separador entre inmuebles
+	 */
 	private JSeparator separator;
+	
+	/**
+	 * El boton para confirmar
+	 */
 	private FxButton confirmar;
+	
+	/**
+	 * El jlabel que imprime la advertencia
+	 */
 	private JLabel alarm;
+	
+	/**
+	 * El jlabel que imprime las caracteristicas
+	 */
 	private JPanel caracteristicas;
 
+	/**
+	 * Funcion que define las dimensiones de la interfaz
+	 */
 	@Override
 	protected void setDimension() {
 		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, Gui.FRAME_HEIGHT - 20));
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	protected void crearComponentes() {
 		Font font = new Font("Comic Sans", Font.PLAIN, 40);
@@ -101,6 +183,9 @@ public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 
 	}
 
+	/**
+	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 */
 	@Override
 	protected void colocarComponentes() {
 		SpringLayout layout = new SpringLayout();
@@ -142,6 +227,9 @@ public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 		layout.putConstraint(SpringLayout.NORTH, caracteristicas, 5, SpringLayout.NORTH, separator);
 	}
 
+	/**
+	 * Funcion que consigue los datos rellenados, avisa de posibles errores
+	 */
 	private EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent e) {
@@ -187,6 +275,10 @@ public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 		}
 	};
 
+	/**
+	 * Esta funcion construye el panel de caracteristicas
+	 * @return panel creado
+	 */
 	private JPanel buildPanelCaracteristicas() {
 		SpringLayout layout = new SpringLayout();
 		JPanel panel = new JPanel(layout);
@@ -236,6 +328,9 @@ public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 		return panel;
 	}
 
+	/**
+	 * Esta funcion registra los eventos que ocurren en la interfaz, pulsar el boton
+	 */
 	@Override
 	protected void registrarEventos() {
 		confirmar.setOnAction(handler);

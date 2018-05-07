@@ -15,28 +15,87 @@ import gui.components.JMultiLineLabel;
 import gui.controllers.Controller;
 import gui.util.PanelInterfaz;
 
+/**
+ * Esta es nuestra clase que sirve como panel de ofertas
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class PanelOferta extends PanelInterfaz {
 
 	private static final long serialVersionUID = -5513253061378866849L;
 
+	/**
+	 * La interfaz grafica
+	 */
 	protected final Gui gui;
 
+	/**
+	 * El id de la oferta
+	 */
 	private final int idOferta;
+	
+	/**
+	 * El label de la descripcion
+	 */
 	private JMultiLineLabel descripcion;
+	
+	/**
+	 * El label del precio
+	 */
 	private JLabel precio;
+	
+	/**
+	 * El label de la fianza
+	 */
 	private JLabel fianza;
+	
+	/**
+	 * El label de la fecha inicial
+	 */
 	private JLabel fechaInicio;
+	
+	/**
+	 * El label de hasta
+	 */
 	private JLabel hasta;
+	
+	/**
+	 * El label de la fecha final
+	 */
 	private JLabel fechaFin;
+	
+	/**
+	 * El label de la direccion
+	 */
 	private JMultiLineLabel direccion;
 
+	/**
+	 * El layout del panel
+	 */
 	protected SpringLayout layout;
 
+	/**
+	 * La anchura del panel
+	 */
 	public final static int PANEL_HEIGHT = 160;
+	
+	/**
+	 * El ancho del panel
+	 */
 	public final static int PANEL_WIDTH = 750;
 
+	/**
+	 * El label de desde
+	 */
 	private JLabel desde;
 
+	/**
+	 * Constructor de PanelOferta
+	 * @param gui interfaz grafica
+	 * @param idOferta id de la oferta
+	 */
 	public PanelOferta(Gui gui, int idOferta) {
 		this.gui = gui;
 		this.idOferta = idOferta;
@@ -47,11 +106,17 @@ public class PanelOferta extends PanelInterfaz {
 		});
 	}
 
+	/**
+	 * Funcion que define las dimensiones de la interfaz
+	 */
 	@Override
 	protected void setDimension() {
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	protected void crearComponentes() {
 		direccion = new JMultiLineLabel("Calle Alcala, nº7, 1B, 28850, Madrid", 200, 30, true);
@@ -81,6 +146,9 @@ public class PanelOferta extends PanelInterfaz {
 		fianza.setFont(fianzaFont);
 	}
 
+	/**
+	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 */
 	@Override
 	protected void colocarComponentes() {
 		layout = new SpringLayout();
@@ -111,6 +179,11 @@ public class PanelOferta extends PanelInterfaz {
 		layout.putConstraint(SpringLayout.NORTH, fianza, 10, SpringLayout.SOUTH, precio);
 	}
 
+	
+	/**
+	 * Carga los datos para el panel
+	 * @param id id de la oferta
+	 */
 	public void cargarDatos(Integer id) {
 		Controller c = this.gui.getController();
 		this.precio.setText(String.format("%.2f €", c.ofertaGetPrecio(id)));
@@ -131,6 +204,10 @@ public class PanelOferta extends PanelInterfaz {
 		this.direccion.setText(c.ofertaGetDireccion(id));
 	}
 
+	/**
+	 * Devuelve el id de la oferta
+	 * @return idOferta id de la oferta
+	 */
 	public int getIdOferta() {
 		return idOferta;
 	}

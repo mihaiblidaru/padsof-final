@@ -17,24 +17,50 @@ import gui.panels.oferta.PanelOfertaEditable;
 import gui.util.GuiConstants;
 import gui.util.Nombrable;
 
+/**
+ * Esta es nuestra clase que sirve para ver nuestras ofertas
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class MisOfertas extends JLayeredPane implements Nombrable {
 
 	private static final long serialVersionUID = -8320036169616362237L;
 
+	/**
+	 * Nombre del panel
+	 */
 	public static final String NAME = "MIS_OFERTAS";
 
+	/**
+	 * Interfaz grafica
+	 */
 	private Gui gui;
 
+	/**
+	 * Contenedor interno de ofertas
+	 */
 	private ContenedorOfertasInterno coi;
 
+	/**
+	 * Panel desplazable
+	 */
 	private JScrollPane scrollPane;
 
+	/**
+	 * Constructor de MisOfertas
+	 * @param gui interfaz grafica
+	 */
 	public MisOfertas(Gui gui) {
 		this.gui = gui;
 		this.setPreferredSize(new Dimension(995, 600));
 		initialize();
 	}
 
+	/**
+	 * Funcion que inicializa este panel
+	 */
 	private void initialize() {
 		SpringLayout springLayout = new SpringLayout();
 		this.setLayout(springLayout);
@@ -53,6 +79,9 @@ public class MisOfertas extends JLayeredPane implements Nombrable {
 
 	}
 
+	/**
+	 * Funcion que carga las ofertas para este panel aniadiendolas al contenedor
+	 */
 	public void cargarOfertas() {
 		coi.clearOfertas();
 		Controller c = gui.getController();
@@ -81,6 +110,9 @@ public class MisOfertas extends JLayeredPane implements Nombrable {
 		});
 	}
 
+	/**
+	 * Funcion que limpias las ofertas utilizando la funcion del contenedor
+	 */
 	public void clearOfertas() {
 		coi.clearOfertas();
 	}

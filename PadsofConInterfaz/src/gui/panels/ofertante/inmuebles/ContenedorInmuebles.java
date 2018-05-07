@@ -22,31 +22,79 @@ import gui.controllers.Controller;
 import gui.panels.Header;
 import gui.util.PanelInterfaz;
 
+/**
+ * Esta es nuestra clase que sirve como contenedor interno de inmuebles
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class ContenedorInmuebles extends PanelInterfaz {
 
 	private static final long serialVersionUID = -2138438771740403776L;
 
+	/**
+	 * El mapa de inmuebles
+	 */
 	private Map<Integer, JComponent> inmuebles = new HashMap<>();
 
+	/**
+	 * La interfaz grafica
+	 */
 	private Gui gui;
 
+	/**
+	 * El layout del contenedor
+	 */
 	private SpringLayout layout;
 
+	/**
+	 * El jlabel de los inmuebles
+	 */
 	private JLabel labelInmuebles;
+	/**
+	 * El separador de los inmuebles
+	 */
 	private JSeparator separatorInmuebles;
+	
+	/**
+	 * El jlabel de los inmuebles, si no hay
+	 */
 	private JLabel labelNoInmuebles;
+	
+	/**
+	 * Boton para aniadir
+	 */
 	private FxButton anyadir;
 
+	/**
+	 * El panel del grupo de inmuebles
+	 */
 	private JPanel grupoInmuebles;
 
+	
+	/**
+	 * La separacion de los inmuebles
+	 */
 	private static final int SEPARACION_INMUEBLES = 10;
+	
+	/**
+	 * El ancho del panel
+	 */
 	private static final int PANEL_WIDTH = 990;
 
+	/**
+	 * Constructor del ContenedorInmuebles
+	 * @param gui interfaz grafica
+	 */
 	public ContenedorInmuebles(Gui gui) {
 		this.gui = gui;
 		initialize();
 	}
 
+	/**
+	 * Funcion que carga los inmuebles en el contenedor
+	 */
 	public void cargarInmuebles() {
 		Controller c = gui.getController();
 		List<Integer> resultados = c.ofertanteGetMisInmuebles();
@@ -58,12 +106,18 @@ public class ContenedorInmuebles extends PanelInterfaz {
 		}
 	}
 
+	/**
+	 * Funcion que define las dimensiones de la interfaz
+	 */
 	@Override
 	public void setDimension() {
 		this.setPreferredSize(new Dimension(PANEL_WIDTH,
 				90 + SEPARACION_INMUEBLES + inmuebles.size() * (PanelInmueble.PANEL_HEIGHT + SEPARACION_INMUEBLES)));
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	public void crearComponentes() {
 		Font font = new Font("Times New Roman", Font.PLAIN, 20);
@@ -88,6 +142,9 @@ public class ContenedorInmuebles extends PanelInterfaz {
 		this.add(anyadir);
 	}
 
+	/**
+	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 */
 	@Override
 	public void colocarComponentes() {
 		layout = new SpringLayout();
@@ -109,6 +166,9 @@ public class ContenedorInmuebles extends PanelInterfaz {
 
 	}
 
+	/**
+	 * Esta funcion registra los eventos que ocurren en la interfaz
+	 */
 	@Override
 	public void registrarEventos() {
 		anyadir.setOnAction(event -> {
@@ -123,6 +183,10 @@ public class ContenedorInmuebles extends PanelInterfaz {
 		});
 	}
 
+	/**
+	 * Funcion que añade un inmueble al contenedor
+	 * @param p panel del inmueble a añadir
+	 */
 	public void addInmueble(PanelInmueble p) {
 		if (inmuebles.isEmpty())
 			labelNoInmuebles.setVisible(false);
@@ -138,6 +202,9 @@ public class ContenedorInmuebles extends PanelInterfaz {
 		}
 	}
 
+	/**
+	 * Funcion que borra los inmuebles de la interfaz
+	 */
 	public void clearInmuebles() {
 		grupoInmuebles.removeAll();
 		inmuebles.clear();

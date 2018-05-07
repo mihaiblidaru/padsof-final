@@ -12,23 +12,47 @@ import gui.util.LimitCounter;
 import gui.util.Nombrable;
 import gui.util.ParameterReference;
 
+/**
+ * Esta es nuestra clase que sirve para editar ofertas
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class EditarOferta extends AniadirOferta implements Nombrable {
 
 	private static final long serialVersionUID = 2220134063340646027L;
 
+	/**
+	 * Nombre del panel
+	 */
 	public final static String NAME = "PANEL_EDITAR_OFERTA";
 
+	/**
+	 * Panel de Oferta
+	 */
 	private ParameterReference<PanelOferta> panelOferta = new ParameterReference<>();
 
+	/**
+	 * Constructor de EditarOferta
+	 * @param gui interfaz grafica
+	 */
 	public EditarOferta(Gui gui) {
 		super(gui);
 	}
 
+	/**
+	 * Esta funcion cambia la visibilidad, vuelve a cargar los datos
+	 * @param state estado de visibilidad
+	 */
 	@Override
 	public void setVisible(boolean state) {
 		super.setVisible(state);
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	public void crearComponentes() {
 		super.crearComponentes();
@@ -37,6 +61,10 @@ public class EditarOferta extends AniadirOferta implements Nombrable {
 		this.alarm.setVisible(false);
 	}
 
+	/**
+	 * Funcion que carga los datos de un panel dado
+	 * @param panel panel del que cargar los datos
+	 */
 	public void cargarDatos(PanelOferta panel) {
 		SwingUtilities.invokeLater(() -> {
 			int id = panel.getIdOferta();
@@ -74,6 +102,9 @@ public class EditarOferta extends AniadirOferta implements Nombrable {
 		});
 	}
 
+	/**
+	 * Esta funcion registra los eventos que ocurren en la interfaz
+	 */
 	@Override
 	public void registrarEventos() {
 		confirmar.setOnAction(new EditarOfertaListener(gui, panelOferta, precioTextBox, fianzaTextBox, desdeDatePicker,
