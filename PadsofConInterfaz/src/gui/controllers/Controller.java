@@ -872,7 +872,7 @@ public class Controller {
 
 	public boolean cambiarTarjeta(Integer idUsuario, String text) {
 		try {
-			model.getClienteById(idUsuario).setCcard(text);
+			return model.getClienteById(idUsuario).setCcard(text);
 		} catch (UsuarioNoPermisoException e) {
 			DialogFactory.noPermisionError();
 		} catch (SQLException e) {
@@ -885,6 +885,26 @@ public class Controller {
 	public String usuarioGetNombre(Integer id) {
 		try {
 			return model.getClienteById(id).getNombre();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		return null;
+	}
+
+	public String usuarioGetTarjeta(int id) {
+		try {
+			return model.getClienteById(id).getCcard();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		return null;
+	}
+
+	public Map<Integer, String> adminGetUsuarioProblemaPagos(String nombre) {
+		try {
+			return model.getUsuarioProblemaPagos(nombre);
 		} catch (SQLException e) {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);

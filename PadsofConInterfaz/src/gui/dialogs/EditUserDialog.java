@@ -19,6 +19,7 @@ import gui.controllers.Controller;
 import gui.panels.admin.usuarios.UserCard;
 import gui.util.DialogFactory;
 import gui.util.IconLoader;
+import gui.util.LimitedDocument;
 
 public class EditUserDialog extends JDialog {
 
@@ -32,35 +33,37 @@ public class EditUserDialog extends JDialog {
 	private boolean value;
 	private Integer idUsuario;
 	private JTextField tarjeta;
+	private JLabel userName;
+	private JLabel tipo;
+	private UserCard card;
 
-	public EditUserDialog(Gui gui, Integer idUsuario, UserCard c) {
+	public EditUserDialog(Gui gui, Integer idUsuario, UserCard card) {
 		super(gui, "Introduce tu comentario", true);
 		this.gui = gui;
 		this.idUsuario = idUsuario;
+		this.card = card;
 
 		Point pLoc = gui.getLocation();
-		this.setLocation(pLoc.x + 350, pLoc.y + 211);
+		this.setLocation(pLoc.x + 375, pLoc.y + 231);
 
 		this.setResizable(false);
 		SpringLayout layout = new SpringLayout();
 		JPanel panel = new JPanel(layout);
 		this.setContentPane(panel);
 
-		panel.setPreferredSize(new Dimension(300, 200));
+		panel.setPreferredSize(new Dimension(250, 150));
 
 		JPanel intPanel = new JPanel();
-		intPanel.setPreferredSize(new Dimension(200, 140));
+		intPanel.setPreferredSize(new Dimension(200, 100));
 		BoxLayout l = new BoxLayout(intPanel, BoxLayout.Y_AXIS);
 		intPanel.setLayout(l);
 
-		JLabel userName = new JLabel("12345670X");
-		JLabel tipo = new JLabel("Ofertante");
-		JPanel filaTelefono = new JPanel();
+		userName = new JLabel(card.getNombre());
+		tipo = new JLabel(card.getTipo());
 		JPanel filaTarjeta = new JPanel();
 
 		userName.setAlignmentX(Component.LEFT_ALIGNMENT);
 		tipo.setAlignmentX(Component.LEFT_ALIGNMENT);
-		filaTelefono.setAlignmentX(Component.LEFT_ALIGNMENT);
 		filaTarjeta.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		intPanel.add(Box.createRigidArea(new Dimension(1, 15)));
@@ -68,22 +71,15 @@ public class EditUserDialog extends JDialog {
 		intPanel.add(Box.createRigidArea(new Dimension(10, 3)));
 		intPanel.add(tipo);
 		intPanel.add(Box.createRigidArea(new Dimension(10, 10)));
-		intPanel.add(filaTelefono);
-		intPanel.add(Box.createRigidArea(new Dimension(10, 10)));
 		intPanel.add(filaTarjeta);
 		intPanel.add(Box.createRigidArea(new Dimension(10, 10)));
 
-		JLabel imgTel = new JLabel(IconLoader.load("res/img/fa-phone-square.png", 20, 20));
-		JLabel telefono = new JLabel("603 296 012");
-
 		JLabel imgTarjeta = new JLabel(IconLoader.load("res/img/fa-cc-visa.png", 20, 20));
 		tarjeta = new JTextField(16);
+		tarjeta.setDocument(new LimitedDocument(16));
+		tarjeta.setText(card.getTarjeta());
 		tarjeta.setPreferredSize(new Dimension(tarjeta.getPreferredSize().width, 25));
 		tarjeta.setMaximumSize(tarjeta.getPreferredSize());
-		filaTelefono.add(imgTel);
-		filaTelefono.add(Box.createRigidArea(new Dimension(5, 1)));
-		filaTelefono.add(telefono);
-
 		filaTarjeta.add(imgTarjeta);
 		filaTarjeta.add(Box.createRigidArea(new Dimension(5, 1)));
 		filaTarjeta.add(tarjeta);
@@ -99,7 +95,6 @@ public class EditUserDialog extends JDialog {
 		contenedorBotones.add(okBtn);
 		contenedorBotones.add(cancelarBtn);
 
-		filaTelefono.setLayout(new BoxLayout(filaTelefono, BoxLayout.X_AXIS));
 		filaTarjeta.setLayout(new BoxLayout(filaTarjeta, BoxLayout.X_AXIS));
 		layout.putConstraint(SpringLayout.NORTH, intPanel, 5, SpringLayout.NORTH, panel);
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, intPanel, 0, SpringLayout.HORIZONTAL_CENTER, panel);
@@ -117,7 +112,7 @@ public class EditUserDialog extends JDialog {
 	}
 
 	private void cambiarTarjeta() {
-		if (tarjeta.getText().length() > 16) {
+		if (tarjeta.getText().length() != 16) {
 			DialogFactory.invalidValueError("Tarjeta");
 		} else if (tarjeta.getText().isEmpty()) {
 			DialogFactory.emptyFieldError("Tarjeta");
@@ -126,6 +121,8 @@ public class EditUserDialog extends JDialog {
 			if (c.cambiarTarjeta(idUsuario, tarjeta.getText())) {
 				this.value = true;
 				this.dispose();
+			} else {
+				DialogFactory.simpleErrorMessage("No se ha podido cambiar la tarjeta, vuelve a comprobar los datos");
 			}
 		}
 	}
@@ -133,5 +130,4 @@ public class EditUserDialog extends JDialog {
 	public boolean getValue() {
 		return value;
 	}
-
 }

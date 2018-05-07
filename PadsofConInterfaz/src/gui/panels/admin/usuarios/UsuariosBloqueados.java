@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
@@ -60,15 +61,16 @@ public class UsuariosBloqueados extends JPanel {
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollPane, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.NORTH, scrollPane, 10, SpringLayout.SOUTH, contenedorBusqurda);
 
-		cu.addUsuario(new UserCard(gui, 1, "od"));
-		cu.addUsuario(new UserCard(gui, 2, "od"));
-		cu.addUsuario(new UserCard(gui, 3, "od"));
-		cu.addUsuario(new UserCard(gui, 4, "od"));
-		cu.addUsuario(new UserCard(gui, 5, "od"));
-		cu.addUsuario(new UserCard(gui, 6, "od"));
-		cu.addUsuario(new UserCard(gui, 7, "od"));
-		cu.addUsuario(new UserCard(gui, 8, "od"));
+		buscar.setOnAction(e -> {
+			SwingUtilities.invokeLater(() -> {
+				if (cuadroBusqueda.getText().isEmpty()) {
+					this.cargarUsuarios();
+				} else {
+					cu.cargarUsuario(cuadroBusqueda.getText());
+				}
 
+			});
+		});
 	}
 
 	public void cargarUsuarios() {

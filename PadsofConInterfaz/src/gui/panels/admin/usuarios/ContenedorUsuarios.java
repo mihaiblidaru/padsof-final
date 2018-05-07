@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import gui.Gui;
 import gui.controllers.Controller;
+import gui.util.DialogFactory;
 
 public class ContenedorUsuarios extends JPanel {
 
@@ -56,7 +57,8 @@ public class ContenedorUsuarios extends JPanel {
 	public void cargarUsuarios() {
 		Controller c = gui.getController();
 		Map<Integer, String> users = c.adminGetUsuariosProblemaPagos();
-
+		this.removeAll();
+		this.usuarios.clear();
 		for (Integer i : users.keySet()) {
 			UserCard card = new UserCard(gui, i, users.get(i));
 			this.addUsuario(card);
@@ -64,6 +66,22 @@ public class ContenedorUsuarios extends JPanel {
 
 		this.revalidate();
 		this.repaint();
+	}
 
+	public void cargarUsuario(String nombre) {
+		Controller c = gui.getController();
+		Map<Integer, String> users = c.adminGetUsuarioProblemaPagos(nombre);
+		if (users.isEmpty()) {
+			DialogFactory.simpleErrorMessage("Ningun usuario encontrado");
+		} else {
+			this.removeAll();
+			this.usuarios.clear();
+			for (Integer i : users.keySet()) {
+				UserCard card = new UserCard(gui, i, users.get(i));
+				this.addUsuario(card);
+			}
+			this.revalidate();
+			this.repaint();
+		}
 	}
 }

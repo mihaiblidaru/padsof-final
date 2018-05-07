@@ -26,13 +26,11 @@ public class UserCard extends PanelInterfaz {
 	private int userID;
 	private String tipo;
 	private JPanel filaTarjeta;
-	private JPanel filaTelefono;
 	private JButton editar;
 	private Gui gui;
 	private JLabel labelTipo;
 	private JLabel userName;
 	private JLabel labelTarjeta;
-	private JLabel labelTelefono;
 
 	public UserCard(Gui gui, Integer userID, String tipo) {
 		this.userID = userID;
@@ -60,14 +58,12 @@ public class UserCard extends PanelInterfaz {
 	protected void crearComponentes() {
 		userName = new JLabel("12345670X");
 		labelTipo = new JLabel("Ofertante");
-		filaTelefono = new JPanel();
 		filaTarjeta = new JPanel();
 		editar = new JButton("Editar");
 		editar.setPreferredSize(new Dimension(80, editar.getPreferredSize().height));
 
 		userName.setAlignmentX(Component.LEFT_ALIGNMENT);
 		labelTipo.setAlignmentX(Component.LEFT_ALIGNMENT);
-		filaTelefono.setAlignmentX(Component.LEFT_ALIGNMENT);
 		filaTarjeta.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		this.add(Box.createRigidArea(new Dimension(1, 15)));
@@ -75,21 +71,12 @@ public class UserCard extends PanelInterfaz {
 		this.add(Box.createRigidArea(new Dimension(10, 3)));
 		this.add(labelTipo);
 		this.add(Box.createRigidArea(new Dimension(10, 10)));
-		this.add(filaTelefono);
-		this.add(Box.createRigidArea(new Dimension(10, 10)));
 		this.add(filaTarjeta);
 		this.add(Box.createRigidArea(new Dimension(10, 10)));
 		this.add(editar);
 
-		JLabel imgTel = new JLabel(IconLoader.load("res/img/fa-phone-square.png", 20, 20));
-		labelTelefono = new JLabel("603 296 012");
-
 		JLabel imgTarjeta = new JLabel(IconLoader.load("res/img/fa-cc-visa.png", 20, 20));
 		labelTarjeta = new JLabel("1234132412341324");
-
-		filaTelefono.add(imgTel);
-		filaTelefono.add(Box.createRigidArea(new Dimension(5, 1)));
-		filaTelefono.add(labelTelefono);
 
 		filaTarjeta.add(imgTarjeta);
 		filaTarjeta.add(Box.createRigidArea(new Dimension(5, 1)));
@@ -103,25 +90,24 @@ public class UserCard extends PanelInterfaz {
 			labelTipo.setText("Ofertante");
 		} else if (tipo.equalsIgnoreCase("d")) {
 			labelTipo.setText("Demandante");
-		} else if (tipo.equalsIgnoreCase("d")) {
+		} else if (tipo.equalsIgnoreCase("od")) {
 			labelTipo.setText("Ofertante-Demandante");
 		}
 
-		/*userName.setText(c.usuarioGetNombre());
-		labelTelefono.setText(c.usuarioGetTelefono());
-		labelTarjeta.setText(c.usuarioGetTarjeta());*/
+		userName.setText(c.usuarioGetNombre(userID));
+		labelTarjeta.setText(c.usuarioGetTarjeta(userID));
 	}
 
 	public String getTarjeta() {
 		return labelTarjeta.getText();
 	}
 
-	public String getTelefono() {
-		return labelTelefono.getText();
-	}
-
 	public String getNombre() {
 		return userName.getText();
+	}
+
+	public String getTipo() {
+		return labelTipo.getText();
 	}
 
 	/**
@@ -130,7 +116,6 @@ public class UserCard extends PanelInterfaz {
 	protected void colocarComponentes() {
 		BoxLayout l = new BoxLayout(this, BoxLayout.Y_AXIS);
 		this.setLayout(l);
-		filaTelefono.setLayout(new BoxLayout(filaTelefono, BoxLayout.X_AXIS));
 		filaTarjeta.setLayout(new BoxLayout(filaTarjeta, BoxLayout.X_AXIS));
 	};
 

@@ -998,4 +998,19 @@ public class MiVacaPiso {
 		return true;
 	}
 
+	public Map<Integer, String> getUsuarioProblemaPagos(String nombre) throws SQLException {
+		Connection con = DBManager.openDbConnection();
+		Statement stmt = con.createStatement();
+		String query = "Select id, rol from cliente where problema_pagos = 1 and identificador = '" + nombre + "'";
+		ResultSet rs = stmt.executeQuery(query);
+
+		Map<Integer, String> listaUsuarios = new TreeMap<>();
+		while (rs.next()) {
+			Integer id = rs.getInt(Columna.ID.toString());
+			String rol = rs.getString(Columna.CLIENTE_ROL.toString());
+			listaUsuarios.put(id, rol);
+		}
+		return listaUsuarios;
+	}
+
 }
