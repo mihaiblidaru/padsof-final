@@ -17,6 +17,9 @@ import app.clases.ofertas.OfertaYaEstaReservadaException;
 import app.clases.ofertas.ReservaDuplicadaException;
 import app.clases.opiniones.Comentario;
 import app.clases.opiniones.Opinion;
+import app.clases.users.Cliente;
+import app.clases.users.Demandante;
+import app.clases.users.Ofertante;
 import app.clases.users.Rol;
 import app.clases.users.UsuarioNoPermisoException;
 import app.clases.users.UsuarioYaTieneReservaException;
@@ -304,12 +307,70 @@ public class Controller {
 		return model.getDemandanteLogueado().getOfertasContratadas();
 	}
 
-	public List<Integer> adminGetOfertasPendientes() throws SQLException {
-		return model.getOfertasPendientes();
+	public List<Integer> adminGetOfertasPendientes()  {
+			try{
+				return model.getOfertasPendientes();
+			}catch (SQLException e) {
+				DialogFactory.internalError(e.getMessage());
+				System.exit(-1);
+			}
+			return null;		
+					
 	}
 
 	public boolean tienePermisosDemandante() {
 		return model.getDemandanteLogueado() != null;
+	}
+	
+	public Cliente getClienteById(int id) throws SQLException {
+		return model.getClienteById(id);
+	}
+	
+	public List<Integer> adminGetDemandantesProblemaPagos() {
+		try {
+			List<Integer> resultados = model.getUsuariosProblemaPago();
+			List<Integer> pagos = new ArrayList<Integer>();
+			for(Integer id : resultados) {
+				if( model.getClienteById(resultados.get(id)) instanceof Ofertante ) {
+					pagos.add(id);
+				}
+			}
+			
+			return pagos;
+		}catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		
+		return null;
+	}
+	
+	public List<Integer> adminGetOfertantesProblemaCobros() {
+		try {
+			List<Integer> resultados = model.getUsuariosProblemaPago();
+			List<Integer> cobros = new ArrayList<Integer>();
+			
+			for(Integer id : resultados) {
+				if( model.getClienteById(resultados.get(id)) instanceof Demandante ) {
+					cobros.add(id);
+				}
+			}
+			return cobros;
+		}catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		
+		
+		return null;
+	}
+	
+	public List<Integer> adminGetUsuariosProblemaPagos()  {
+		try{
+			return model.getUsuariosProblemaPago();
+		}catch(SQLException e) {
+			return null;
+		}
 	}
 
 	public boolean contratarOferta(int idOferta) {

@@ -48,12 +48,7 @@ public class ContenedorOfertasPendientes extends PanelInterfaz {
 	public void cargarOfertas() {
 		Controller c = gui.getController();
 		List<Integer> resultados = null;
-		try {
 			resultados = c.adminGetOfertasPendientes();
-		} catch (SQLException e) {
-
-		}
-
 		for (Integer id : ofertas.keySet()) {
 			if (!resultados.contains(id)) {
 				grupoOfertas.remove(ofertas.remove(id));
