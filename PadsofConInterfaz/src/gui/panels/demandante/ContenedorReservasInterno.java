@@ -47,6 +47,7 @@ public class ContenedorReservasInterno extends PanelInterfaz {
 	public ContenedorReservasInterno() {
 		layout = new SpringLayout();
 		this.setLayout(layout);
+		initialize();
 
 	}
 

@@ -220,6 +220,48 @@ public class MiVacaPiso {
 		con.close();
 	}
 
+	public List<Integer> getUltimasOfertas(int numOfertas) {
+		String sql = "Select o.id from oferta as o where " + Columna.OFERTA_ESTADO.toString() + " = '"
+				+ Estado.ACEPTADA.toString() + "'";
+
+		sql += " order by o.id limit " + numOfertas;
+
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		List<Integer> resultados = new ArrayList<>();
+		try {
+			con = DBManager.openDbConnection();
+			stmt = con.createStatement();
+
+			rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				Integer idOferta = rs.getInt(Columna.ID.toString());
+				resultados.add(idOferta);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(e.getMessage());
+		} finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+			}
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return resultados;
+	}
+
 	/**
 	 * Realiza una búsqueda ofertas.
 	 *
@@ -645,9 +687,12 @@ public class MiVacaPiso {
 		con.close();
 
 		int newId = -1;
-		newId = DBManager.insertRow(Tabla.OPINION,
-				Arrays.asList(Columna.OPINION_VALOR, Columna.OPINION_USUARIO, Columna.OPINION_OFERTA), valor,
-				this.demandanteLogueado.getId(), idOferta);
+		LocalDate fecha = FechaSimulada.getHoy();
+		newId = DBManager
+				.insertRow(
+						Tabla.OPINION, Arrays.asList(Columna.OPINION_VALOR, Columna.OPINION_USUARIO,
+								Columna.OPINION_OFERTA, Columna.OPINION_FECHA),
+						valor, this.demandanteLogueado.getId(), idOferta, fecha);
 
 		Numerica com = new Numerica(newId, FechaSimulada.getHoy(), demandanteLogueado.getId(), valor);
 

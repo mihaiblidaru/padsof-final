@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -25,23 +27,24 @@ public class ComentarDialog extends JDialog {
 	private static final long serialVersionUID = -889156607009791316L;
 	private JButton btnOk;
 	private JButton btnCancel;
-	private int limit = 300;
+	private int limit = 200;
 	private JLabel limitLabel;
 	private JTextArea comentarioTextBox;
 	private Integer idOferta;
 	private Integer idPadre;
+	private Gui gui;
 	private boolean value;
 
-	public ComentarDialog(Gui parent, Integer idOferta, Integer idPadre) {
-		super(parent, "Introduce tu comentario", true);
+	public ComentarDialog(Gui gui, Integer idOferta, Integer idPadre) {
+		super(gui, "Introduce tu comentario", true);
+		this.gui = gui;
 		this.idOferta = idOferta;
 		this.idPadre = idPadre;
 
-		Point pLoc = parent.getLocation();
+		Point pLoc = gui.getLocation();
 		this.setLocation(pLoc.x + 250, pLoc.y + 191);
 
 		this.setResizable(false);
-		Point loc = parent.getLocation();
 		SpringLayout layout = new SpringLayout();
 		JPanel panel = new JPanel(layout);
 		this.setContentPane(panel);
@@ -89,17 +92,43 @@ public class ComentarDialog extends JDialog {
 		cancelarBtn.addActionListener((e) -> this.dispose());
 
 		okBtn.addActionListener(e -> {
-			if (comentarioTextBox.getText().trim().isEmpty()) {
-				DialogFactory.emptyFieldError("comentario");
-			} else {
-				Controller c = parent.getController();
-				c.ofertaComentar(comentarioTextBox.getText().trim(), idOferta, idPadre);
-				this.value = true;
-				this.dispose();
+			enviarComentario();
+		});
+
+		comentarioTextBox.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == '\n') {
+					enviarComentario();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
 			}
 		});
 
 		pack();
+	}
+
+	private void enviarComentario() {
+		if (comentarioTextBox.getText().trim().isEmpty()) {
+			DialogFactory.emptyFieldError("comentario");
+		} else {
+			Controller c = gui.getController();
+			c.ofertaComentar(comentarioTextBox.getText().trim(), idOferta, idPadre);
+			this.value = true;
+			this.dispose();
+		}
 	}
 
 	public boolean getValue() {

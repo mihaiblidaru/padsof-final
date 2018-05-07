@@ -16,6 +16,7 @@ import app.clases.ofertas.OfertaNoModificableException;
 import app.clases.ofertas.OfertaYaEstaReservadaException;
 import app.clases.ofertas.ReservaDuplicadaException;
 import app.clases.opiniones.Comentario;
+import app.clases.opiniones.Numerica;
 import app.clases.opiniones.Opinion;
 import app.clases.users.Cliente;
 import app.clases.users.Demandante;
@@ -30,12 +31,17 @@ import gui.util.DialogFactory;
 import gui.util.GuiConstants;
 
 public class Controller {
-	private final MiVacaPiso model;
-	private final Gui gui;
+	private MiVacaPiso model;
+	private Gui gui;
 
-	public Controller(Gui gui) throws SQLException {
+	public Controller(Gui gui) {
 		this.gui = gui;
-		this.model = MiVacaPiso.getInstance();
+		try {
+			this.model = MiVacaPiso.getInstance();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
 	}
 
 	//equivalencias entre la clase interna rol y la vista
@@ -82,22 +88,72 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Hace el logout del sistema
+	 */
 	public void logout() {
 		model.logout();
 	}
 
+	/**
+	 * Devuelve el numero de inmuebles del ofertante logueado
+	 * 
+	 * @return el numero de inmuebles del ofertante logueado
+	 */
 	public int getNumInmuebles() {
 		return model.getOfertanteLogueado().getInmuebles().size();
 	}
 
+	/**
+	 * Devuelve los ids de las ultimas ofertas publicadas
+	 * 
+	 * @param num
+	 *            cantidad máxima de ofertas a devolver
+	 * @return los ids de las ultimas num ofertas publicadas
+	 */
+	public List<Integer> getUltimasOfertas(int num) {
+		return model.getUltimasOfertas(num);
+	}
+
+	/**
+	 * Devuelve los resultados de la busqueda de viviendas
+	 * 
+	 * @param localidad
+	 *            localidad del inmueble
+	 * @param cp
+	 *            codigo postal
+	 * @param fechaInicio
+	 *            fecha de inicio
+	 * @return los resultados de la busqueda de viviendas
+	 */
 	public List<Integer> buscarViviendas(String localidad, Integer cp, LocalDate fechaInicio) {
 		return model.buscarOfertas(localidad, cp, fechaInicio, null);
 	}
 
+	/**
+	 * Devuelve los resultados de la busqueda vacacional
+	 * 
+	 * @param localidad
+	 *            localidad del inmueble
+	 * @param cp
+	 *            codigo postal
+	 * @param desde
+	 *            fecha de inicio de la oferta
+	 * @param hasta
+	 *            feha final de la oferta
+	 * @return resultados de la busqueda vacacional
+	 */
 	public List<Integer> buscarVacacional(String localidad, Integer cp, LocalDate desde, LocalDate hasta) {
 		return model.buscarOfertas(localidad, cp, desde, hasta);
 	}
 
+	/**
+	 * Devuelve el precio de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @return el precio de la oferta
+	 */
 	public Float ofertaGetPrecio(Integer id) {
 		try {
 			return model.getOfertaById(id).getPrecio();
@@ -108,6 +164,13 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve la fianza de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @return la fianza de una oferta
+	 */
 	public Float ofertaGetFianza(Integer id) {
 
 		try {
@@ -119,6 +182,13 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve la descripcion de una oferta
+	 * 
+	 * @param id
+	 *            Id de la oferta
+	 * @return la descripcion de una oferta
+	 */
 	public String ofertaGetDescripcion(Integer id) {
 		try {
 			return model.getOfertaById(id).getDescripcion();
@@ -129,6 +199,13 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve la fecha final de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @return la fecha final de una oferta
+	 */
 	public LocalDate ofertaGetFechaFin(Integer id) {
 		try {
 			return model.getOfertaById(id).getFechaFin();
@@ -139,6 +216,13 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve la fecha inicio de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @return la fecha inicio de una oferta
+	 */
 	public LocalDate ofertaGetFechaInicio(Integer id) {
 		try {
 			return model.getOfertaById(id).getFechaInicio();
@@ -149,6 +233,13 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve el numero de meses de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @return el numero se meses de una oferta
+	 */
 	public Integer ofertaGetNumMeses(Integer id) {
 		try {
 			return model.getOfertaById(id).getNumMeses();
@@ -159,6 +250,13 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve la direccion del inmueble de la oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @return la direccion del inmueble de la oferta
+	 */
 	public String ofertaGetDireccion(Integer id) {
 		try {
 			return inmuebleGetDireccionCompleta(model.getOfertaById(id).getInmueble());
@@ -169,6 +267,13 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve si la oferta se encuentra en un estado editable
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @return si la oferta se encuentra en un estado editable
+	 */
 	public Boolean ofertaGetEditable(Integer id) {
 		Estado estado = null;
 		try {
@@ -181,6 +286,11 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve la lista de ids de ofertas del ofertante logueado
+	 * 
+	 * @return la lista de ids de ofertas del ofertante logueado
+	 */
 	public List<Integer> ofertanteGetMisOfertas() {
 		List<Integer> result = new ArrayList<>();
 		List<Integer> inmuebles = model.getOfertanteLogueado().getInmuebles();
@@ -196,6 +306,11 @@ public class Controller {
 		return result;
 	}
 
+	/**
+	 * Devuelve los ids de los inmuebles del ofertante logueado
+	 * 
+	 * @return los ids de los inmuebles del ofertante logueado
+	 */
 	public List<Integer> ofertanteGetMisInmuebles() {
 		return model.getOfertanteLogueado().getInmuebles();
 	}
@@ -210,6 +325,13 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve la direccion completa de un inmueble
+	 * 
+	 * @param id
+	 *            id del inmueble
+	 * @return la direccion completa de un inmueble
+	 */
 	public String inmuebleGetDireccionCompleta(Integer id) {
 		Inmueble inmueble = null;
 		try {
@@ -223,6 +345,13 @@ public class Controller {
 
 	}
 
+	/**
+	 * Devuelve el numero de ofertas de un inmueble
+	 * 
+	 * @param id
+	 *            id del inmueble
+	 * @return el numero de ofertas de un inmueble
+	 */
 	public Integer inmuebleGetNumOfertas(Integer id) {
 		try {
 			return model.getInmuebleById(id).getOfertas().size();
@@ -233,9 +362,24 @@ public class Controller {
 		return null;
 	}
 
-	public Integer addInmueble(String localidad, int cp, String direccion, List<String> claves, List<String> valores) {
+	/**
+	 * Añade un nuevo inmueble al sistema
+	 * 
+	 * @param localidad
+	 *            localidad del inmueble
+	 * @param cp
+	 *            codigo postal del inmueble
+	 * @param direccion
+	 *            direccion del inmueble
+	 * @param claves
+	 *            claves de las caracteristicas
+	 * @param valores
+	 *            valores de las caracteristicas
+	 * @return
+	 */
+	public boolean addInmueble(String localidad, int cp, String direccion, List<String> claves, List<String> valores) {
 		try {
-			return model.addInmueble(localidad, cp, direccion, claves, valores);
+			return model.addInmueble(localidad, cp, direccion, claves, valores) != null;
 		} catch (UsuarioNoPermisoException e) {
 			DialogFactory.noPermisionError();
 		} catch (InmuebleDuplicadoException e) {
@@ -244,7 +388,7 @@ public class Controller {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
 		}
-		return null;
+		return false;
 	}
 
 	public Integer addOfertaVivienda(LocalDate fechaInicio, int n_meses, float precio, float fianza, String descripcion,
@@ -252,46 +396,102 @@ public class Controller {
 		return model.addOferta(fechaInicio, n_meses, precio, fianza, descripcion, idInmueble);
 	}
 
-	public Integer addOfertaVacacional(LocalDate fechaInicio, LocalDate fechaFin, float precio, float fianza,
-			String descripcion, Integer idInmueble) throws UsuarioNoPermisoException {
-		return model.addOferta(fechaInicio, fechaFin, precio, fianza, descripcion, idInmueble);
+	/**
+	 * Añade una nueva oferrta vacacional
+	 * 
+	 * @param fechaInicio
+	 *            fecha de inicio de la oferta
+	 * @param fechaFin
+	 *            fecha de fin de la oferta
+	 * @param precio
+	 *            precio de la oferta
+	 * @param fianza
+	 *            fianza de la oferta
+	 * @param descripcion
+	 *            descripcion de la oferta
+	 * @param idInmueble
+	 *            id del inmueble de la oferta
+	 * @return el estado de la accion
+	 * 
+	 */
+	public boolean addOfertaVacacional(LocalDate fechaInicio, LocalDate fechaFin, float precio, float fianza,
+			String descripcion, Integer idInmueble) {
+		try {
+			return model.addOferta(fechaInicio, fechaFin, precio, fianza, descripcion, idInmueble) != null;
+		} catch (UsuarioNoPermisoException e) {
+			DialogFactory.noPermisionError();
+		}
+		return false;
 	}
 
-	public void ofertaSetPrecio(int id, float parseFloat) {
+	/**
+	 * Cambia el precio de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @param parseFloat
+	 *            nuevo precio de la oferta
+	 * @return el resultado de esta accion
+	 */
+	public boolean ofertaSetPrecio(int id, float parseFloat) {
 		try {
-			model.getOfertaById(id).setPrecio(parseFloat);
+			return model.getOfertaById(id).setPrecio(parseFloat);
 		} catch (OfertaNoModificableException e) {
 			DialogFactory.internalError("La oferta se encuentra en un estado no modificable");
 		} catch (SQLException e) {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
 		}
+		return false;
 	}
 
-	public void ofertaSetFianza(int id, float parseFloat) {
+	/**
+	 * Cambia la fianza de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @param parseFloat
+	 *            el nuevo valor de la fianza
+	 * @return el resultado de esta accion
+	 */
+	public boolean ofertaSetFianza(int id, float parseFloat) {
 		try {
-			model.getOfertaById(id).setFianza(parseFloat);
+			return model.getOfertaById(id).setFianza(parseFloat);
 		} catch (OfertaNoModificableException e) {
 			DialogFactory.internalError("La oferta se encuentra en un estado no modificable");
 		} catch (SQLException e) {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
 		}
-
+		return false;
 	}
 
-	public void ofertaSetDescripcion(int id, String descripcion) {
+	/**
+	 * Cambia la descripcion de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @param descripcion
+	 *            nueva descripcion
+	 * @return el resultado de esta accion
+	 */
+	public boolean ofertaSetDescripcion(int id, String descripcion) {
 		try {
-			model.getOfertaById(id).setDescripcion(descripcion);
+			return model.getOfertaById(id).setDescripcion(descripcion);
 		} catch (OfertaNoModificableException e) {
 			DialogFactory.internalError("La oferta se encuentra en un estado no modificable");
 		} catch (SQLException e) {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
 		}
-
+		return false;
 	}
 
+	/**
+	 * Devuelve el id de la oferta reservada por el demandante
+	 * 
+	 * @return id de la oferta reservada
+	 */
 	public Integer demandanteGetOfertaReservada() {
 		Integer r = model.getDemandanteLogueado().getReservaActiva();
 		try {
@@ -303,76 +503,109 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve la lista de ofertas contratadas del demandante logueado
+	 * 
+	 * @return la lista de ofertas contratadas del demandante logueado
+	 */
 	public List<Integer> demandanteGetOfertasContratadas() {
 		return model.getDemandanteLogueado().getOfertasContratadas();
 	}
 
-	public List<Integer> adminGetOfertasPendientes()  {
-			try{
-				return model.getOfertasPendientes();
-			}catch (SQLException e) {
-				DialogFactory.internalError(e.getMessage());
-				System.exit(-1);
-			}
-			return null;		
-					
+	/**
+	 * Devuelve la lista de los ids de las ofertas que tiene que revisar el
+	 * administrados
+	 * 
+	 * @return la lista de los ids de las ofertas que tiene que revisar el
+	 *         administrados
+	 */
+	public List<Integer> adminGetOfertasPendientes() {
+		try {
+			return model.getOfertasPendientes();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		return null;
+
 	}
 
+	/**
+	 * Devuelve si el usuario logueado tiene permisos de demandante
+	 * 
+	 * @return si el usuario logueado tiene permisos de demandante
+	 */
 	public boolean tienePermisosDemandante() {
 		return model.getDemandanteLogueado() != null;
 	}
-	
+
 	public Cliente getClienteById(int id) throws SQLException {
 		return model.getClienteById(id);
 	}
-	
+
 	public List<Integer> adminGetDemandantesProblemaPagos() {
 		try {
 			List<Integer> resultados = model.getUsuariosProblemaPago();
 			List<Integer> pagos = new ArrayList<Integer>();
-			for(Integer id : resultados) {
-				if( model.getClienteById(resultados.get(id)) instanceof Ofertante ) {
+			for (Integer id : resultados) {
+				if (model.getClienteById(resultados.get(id)) instanceof Ofertante) {
 					pagos.add(id);
 				}
 			}
-			
+
 			return pagos;
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
 		}
-		
+
 		return null;
 	}
-	
+
+	/**
+	 * Devuelve la lista de los ofertantes con problemas de pago
+	 * 
+	 * @return la lista de los ofertantes con problemas de pago
+	 */
 	public List<Integer> adminGetOfertantesProblemaCobros() {
 		try {
 			List<Integer> resultados = model.getUsuariosProblemaPago();
 			List<Integer> cobros = new ArrayList<Integer>();
-			
-			for(Integer id : resultados) {
-				if( model.getClienteById(resultados.get(id)) instanceof Demandante ) {
+
+			for (Integer id : resultados) {
+				if (model.getClienteById(resultados.get(id)) instanceof Demandante) {
 					cobros.add(id);
 				}
 			}
 			return cobros;
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
 		}
-		
-		
+
 		return null;
 	}
-	
-	public List<Integer> adminGetUsuariosProblemaPagos()  {
-		try{
+
+	/**
+	 * Devuelve una lista completa con los ids de los usuarios con problemas de pago
+	 * 
+	 * @return una lista completa con los ids de los usuarios con problemas de pago
+	 */
+	public List<Integer> adminGetUsuariosProblemaPagos() {
+		try {
 			return model.getUsuariosProblemaPago();
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			return null;
 		}
 	}
 
+	/**
+	 * Intenta contratar una oferta
+	 * 
+	 * @param idOferta
+	 *            id de la oferta
+	 * @return el resultado de la accion
+	 */
 	public boolean contratarOferta(int idOferta) {
 		try {
 			return model.contratar(idOferta);
@@ -389,6 +622,11 @@ public class Controller {
 		return false;
 	}
 
+	/**
+	 * Cancela la reserva del demandante logueado
+	 * 
+	 * @return es estado de la accion
+	 */
 	public Boolean demandanteCancelarReserva() {
 		try {
 			return model.cancelarReserva();
@@ -399,6 +637,15 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve los comentarios de una oferta como una lista de PanelesComentario
+	 * ya inicializados
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @return los comentarios de una oferta como una lista de PanelesComentario
+	 *         ya inicializados
+	 */
 	public List<PanelComentario> ofertaGetComentarios(Integer id) {
 		Oferta oferta = null;
 		try {
@@ -414,13 +661,21 @@ public class Controller {
 				.collect(Collectors.toList());
 		noComentarios.forEach(k -> opiniones.remove(k));
 
-		List<PanelComentario> resultado = opiniones.values().stream().map(v -> new PanelComentario(gui,
-				((Comentario) v).getTexto(), v.getId(), ((Comentario) v).getPadre(), id, v.getFecha()))
+		return opiniones.values().stream().map(
+				v -> new PanelComentario(gui, ((Comentario) v).getTexto(), v.getId(), ((Comentario) v).getPadre(), id))
 				.collect(Collectors.toList());
-
-		return resultado;
 	}
 
+	/**
+	 * Añade un nuevo comentario a una oferta
+	 * 
+	 * @param comentario
+	 *            texto del comentario
+	 * @param idOferta
+	 *            id de la oferta
+	 * @param idPadre
+	 *            id del comentario padre del nuevo comentario
+	 */
 	public void ofertaComentar(String comentario, Integer idOferta, Integer idPadre) {
 
 		try {
@@ -433,6 +688,13 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Realiza una reserva de una oferta
+	 * 
+	 * @param idOferta
+	 *            id de la oferta
+	 * @return si la reserva se ha hecho bien o no
+	 */
 	public boolean reservarOferta(int idOferta) {
 		try {
 			return model.reservar(idOferta);
@@ -453,6 +715,14 @@ public class Controller {
 		return false;
 	}
 
+	/**
+	 * Cambia la fecha de inicio de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @param desde
+	 *            nueva fecha de inicio
+	 */
 	public void ofertaSetFechaInicio(int id, LocalDate desde) {
 		try {
 			model.getOfertaById(id).setFechaInicio(desde);
@@ -464,28 +734,52 @@ public class Controller {
 		}
 	}
 
-	public void ofertaSetFechaFin(int id, LocalDate hasta) {
+	/**
+	 * Cambia la fecha final de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @param hasta
+	 *            Fecha de fin de la oferta
+	 */
+	public boolean ofertaSetFechaFin(int id, LocalDate hasta) {
 		try {
-			model.getOfertaById(id).setFechaFin(hasta);
+			return model.getOfertaById(id).setFechaFin(hasta);
 		} catch (OfertaNoModificableException e) {
 			DialogFactory.internalError("La oferta se encuentra en un estado no modificable");
 		} catch (SQLException e) {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
 		}
+		return false;
 	}
 
-	public void ofertaSetNumMeses(int id, int meses) {
+	/**
+	 * Cambia el numero de meses de la oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @param meses
+	 *            número de meses de la oferta
+	 */
+	public boolean ofertaSetNumMeses(int id, int meses) {
 		try {
-			model.getOfertaById(id).setNumMeses(meses);
+			return model.getOfertaById(id).setNumMeses(meses);
 		} catch (OfertaNoModificableException e) {
 			DialogFactory.internalError("La oferta se encuentra en un estado no modificable");
 		} catch (SQLException e) {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
 		}
+		return false;
 	}
 
+	/**
+	 * Marca una oferta como rechazada
+	 * 
+	 * @param idOferta
+	 *            id de la oferta
+	 */
 	public void rechazarOferta(int idOferta) {
 		try {
 			model.getOfertaById(idOferta).setEstado(Estado.RETIRADA);
@@ -495,6 +789,12 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Marca una oferta como aceptada
+	 * 
+	 * @param idOferta
+	 *            id de la oferta
+	 */
 	public void aceptarOferta(int idOferta) {
 		try {
 			model.getOfertaById(idOferta).setEstado(Estado.ACEPTADA);
@@ -502,5 +802,70 @@ public class Controller {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
 		}
+	}
+
+	/**
+	 * Añade una valoracion numerica a una oferta
+	 * 
+	 * @param idOferta
+	 *            id de la oferta que se va a valorar
+	 * @param valor
+	 *            valor numerico de la opinion
+	 */
+	public boolean ofertaValorar(Integer idOferta, int valor) {
+		try {
+			return model.addNumerica(idOferta, valor);
+		} catch (UsuarioNoPermisoException e) {
+			DialogFactory.noPermisionError();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		return false;
+	}
+
+	/**
+	 * Devuelve la valoracion media de una oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @return la valoracion media de una oferta
+	 */
+	public Integer ofertaGetValoracion(Integer id) {
+		try {
+			return model.getOfertaById(id).getNumericamedia();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		return null;
+	}
+
+	/**
+	 * Devuelve si una oferta dada ya ha sido valorada por el demandante logueado
+	 * 
+	 * @param id
+	 *            id de la oferta
+	 * @return si una oferta dada ya ha sido valorada por el demandante logueado
+	 */
+	public boolean ofertaYaTieneValoracion(Integer id) {
+		Oferta o = null;
+		try {
+			o = model.getOfertaById(id);
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+
+		Integer idUsuario = model.getDemandanteLogueado().getId();
+		for (Opinion op : o.getOpiniones().values()) {
+			if (op instanceof Numerica) {
+				if (op.getUsuario().equals(idUsuario)) {
+					return true;
+				}
+			}
+
+		}
+		return false;
 	}
 }

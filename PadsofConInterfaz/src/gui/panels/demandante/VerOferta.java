@@ -4,11 +4,15 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,6 +26,7 @@ import gui.components.fx.FxButton;
 import gui.controllers.Controller;
 import gui.dialogs.ComentarDialog;
 import gui.panels.oferta.comentario.PanelComentario;
+import gui.util.IconLoader;
 import gui.util.LimitedFlowLayout;
 import gui.util.Nombrable;
 import gui.util.PanelInterfaz;
@@ -49,13 +54,22 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 	private JScrollPane scrollPane;
 	private FxButton aniadirComentario;
 
-	private Integer idOferta;
+	protected Integer idOferta;
+	private JPanel grupoValoracion;
+	private ImageIcon empty;
+	private ImageIcon full;
+	protected boolean[] valoracionInicial = new boolean[5];
+	boolean yaValorado;
+	private JLabel star1;
+	private JLabel star2;
+	private JLabel star3;
+	private JLabel star4;
+	private JLabel star5;
+	private JLabel labelValoracion;
 
 	public VerOferta(Gui gui) {
 		this.gui = gui;
 		initialize();
-		//this.setBackground(Color.RED);
-
 	}
 
 	@Override
@@ -69,10 +83,10 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 		Font precioFont = new Font("Comic Sans", Font.PLAIN, 50);
 		Font fianzaFont = new Font("Comic Sans", Font.PLAIN, 20);
 
-		direccion = new JMultiLineLabel("Calle Alcala, nº7, 1B, 28850, Madrid", 200, 30);
+		direccion = new JMultiLineLabel("Calle Alcala, nº7, 1B, 28850, Madrid", 200, 30, true);
 		descripcion = new JMultiLineLabel(
 				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus purus elit, mattis id mauris eu, varius venenatis eros. Vestibulum quis pulvinar odio, vitae ultrices arcu. Nulla et cursus ante, ac rutrum purus. Suspendisse sed ex purus. Donec condimentum leo non interdum consectetur. Curabitur fermentum dolor eu porta sagittis. Nam ut justo quis diam efficitur fringilla. Vivamus a ornare est, eget porttitor mauris. Maecenas faucibus pretium ligula ut tempus. Donec eleifend erat ligula, ut cursus quam lacinia vitae.",
-				400, 65);
+				400, 65, true);
 
 		desde = new JLabel("Desde");
 		fechaInicio = new JLabel("12-12-2012");
@@ -98,6 +112,27 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 		scrollPane = new JScrollPane(comentarios, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setPreferredSize(new Dimension(830, 320));
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+		grupoValoracion = new JPanel();
+		grupoValoracion.setPreferredSize(new Dimension(200, 40));
+		labelValoracion = new JLabel("Valora esta oferta");
+
+		labelValoracion.setFont(precioFont.deriveFont(Font.PLAIN, 17));
+
+		empty = IconLoader.load("res/img/fa-star-empty.png", 30, 30);
+		full = IconLoader.load("res/img/fa-star-full.png", 30, 30);
+		star1 = new JLabel(empty);
+		star2 = new JLabel(empty);
+		star3 = new JLabel(empty);
+		star4 = new JLabel(empty);
+		star5 = new JLabel(empty);
+
+		grupoValoracion.add(star1);
+		grupoValoracion.add(star2);
+		grupoValoracion.add(star3);
+		grupoValoracion.add(star4);
+		grupoValoracion.add(star5);
 
 		this.add(direccion);
 		this.add(fechaInicio);
@@ -111,6 +146,8 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 		this.add(precioTotal);
 		this.add(scrollPane);
 		this.add(aniadirComentario);
+		this.add(grupoValoracion);
+		this.add(labelValoracion);
 
 	}
 
@@ -154,24 +191,31 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 		layout.putConstraint(SpringLayout.EAST, aniadirComentario, 0, SpringLayout.EAST, scrollPane);
 		layout.putConstraint(SpringLayout.SOUTH, aniadirComentario, -10, SpringLayout.NORTH, scrollPane);
 
+		layout.putConstraint(SpringLayout.NORTH, grupoValoracion, 10, SpringLayout.SOUTH, fechaInicio);
+		layout.putConstraint(SpringLayout.WEST, grupoValoracion, 20, SpringLayout.WEST, this);
+
+		layout.putConstraint(SpringLayout.NORTH, labelValoracion, 10, SpringLayout.SOUTH, grupoValoracion);
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, labelValoracion, 0, SpringLayout.HORIZONTAL_CENTER,
+				grupoValoracion);
+
+		grupoValoracion.setLayout(new FlowLayout(FlowLayout.LEFT, 7, 0));
+
 	}
 
 	public void cargarComentarios(Integer id) {
-		SwingUtilities.invokeLater(() -> {
-			Controller c = gui.getController();
-			comentarios.removeAll();
-			List<PanelComentario> resultados = c.ofertaGetComentarios(id);
-			for (PanelComentario panelComentario : resultados) {
-				colocarComentario(panelComentario);
-			}
+		Controller c = gui.getController();
+		comentarios.removeAll();
+		List<PanelComentario> resultados = c.ofertaGetComentarios(id);
+		for (PanelComentario panelComentario : resultados) {
+			colocarComentario(panelComentario);
+		}
 
-			comentarios.revalidate();
-			comentarios.repaint();
-			scrollPane.revalidate();
-			scrollPane.repaint();
-			this.revalidate();
-			this.repaint();
-		});
+		comentarios.revalidate();
+		comentarios.repaint();
+		scrollPane.revalidate();
+		scrollPane.repaint();
+		this.revalidate();
+		this.repaint();
 	}
 
 	private void colocarComentario(PanelComentario p) {
@@ -184,15 +228,17 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 				PanelComentario panelPadre = (PanelComentario) coms[i];
 				if (((PanelComentario) coms[i]).getIdComentario().equals(padre)) {
 					comentarios.add(p, i + 1);
-					p.setPreferredSize(new Dimension(panelPadre.getPreferredSize().width - 40,
-							panelPadre.getPreferredSize().height));
+					p.setNivel(panelPadre.getNivel() + 1);
 					break;
 				}
 			}
 		}
 		p.revalidate();
 		p.repaint();
-		comentarios.setPreferredSize(new Dimension(800, comentarios.getComponentCount() * 36));
+
+		int altura = Stream.of(comentarios.getComponents()).map(c -> c.getPreferredSize().height + 5)
+				.mapToInt(Integer::intValue).sum() + 5;
+		comentarios.setPreferredSize(new Dimension(800, altura));
 
 	}
 
@@ -216,8 +262,32 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 			}
 			this.descripcion.setText(c.ofertaGetDescripcion(id));
 			this.direccion.setText(c.ofertaGetDireccion(id));
+			cargarValoracion(id);
 			cargarComentarios(id);
 		});
+	}
+
+	protected void cargarValoracion(Integer id) {
+		Controller c = gui.getController();
+		Integer val = c.ofertaGetValoracion(id);
+
+		for (int i = 0; i < val; i++) {
+			((JLabel) grupoValoracion.getComponent(i)).setIcon(full);
+			valoracionInicial[i] = true;
+		}
+
+		for (int i = val; i < 5; i++) {
+			((JLabel) grupoValoracion.getComponent(i)).setIcon(empty);
+			valoracionInicial[i] = false;
+		}
+
+		yaValorado = c.ofertaYaTieneValoracion(idOferta);
+		if (yaValorado) {
+			labelValoracion.setText("Ya has valorado esta oferta");
+		} else {
+			labelValoracion.setText("Valora esta oferta");
+		}
+
 	}
 
 	@Override
@@ -232,6 +302,107 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 				}
 			});
 		});
+
+		star1.addMouseListener(new StarListener(grupoValoracion, 0));
+		star2.addMouseListener(new StarListener(grupoValoracion, 1));
+		star3.addMouseListener(new StarListener(grupoValoracion, 2));
+		star4.addMouseListener(new StarListener(grupoValoracion, 3));
+		star5.addMouseListener(new StarListener(grupoValoracion, 4));
+
+		grupoValoracion.addMouseListener(new StarGroupListener());
+
+	}
+
+	private class StarListener implements MouseListener {
+		private JPanel group;
+		private int index;
+		private boolean initialStatus[];
+
+		public StarListener(JPanel group, int index) {
+			this.group = group;
+			this.index = index;
+			initialStatus = new boolean[5];
+			for (int i = 0; i < 5; i++) {
+				JLabel star = ((JLabel) group.getComponent(i));
+				initialStatus[i] = star.getIcon().equals(full);
+			}
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (!yaValorado) {
+				Controller c = gui.getController();
+				c.ofertaValorar(idOferta, index + 1);
+				cargarValoracion(idOferta);
+			}
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			if (!yaValorado) {
+				for (int i = 0; i <= index; i++) {
+					((JLabel) group.getComponent(i)).setIcon(full);
+				}
+
+				for (int i = index + 1; i < 5; i++) {
+					((JLabel) group.getComponent(i)).setIcon(empty);
+				}
+			}
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		}
+	}
+
+	private class StarGroupListener implements MouseListener {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			if (!yaValorado) {
+				JPanel group = (JPanel) e.getSource();
+				for (int i = 0; i < 5; i++) {
+					JLabel star = ((JLabel) group.getComponent(i));
+					if (valoracionInicial[i]) {
+						star.setIcon(full);
+					} else {
+						star.setIcon(empty);
+					}
+				}
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
 
 	}
 

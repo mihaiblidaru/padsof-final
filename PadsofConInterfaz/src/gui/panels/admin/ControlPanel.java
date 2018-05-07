@@ -2,7 +2,6 @@ package gui.panels.admin;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +13,6 @@ import javax.swing.SpringLayout;
 import javax.swing.border.TitledBorder;
 
 import gui.Gui;
-import app.clases.MiVacaPiso;
-import app.clases.users.Demandante;
-import app.clases.users.Ofertante;
 import gui.controllers.Controller;
 import gui.util.PanelInterfaz;
 
@@ -31,9 +27,13 @@ public class ControlPanel extends PanelInterfaz {
 	JButton ver;
 	private static final long serialVersionUID = 7615793439529902683L;
 	public static final String NAME = "PANEL_DE_CONTROL";
+	private List<Integer> pagos;
+	private List<Integer> cobros;
 
 	public ControlPanel(Gui gui) {
 		this.gui = gui;
+		pagos = new ArrayList<>();
+		cobros = new ArrayList<>();
 		initialize();
 	}
 
@@ -66,13 +66,22 @@ public class ControlPanel extends PanelInterfaz {
 	public void crearComponentes() {
 
 		Controller c = gui.getController();
-		
+
 		problemaPagos = new JPanel();
 		problemaCobros = new JPanel();
 		ofertaPendiente = new JPanel();
 		ver = new JButton("Ver");
 		oferta = new JLabel("Piso cutre, una cantidad muy grande de cutre, uye");
-		
+
+		TitledBorder title;
+		title = BorderFactory.createTitledBorder(" Ofertas nuevas");
+		TitledBorder titlep;
+		titlep = BorderFactory.createTitledBorder(pagos.size() + " Usuarios con problemas de pago ");
+		TitledBorder titlec;
+		titlec = BorderFactory.createTitledBorder(cobros.size() + " Usuarios con problemas de cobro");
+		this.ofertaPendiente.setBorder(title);
+		this.problemaPagos.setBorder(titlep);
+		this.problemaCobros.setBorder(titlec);
 
 		this.ofertaPendiente.add(oferta);
 		this.ofertaPendiente.add(ver);
@@ -91,13 +100,9 @@ public class ControlPanel extends PanelInterfaz {
 		this.setBackground(Color.WHITE);
 		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, 562));
 	}
-	
 	public void cargarUsuarios() {
-		
+
 		Controller c = gui.getController();
-		List<Integer> pagos = null;
-		List<Integer> cobros = null;
-		
 		pagos = c.adminGetOfertantesProblemaCobros();
 		cobros = c.adminGetDemandantesProblemaPagos();
 		
@@ -122,6 +127,6 @@ public class ControlPanel extends PanelInterfaz {
 		title = BorderFactory.createTitledBorder( ofertas.size() +" Ofertas nuevas");
 		this.ofertaPendiente.setBorder(title);
 		
-		
+
 	}
 }

@@ -53,5 +53,6 @@ public class OfertasPendientes extends JLayeredPane implements Nombrable {
 	public void removeOferta(int id) {
 		coi.removeOferta(id);
 		this.revalidate();
+		this.repaint();
 	}
 }

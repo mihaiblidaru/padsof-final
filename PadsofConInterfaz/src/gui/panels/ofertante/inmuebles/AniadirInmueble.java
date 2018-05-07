@@ -3,13 +3,8 @@ package gui.panels.ofertante.inmuebles;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,11 +23,13 @@ import gui.controllers.Controller;
 import gui.panels.Header;
 import gui.panels.ofertante.caracteristicas.PanelCaracteristicas;
 import gui.util.DialogFactory;
+import gui.util.IconLoader;
 import gui.util.Nombrable;
+import gui.util.PanelInterfaz;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-public class AniadirInmueble extends JPanel implements Nombrable {
+public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = -4230661380101910555L;
 
@@ -42,112 +39,107 @@ public class AniadirInmueble extends JPanel implements Nombrable {
 
 	public AniadirInmueble(Gui gui) {
 		this.gui = gui;
-		this.setName(NAME);
+		initialize();
 	}
 
 	private FxTextField localidadTextField;
 	private FxTextField cpTextField;
 	private FxTextField direccionTextField;
 	private FxTextField direccionExtraTextField;
+	private PanelCaracteristicas pc;
+	private JLabel etiqueta;
+	private JLabel localidad;
+	private JLabel codigoPostal;
+	private JLabel direccionLabel;
+	private JLabel direccionLabel2;
+	private JLabel warningIcon;
+	private JSeparator separator;
+	private FxButton confirmar;
+	private JLabel alarm;
+	private JPanel caracteristicas;
 
-	private void initialize() {
+	@Override
+	protected void setDimension() {
+		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, Gui.FRAME_HEIGHT - 20));
+	}
+
+	@Override
+	protected void crearComponentes() {
+		Font font = new Font("Comic Sans", Font.PLAIN, 40);
+		etiqueta = new JLabel("Añadir Vivienda");
+		localidad = new JLabel("Localidad:");
+		codigoPostal = new JLabel("Codigo Postal:");
+		this.cpTextField = new FxTextField(187, 25, "Ej: 28850");
+		this.localidadTextField = new FxTextField(210, 25, "Ej: Madrid");
+		this.direccionTextField = new FxTextField(210, 25, "Ej: Calle Alcala, 30");
+		this.direccionExtraTextField = new FxTextField(172, 25, "Ej: Escalera A, Portal 15, 1B");
+		direccionLabel = new JLabel("Direccion:");
+		direccionLabel2 = new JLabel("Direccion(extra):");
+		warningIcon = new JLabel(IconLoader.load("res/img/fa-warning.png", 10, 10));
+		separator = new JSeparator(SwingConstants.VERTICAL);
+		confirmar = new FxButton(200, 60, "Confirmar");
+		alarm = new JLabel("No puedes añadir el mismo inmueble dos veces");
+		caracteristicas = buildPanelCaracteristicas();
+		etiqueta.setFont(font);
+
+		this.add(etiqueta);
+		this.add(localidad);
+		this.add(this.localidadTextField);
+		this.add(codigoPostal);
+		this.add(this.cpTextField);
+		this.add(direccionLabel);
+		this.add(this.direccionTextField);
+		this.add(direccionLabel2);
+		this.add(this.direccionExtraTextField);
+		this.add(confirmar);
+		this.add(alarm);
+		this.add(caracteristicas);
+		this.add(warningIcon);
+		this.add(separator);
+
+		cpTextField.setOnlyInteger();
+
+	}
+
+	@Override
+	protected void colocarComponentes() {
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);
-		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, Gui.FRAME_HEIGHT - 20));
-		this.setBackground(Color.WHITE);
-
-		Font font = new Font("Comic Sans", Font.PLAIN, 40);
-
-		JLabel etiqueta = new JLabel("Añadir Vivienda");
-		layout.putConstraint(SpringLayout.NORTH, etiqueta, 70, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, etiqueta, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		etiqueta.setFont(font);
-		this.add(etiqueta);
-
-		JLabel localidad = new JLabel("Localidad:");
-		layout.putConstraint(SpringLayout.NORTH, localidad, 25, SpringLayout.SOUTH, etiqueta);
-		layout.putConstraint(SpringLayout.WEST, localidad, -160, SpringLayout.WEST, etiqueta);
-		this.add(localidad);
-
-		this.localidadTextField = new FxTextField(210, 25, "Ej: Madrid");
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, this.localidadTextField, 0, SpringLayout.VERTICAL_CENTER,
-				localidad);
-		layout.putConstraint(SpringLayout.WEST, this.localidadTextField, 10, SpringLayout.EAST, localidad);
-		this.add(this.localidadTextField);
-
-		JLabel codigoPostal = new JLabel("Codigo Postal:");
-		layout.putConstraint(SpringLayout.NORTH, codigoPostal, 15, SpringLayout.SOUTH, localidad);
-		layout.putConstraint(SpringLayout.WEST, codigoPostal, 0, SpringLayout.WEST, localidad);
-		this.add(codigoPostal);
-
-		this.cpTextField = new FxTextField(187, 25, "Ej: 28850");
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, this.cpTextField, 0, SpringLayout.VERTICAL_CENTER,
 				codigoPostal);
 		layout.putConstraint(SpringLayout.WEST, this.cpTextField, 10, SpringLayout.EAST, codigoPostal);
 		layout.putConstraint(SpringLayout.EAST, this.cpTextField, 0, SpringLayout.EAST, this.localidadTextField);
-		this.add(this.cpTextField);
 
-		JLabel direccionLabel = new JLabel("Direccion:");
 		layout.putConstraint(SpringLayout.NORTH, direccionLabel, 15, SpringLayout.SOUTH, codigoPostal);
 		layout.putConstraint(SpringLayout.WEST, direccionLabel, 0, SpringLayout.WEST, localidad);
-		this.add(direccionLabel);
 
-		this.direccionTextField = new FxTextField(210, 25, "Ej: Calle Alcala, 30");
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, this.direccionTextField, 0, SpringLayout.VERTICAL_CENTER,
 				direccionLabel);
 		layout.putConstraint(SpringLayout.WEST, this.direccionTextField, 10, SpringLayout.EAST, direccionLabel);
-		this.add(this.direccionTextField);
 
-		JLabel direccionLabel2 = new JLabel("Direccion(extra):");
 		layout.putConstraint(SpringLayout.NORTH, direccionLabel2, 15, SpringLayout.SOUTH, direccionLabel);
 		layout.putConstraint(SpringLayout.WEST, direccionLabel2, 0, SpringLayout.WEST, direccionLabel);
-		this.add(direccionLabel2);
 
-		this.direccionExtraTextField = new FxTextField(172, 25, "Ej: Escalera A, Portal 15, 1B");
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, this.direccionExtraTextField, 0,
 				SpringLayout.VERTICAL_CENTER, direccionLabel2);
 		layout.putConstraint(SpringLayout.WEST, this.direccionExtraTextField, 10, SpringLayout.EAST, direccionLabel2);
-		this.add(this.direccionExtraTextField);
 
-		FxButton confirmar = new FxButton(200, 60, "Confirmar");
 		layout.putConstraint(SpringLayout.NORTH, confirmar, 30, SpringLayout.SOUTH, direccionExtraTextField);
 		layout.putConstraint(SpringLayout.WEST, confirmar, 40, SpringLayout.WEST, direccionLabel2);
-		this.add(confirmar);
 
-		JLabel alarm = new JLabel("No puedes añadir el mismo inmueble dos veces");
 		layout.putConstraint(SpringLayout.WEST, alarm, -22, SpringLayout.WEST, confirmar);
 		layout.putConstraint(SpringLayout.SOUTH, alarm, -5, SpringLayout.NORTH, confirmar);
-		this.add(alarm);
 
-		ImageIcon image = null;
-		try {
-			image = new ImageIcon(
-					ImageIO.read(new File("res/img/fa-warning.png")).getScaledInstance(10, 10, Image.SCALE_SMOOTH));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		JLabel warningIcon = new JLabel(image);
-
-		this.add(warningIcon);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, warningIcon, 0, SpringLayout.VERTICAL_CENTER, alarm);
 		layout.putConstraint(SpringLayout.EAST, warningIcon, -5, SpringLayout.WEST, alarm);
 
-		JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
-		this.add(separator);
 		layout.putConstraint(SpringLayout.WEST, separator, 15, SpringLayout.EAST, this.localidadTextField);
 		layout.putConstraint(SpringLayout.NORTH, separator, -5, SpringLayout.NORTH, this.localidadTextField);
 		separator.setPreferredSize(new Dimension(2, 220));
 		separator.setForeground(new Color(200, 200, 200));
 
-		JPanel caracteristicas = buildPanelCaracteristicas();
-
-		this.add(caracteristicas);
-
 		layout.putConstraint(SpringLayout.WEST, caracteristicas, 0, SpringLayout.EAST, separator);
 		layout.putConstraint(SpringLayout.NORTH, caracteristicas, 5, SpringLayout.NORTH, separator);
-
-		cpTextField.setOnlyInteger();
-		confirmar.setOnAction(handler);
 	}
 
 	private EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
@@ -194,8 +186,6 @@ public class AniadirInmueble extends JPanel implements Nombrable {
 
 		}
 	};
-
-	private PanelCaracteristicas pc;;
 
 	private JPanel buildPanelCaracteristicas() {
 		SpringLayout layout = new SpringLayout();
@@ -244,6 +234,11 @@ public class AniadirInmueble extends JPanel implements Nombrable {
 
 		addCaracteristica.setOnAction((event) -> pc.addCaracteristica());
 		return panel;
+	}
+
+	@Override
+	protected void registrarEventos() {
+		confirmar.setOnAction(handler);
 	}
 
 }

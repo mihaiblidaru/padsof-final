@@ -9,12 +9,10 @@ import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
-import java.sql.SQLException;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
@@ -67,11 +65,7 @@ public class Gui extends JFrame {
 
 		SplashScreen splashScreen = new SplashScreen();
 		Controller controller = null;
-		try {
-			controller = new Controller(gui);
-		} catch (SQLException e) {
-			JOptionPane.showInputDialog(gui, "SQL ERROR", null);
-		}
+		controller = new Controller(gui);
 		gui.SetController(controller);
 
 		SwingUtilities.invokeLater(() -> {
