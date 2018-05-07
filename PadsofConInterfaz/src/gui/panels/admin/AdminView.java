@@ -23,7 +23,7 @@ public class AdminView extends JPanel implements Nombrable {
 
 		this.gui = gui;
 		ofertasPendientes = new OfertasPendientes(gui);
-		this.add(new ControlPanel(), ControlPanel.NAME);
+		this.add(new ControlPanel(gui), ControlPanel.NAME);
 		this.add(ofertasPendientes, OfertasPendientes.NAME);
 		this.add(new UsuariosBloqueados(gui), UsuariosBloqueados.NAME);
 		layout.first(this);
