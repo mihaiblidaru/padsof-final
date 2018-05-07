@@ -41,6 +41,9 @@ public class Gui extends JFrame {
 	public static int FRAME_WIDTH = 1000;
 	public static int FRAME_HEIGHT = 621;
 
+	/**
+	 * Controlador de la aplicacion
+	 */
 	private Controller controller;
 	private JPanel contentPane;
 	private SpringLayout layout;
