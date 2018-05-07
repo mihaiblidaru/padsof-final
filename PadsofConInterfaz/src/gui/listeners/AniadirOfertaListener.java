@@ -94,12 +94,10 @@ public class AniadirOfertaListener implements EventHandler<ActionEvent> {
 					hastaDatePicker.setValue(null);
 					return;
 				}
-				try {
-					c.addOfertaVacacional(desde, hasta, precioAsNum, fianzaAsNum, descripcion, idInmueble);
+				if (c.addOfertaVacacional(desde, hasta, precioAsNum, fianzaAsNum, descripcion, idInmueble)) {
 					gui.showOnly(Header.NAME, MisOfertas.NAME);
-				} catch (NumberFormatException | UsuarioNoPermisoException e) {
-					e.printStackTrace();
 				}
+
 			} else {
 				String numMeses = mesesTextField.getText();
 

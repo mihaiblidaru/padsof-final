@@ -40,11 +40,13 @@ public class PanelComentario extends PanelInterfaz {
 		this.gui = gui;
 		this.idOferta = idOferta;
 		this.setBorder(BorderFactory.createEtchedBorder());
+		initialize();
 	}
 
 	@Override
 	public void setDimension() {
-		this.setPreferredSize(new Dimension(PANEL_WIDTH - nivel * DECREMENTO_POR_NIVEL, PANEL_HEIGHT));
+		int height = this.labelTexto.getPreferredSize().height;
+		this.setPreferredSize(new Dimension(PANEL_WIDTH - nivel * DECREMENTO_POR_NIVEL, height + 15));
 	}
 
 	@Override
@@ -98,6 +100,7 @@ public class PanelComentario extends PanelInterfaz {
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
 		this.labelTexto.setNewSize(500 - nivel * DECREMENTO_POR_NIVEL, 20);
+
 		setDimension();
 	}
 

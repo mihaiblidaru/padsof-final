@@ -45,6 +45,7 @@ public class LoginPanel extends PanelInterfaz implements Nombrable {
 	public LoginPanel(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createEtchedBorder());
+		initialize();
 	}
 
 	@Override

@@ -31,6 +31,7 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 
 	public ResultadosBusqueda(Gui gui) {
 		this.gui = gui;
+		initialize();
 		SwingUtilities.invokeLater(() -> {
 			cargarResultados(gui.getController().getUltimasOfertas(5));
 		});

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,12 +42,13 @@ public class ContenedorOfertasPendientes extends PanelInterfaz {
 
 	public ContenedorOfertasPendientes(Gui gui) {
 		this.gui = gui;
+		initialize();
 	}
 
 	public void cargarOfertas() {
 		Controller c = gui.getController();
 		List<Integer> resultados = null;
-			resultados = c.adminGetOfertasPendientes();
+		resultados = c.adminGetOfertasPendientes();
 		for (Integer id : ofertas.keySet()) {
 			if (!resultados.contains(id)) {
 				grupoOfertas.remove(ofertas.remove(id));

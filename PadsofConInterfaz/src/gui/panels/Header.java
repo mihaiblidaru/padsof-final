@@ -57,6 +57,7 @@ public class Header extends PanelInterfaz implements Nombrable {
 	public Header(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
+		initialize();
 	}
 
 	@Override

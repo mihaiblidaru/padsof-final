@@ -39,7 +39,7 @@ public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 
 	public AniadirInmueble(Gui gui) {
 		this.gui = gui;
-		this.setName(NAME);
+		initialize();
 	}
 
 	private FxTextField localidadTextField;

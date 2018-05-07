@@ -27,6 +27,7 @@ public class MisReservas extends PanelInterfaz implements Nombrable {
 
 	public MisReservas(Gui gui) {
 		this.gui = gui;
+		initialize();
 	}
 
 	@Override

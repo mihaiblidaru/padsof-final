@@ -23,6 +23,7 @@ public class MisInmuebles extends PanelInterfaz implements Nombrable {
 
 	public MisInmuebles(Gui gui) {
 		this.gui = gui;
+		this.initialize();
 	}
 
 	@Override

@@ -61,7 +61,7 @@ public class AniadirOferta extends PanelInterfaz implements Nombrable {
 
 	public AniadirOferta(Gui gui) {
 		this.gui = gui;
-
+		initialize();
 	}
 
 	@Override

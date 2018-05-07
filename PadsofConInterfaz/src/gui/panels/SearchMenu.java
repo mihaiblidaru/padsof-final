@@ -32,6 +32,7 @@ public class SearchMenu extends PanelInterfaz implements Nombrable {
 	public SearchMenu(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.LIGHT_GRAY));
+		initialize();
 	}
 
 	@Override

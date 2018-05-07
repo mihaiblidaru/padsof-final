@@ -40,6 +40,7 @@ public class PanelOferta extends PanelInterfaz {
 	public PanelOferta(Gui gui, int idOferta) {
 		this.gui = gui;
 		this.idOferta = idOferta;
+		initialize();
 		SwingUtilities.invokeLater(() -> {
 			setBorder(BorderFactory.createEtchedBorder());
 			cargarDatos(idOferta);
@@ -58,7 +59,7 @@ public class PanelOferta extends PanelInterfaz {
 		fechaInicio = new JLabel("12-12-2012");
 		hasta = new JLabel("Hasta o Num Meses");
 		fechaFin = new JLabel("22/12/2012");
-		descripcion = new JMultiLineLabel("ERROR. Descripcio", 300, 65, true);
+		descripcion = new JMultiLineLabel("ERROR. Descripcio", 300, 80, true);
 		precio = new JLabel("300 €");
 		fianza = new JLabel("+150 €");
 

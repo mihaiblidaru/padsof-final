@@ -2,6 +2,7 @@ package gui.panels.admin;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -31,6 +32,8 @@ public class ControlPanel extends PanelInterfaz {
 
 	public ControlPanel(Gui gui) {
 		this.gui = gui;
+		pagos = new ArrayList<>();
+		cobros = new ArrayList<>();
 		initialize();
 	}
 
@@ -100,9 +103,6 @@ public class ControlPanel extends PanelInterfaz {
 	public void cargarUsuarios() {
 
 		Controller c = gui.getController();
-		pagos = null;
-		cobros = null;
-
 		pagos = c.adminGetOfertantesProblemaCobros();
 		cobros = c.adminGetDemandantesProblemaPagos();
 

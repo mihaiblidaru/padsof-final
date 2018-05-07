@@ -44,6 +44,7 @@ public class ContenedorInmuebles extends PanelInterfaz {
 
 	public ContenedorInmuebles(Gui gui) {
 		this.gui = gui;
+		initialize();
 	}
 
 	public void cargarInmuebles() {
