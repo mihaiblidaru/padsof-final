@@ -2,6 +2,7 @@ package gui.panels.admin;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -11,10 +12,12 @@ import javax.swing.SpringLayout;
 import javax.swing.border.TitledBorder;
 
 import gui.Gui;
+import gui.controllers.Controller;
 import gui.util.PanelInterfaz;
 
 public class ControlPanel extends PanelInterfaz {
 
+	private Gui gui;
 	JPanel ofertaPendiente;
 	JPanel problemaPagos;
 	JPanel problemaCobros;
@@ -23,8 +26,11 @@ public class ControlPanel extends PanelInterfaz {
 	JButton ver;
 	private static final long serialVersionUID = 7615793439529902683L;
 	public static final String NAME = "PANEL_DE_CONTROL";
+	private List<Integer> pagos;
+	private List<Integer> cobros;
 
-	public ControlPanel() {
+	public ControlPanel(Gui gui) {
+		this.gui = gui;
 		initialize();
 	}
 
@@ -56,17 +62,19 @@ public class ControlPanel extends PanelInterfaz {
 
 	public void crearComponentes() {
 
+		Controller c = gui.getController();
+
 		problemaPagos = new JPanel();
 		problemaCobros = new JPanel();
 		ofertaPendiente = new JPanel();
 		ver = new JButton("Ver");
 		oferta = new JLabel("Piso cutre, una cantidad muy grande de cutre, uye");
 		TitledBorder title;
-		title = BorderFactory.createTitledBorder("1 Ofertas nuevas");
+		title = BorderFactory.createTitledBorder(" Ofertas nuevas");
 		TitledBorder titlep;
-		titlep = BorderFactory.createTitledBorder("1 usuario con problemas de pago ");
+		titlep = BorderFactory.createTitledBorder(pagos.size() + " Usuarios con problemas de pago ");
 		TitledBorder titlec;
-		titlec = BorderFactory.createTitledBorder("1 usuario con problemas de cobro");
+		titlec = BorderFactory.createTitledBorder(cobros.size() + " Usuarios con problemas de cobro");
 		this.ofertaPendiente.setBorder(title);
 		this.problemaPagos.setBorder(titlep);
 		this.problemaCobros.setBorder(titlec);
@@ -87,5 +95,16 @@ public class ControlPanel extends PanelInterfaz {
 	public void setDimension() {
 		this.setBackground(Color.WHITE);
 		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, 562));
+	}
+
+	public void cargarUsuarios() {
+
+		Controller c = gui.getController();
+		pagos = null;
+		cobros = null;
+
+		pagos = c.adminGetOfertantesProblemaCobros();
+		cobros = c.adminGetDemandantesProblemaPagos();
+
 	}
 }
