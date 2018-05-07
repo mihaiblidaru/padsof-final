@@ -1,11 +1,14 @@
 package gui.controllers;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.swing.SwingUtilities;
 
 import app.clases.MiVacaPiso;
 import app.clases.inmueble.Inmueble;
@@ -16,6 +19,7 @@ import app.clases.ofertas.OfertaNoModificableException;
 import app.clases.ofertas.OfertaYaEstaReservadaException;
 import app.clases.ofertas.ReservaDuplicadaException;
 import app.clases.opiniones.Comentario;
+import app.clases.opiniones.Numerica;
 import app.clases.opiniones.Opinion;
 import app.clases.users.Rol;
 import app.clases.users.UsuarioNoPermisoException;
@@ -25,6 +29,7 @@ import gui.Gui;
 import gui.panels.oferta.comentario.PanelComentario;
 import gui.util.DialogFactory;
 import gui.util.GuiConstants;
+import gui.util.ParameterReference;
 
 public class Controller {
 	private final MiVacaPiso model;
@@ -85,6 +90,10 @@ public class Controller {
 
 	public int getNumInmuebles() {
 		return model.getOfertanteLogueado().getInmuebles().size();
+	}
+
+	public List<Integer> getUltimasOfertas(int num) {
+		return model.getUltimasOfertas(num);
 	}
 
 	public List<Integer> buscarViviendas(String localidad, Integer cp, LocalDate fechaInicio) {
@@ -352,12 +361,19 @@ public class Controller {
 		List<Integer> noComentarios = opiniones.keySet().stream().filter(k -> !(opiniones.get(k) instanceof Comentario))
 				.collect(Collectors.toList());
 		noComentarios.forEach(k -> opiniones.remove(k));
+		ParameterReference<List<PanelComentario>> contResultados = new ParameterReference<>();
 
-		List<PanelComentario> resultado = opiniones.values().stream().map(v -> new PanelComentario(gui,
-				((Comentario) v).getTexto(), v.getId(), ((Comentario) v).getPadre(), id, v.getFecha()))
-				.collect(Collectors.toList());
+		try {
+			SwingUtilities.invokeAndWait(() -> {
+				contResultados.setValue(
+						opiniones.values().stream().map(v -> new PanelComentario(gui, ((Comentario) v).getTexto(),
+								v.getId(), ((Comentario) v).getPadre(), id)).collect(Collectors.toList()));
 
-		return resultado;
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			e.printStackTrace();
+		}
+		return contResultados.getValue();
 	}
 
 	public void ofertaComentar(String comentario, Integer idOferta, Integer idPadre) {
@@ -441,5 +457,48 @@ public class Controller {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
 		}
+	}
+
+	public void ofertaValorar(Integer idOferta, int valor) {
+		try {
+			model.addNumerica(idOferta, valor);
+		} catch (UsuarioNoPermisoException e) {
+			DialogFactory.noPermisionError();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+
+	}
+
+	public Integer ofertaGetValoracion(Integer id) {
+		try {
+			return model.getOfertaById(id).getNumericamedia();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		return null;
+	}
+
+	public boolean ofertaYaTieneValoracion(Integer id) {
+		Oferta o = null;
+		try {
+			o = model.getOfertaById(id);
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+
+		Integer idUsuario = model.getDemandanteLogueado().getId();
+		for (Opinion op : o.getOpiniones().values()) {
+			if (op instanceof Numerica) {
+				if (op.getUsuario().equals(idUsuario)) {
+					return true;
+				}
+			}
+
+		}
+		return false;
 	}
 }

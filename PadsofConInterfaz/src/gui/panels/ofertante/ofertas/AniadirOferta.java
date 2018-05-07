@@ -3,14 +3,9 @@ package gui.panels.ofertante.ofertas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -24,6 +19,7 @@ import gui.components.fx.FxDatePicker;
 import gui.components.fx.FxTextField;
 import gui.controllers.Controller;
 import gui.listeners.AniadirOfertaListener;
+import gui.util.IconLoader;
 import gui.util.LimitCounter;
 import gui.util.LimitedDocument;
 import gui.util.Nombrable;
@@ -75,14 +71,6 @@ public class AniadirOferta extends PanelInterfaz implements Nombrable {
 
 	@Override
 	public void crearComponentes() {
-		String[] petStrings = { "Piso 1", "Piso 2", "Piso 3", "Piso 4", "Piso 5", };
-		ImageIcon image = null;
-		try {
-			image = new ImageIcon(
-					ImageIO.read(new File("res/img/fa-warning.png")).getScaledInstance(10, 10, Image.SCALE_SMOOTH));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 
 		Font font = new Font("Comic Sans", Font.PLAIN, 40);
 		Font descfont = new Font("Comic Sans", Font.PLAIN, 25);
@@ -103,11 +91,11 @@ public class AniadirOferta extends PanelInterfaz implements Nombrable {
 		limitLabel = new JLabel(String.format("%d restantes", limit));
 		confirmar = new FxButton(200, 100, "Confirmar");
 		alarm = new JLabel("No puedes añadir la misma oferta dos veces");
-		warningIcon = new JLabel(image);
+		warningIcon = new JLabel(IconLoader.load("res/img/fa-warning.png", 10, 10));
 		checkBoxVacacional = new FxCheckBox(100, 20, "Vacacional");
 		checkBoxVivienda = new FxCheckBox(100, 20, "Vivienda");
 		precio = new JLabel("Precio");
-		comboBoxInmueble = new JComboBox<>(petStrings);
+		comboBoxInmueble = new JComboBox<>();
 
 		titulo.setFont(font);
 

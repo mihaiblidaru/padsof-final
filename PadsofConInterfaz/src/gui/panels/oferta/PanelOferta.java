@@ -8,6 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.JMultiLineLabel;
@@ -39,8 +40,10 @@ public class PanelOferta extends PanelInterfaz {
 	public PanelOferta(Gui gui, int idOferta) {
 		this.gui = gui;
 		this.idOferta = idOferta;
-		setBorder(BorderFactory.createEtchedBorder());
-		cargarDatos(idOferta);
+		SwingUtilities.invokeLater(() -> {
+			setBorder(BorderFactory.createEtchedBorder());
+			cargarDatos(idOferta);
+		});
 	}
 
 	@Override
@@ -50,12 +53,12 @@ public class PanelOferta extends PanelInterfaz {
 
 	@Override
 	protected void crearComponentes() {
-		direccion = new JMultiLineLabel("Calle Alcala, nº7, 1B, 28850, Madrid", 200, 30);
+		direccion = new JMultiLineLabel("Calle Alcala, nº7, 1B, 28850, Madrid", 200, 30, true);
 		desde = new JLabel("Desde");
 		fechaInicio = new JLabel("12-12-2012");
 		hasta = new JLabel("Hasta o Num Meses");
 		fechaFin = new JLabel("22/12/2012");
-		descripcion = new JMultiLineLabel("ERROR. Descripcio", 300, 65);
+		descripcion = new JMultiLineLabel("ERROR. Descripcio", 300, 65, true);
 		precio = new JLabel("300 €");
 		fianza = new JLabel("+150 €");
 

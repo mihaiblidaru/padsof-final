@@ -1,7 +1,6 @@
 package gui.panels.oferta.comentario;
 
 import java.awt.Dimension;
-import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
 import javax.swing.SpringLayout;
@@ -22,7 +21,7 @@ public class PanelComentario extends PanelInterfaz {
 	private static final long serialVersionUID = 7878894793986097142L;
 	private final String texto;
 	private final Integer idComentario;
-	private final LocalDate date;
+	private int nivel = 0;
 	private SpringLayout layout;
 	private JMultiLineLabel labelTexto;
 	private Integer padre;
@@ -30,32 +29,31 @@ public class PanelComentario extends PanelInterfaz {
 	private FxButton responer;
 	private Gui gui;
 
-	public PanelComentario(Gui gui, String texto, Integer idComentario, Integer padre, Integer idOferta,
-			LocalDate date) {
+	public final static int PANEL_WIDTH = 700;
+	public final static int PANEL_HEIGHT = 30;
+	private final static int DECREMENTO_POR_NIVEL = 40;
+
+	public PanelComentario(Gui gui, String texto, Integer idComentario, Integer padre, Integer idOferta) {
 		this.texto = texto;
 		this.idComentario = idComentario;
-		this.date = date;
 		this.padre = padre;
 		this.gui = gui;
 		this.idOferta = idOferta;
 		this.setBorder(BorderFactory.createEtchedBorder());
-		initialize();
 	}
 
 	@Override
 	public void setDimension() {
-		this.setPreferredSize(new Dimension(700, 30));
-
+		this.setPreferredSize(new Dimension(PANEL_WIDTH - nivel * DECREMENTO_POR_NIVEL, PANEL_HEIGHT));
 	}
 
 	@Override
 	public void crearComponentes() {
-		labelTexto = new JMultiLineLabel(texto, 500, 20);
+		labelTexto = new JMultiLineLabel(texto, 500, 20, false);
 		responer = new FxButton(80, 25, "Responder");
 
 		this.add(responer);
 		this.add(labelTexto);
-
 	}
 
 	@Override
@@ -91,6 +89,16 @@ public class PanelComentario extends PanelInterfaz {
 
 	public Integer getPadre() {
 		return padre;
+	}
+
+	public int getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(int nivel) {
+		this.nivel = nivel;
+		this.labelTexto.setNewSize(500 - nivel * DECREMENTO_POR_NIVEL, 20);
+		setDimension();
 	}
 
 }

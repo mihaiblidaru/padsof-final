@@ -25,7 +25,7 @@ public class ComentarDialog extends JDialog {
 	private static final long serialVersionUID = -889156607009791316L;
 	private JButton btnOk;
 	private JButton btnCancel;
-	private int limit = 300;
+	private int limit = 200;
 	private JLabel limitLabel;
 	private JTextArea comentarioTextBox;
 	private Integer idOferta;

@@ -135,6 +135,7 @@ public class ContenedorOfertasPendientes extends PanelInterfaz {
 		grupoOfertas.remove(ofertas.remove(id));
 		if (ofertas.isEmpty()) {
 			labelNoOfertas.setVisible(true);
+			this.repaint();
 		}
 		this.revalidate();
 	}

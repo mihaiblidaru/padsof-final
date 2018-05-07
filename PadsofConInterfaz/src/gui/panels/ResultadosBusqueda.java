@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
@@ -30,11 +31,16 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 
 	public ResultadosBusqueda(Gui gui) {
 		this.gui = gui;
+		SwingUtilities.invokeLater(() -> {
+			cargarResultados(gui.getController().getUltimasOfertas(5));
+		});
 	}
 
 	public void cargarResultados(List<Integer> resultados) {
-		contenedor.cargarResultados(resultados);
-		this.revalidate();
+		SwingUtilities.invokeLater(() -> {
+			contenedor.cargarResultados(resultados);
+			this.revalidate();
+		});
 	}
 
 	public void actualizarOfertas() {
@@ -87,7 +93,7 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 			resultados.put(c.getIdOferta(), c);
 
 			this.setPreferredSize(
-					new Dimension(750, 10 + this.getComponentCount() * (c.getPreferredSize().height + 10)));
+					new Dimension(750, 10 + this.getComponentCount() * (PanelOfertaBusqueda.PANEL_HEIGHT + 10)));
 
 			return c;
 		}
