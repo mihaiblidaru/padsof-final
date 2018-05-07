@@ -96,6 +96,8 @@ public class AniadirOfertaListener implements EventHandler<ActionEvent> {
 				}
 				if (c.addOfertaVacacional(desde, hasta, precioAsNum, fianzaAsNum, descripcion, idInmueble)) {
 					gui.showOnly(Header.NAME, MisOfertas.NAME);
+					MisOfertas mo = (MisOfertas) gui.getComponent(MisOfertas.NAME);
+					mo.cargarOfertas();
 				}
 
 			} else {
@@ -123,6 +125,8 @@ public class AniadirOfertaListener implements EventHandler<ActionEvent> {
 				try {
 					c.addOfertaVivienda(desde, mesesAsNum, precioAsNum, fianzaAsNum, descripcion, idInmueble);
 					gui.showOnly(Header.NAME, MisOfertas.NAME);
+					MisOfertas mo = (MisOfertas) gui.getComponent(MisOfertas.NAME);
+					mo.cargarOfertas();
 				} catch (UsuarioNoPermisoException e) {
 					e.printStackTrace();
 				}

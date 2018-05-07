@@ -77,6 +77,7 @@ public class LoginButtonHandler implements EventHandler<ActionEvent> {
 							AdminView av = (AdminView) gui.getComponent(AdminView.NAME);
 							av.show(ControlPanel.NAME);
 							header.appNameSetVisible(false);
+
 						} else if (rol.equals(GuiConstants.ROL_DESCONOCIDO)) {
 							DialogFactory.internalError("Rol del usuario desconocido");
 						}

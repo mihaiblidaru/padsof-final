@@ -152,7 +152,7 @@ public class Reserva {
 			this.fechaCaducar = hoy;
 			return true;
 		} catch (SQLException e) {
-
+			e.printStackTrace();
 		}
 		return false;
 	}

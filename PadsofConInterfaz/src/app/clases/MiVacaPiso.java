@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import app.clases.data.Columna;
 import app.clases.data.DBManager;
@@ -374,6 +375,17 @@ public class MiVacaPiso {
 				e.printStackTrace();
 			}
 		}
+
+		if (ofertanteLogueado != null) {
+			this.ofertanteLogueado.getInmuebles().stream().map(id -> {
+				try {
+					return getInmuebleById(id).getOfertas();
+				} catch (SQLException e) {
+					return null;
+				}
+			}).forEach(l -> l.forEach(ido -> resultados.remove(ido)));
+		}
+
 		return resultados;
 	}
 
@@ -911,7 +923,7 @@ public class MiVacaPiso {
 				Arrays.asList(Columna.RESERVA_FECHAINICIO, Columna.RESERVA_CLIENTE, Columna.RESERVA_OFERTA),
 				FechaSimulada.getHoy(), this.demandanteLogueado.getId(), id);
 
-		Reserva reserva = new Reserva(id, this.demandanteLogueado.getId(), id, FechaSimulada.getHoy());
+		Reserva reserva = new Reserva(idReserva, this.demandanteLogueado.getId(), id, FechaSimulada.getHoy());
 
 		this.listaReservas.put(idReserva, reserva);
 
@@ -959,16 +971,17 @@ public class MiVacaPiso {
 	 *             Error de la base de datos. Puede suponer un error de conexion o
 	 *             de programacion
 	 */
-	public List<Integer> getUsuariosProblemaPago() throws SQLException {
+	public Map<Integer, String> getUsuariosProblemaPago() throws SQLException {
 		Connection con = DBManager.openDbConnection();
 		Statement stmt = con.createStatement();
-		String query = "Select id from cliente where problema_pagos = 1";
+		String query = "Select id, rol from cliente where problema_pagos = 1";
 		ResultSet rs = stmt.executeQuery(query);
 
-		List<Integer> listaUsuarios = new ArrayList<>();
+		Map<Integer, String> listaUsuarios = new TreeMap<>();
 		while (rs.next()) {
 			Integer id = rs.getInt(Columna.ID.toString());
-			listaUsuarios.add(id);
+			String rol = rs.getString(Columna.CLIENTE_ROL.toString());
+			listaUsuarios.put(id, rol);
 		}
 		return listaUsuarios;
 	}

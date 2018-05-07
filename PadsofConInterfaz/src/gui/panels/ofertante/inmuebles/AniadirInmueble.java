@@ -79,7 +79,7 @@ public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 		separator = new JSeparator(SwingConstants.VERTICAL);
 		confirmar = new FxButton(200, 60, "Confirmar");
 		alarm = new JLabel("No puedes añadir el mismo inmueble dos veces");
-		caracteristicas = buildPanelCaracteristicas();
+
 		etiqueta.setFont(font);
 
 		this.add(etiqueta);
@@ -93,7 +93,7 @@ public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 		this.add(this.direccionExtraTextField);
 		this.add(confirmar);
 		this.add(alarm);
-		this.add(caracteristicas);
+
 		this.add(warningIcon);
 		this.add(separator);
 
@@ -105,6 +105,20 @@ public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 	protected void colocarComponentes() {
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);
+
+		layout.putConstraint(SpringLayout.NORTH, etiqueta, 70, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, etiqueta, 0, SpringLayout.HORIZONTAL_CENTER, this);
+
+		layout.putConstraint(SpringLayout.NORTH, localidad, 25, SpringLayout.SOUTH, etiqueta);
+		layout.putConstraint(SpringLayout.WEST, localidad, -160, SpringLayout.WEST, etiqueta);
+
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, this.localidadTextField, 0, SpringLayout.VERTICAL_CENTER,
+				localidad);
+		layout.putConstraint(SpringLayout.WEST, this.localidadTextField, 10, SpringLayout.EAST, localidad);
+
+		layout.putConstraint(SpringLayout.NORTH, codigoPostal, 15, SpringLayout.SOUTH, localidad);
+		layout.putConstraint(SpringLayout.WEST, codigoPostal, 0, SpringLayout.WEST, localidad);
+
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, this.cpTextField, 0, SpringLayout.VERTICAL_CENTER,
 				codigoPostal);
 		layout.putConstraint(SpringLayout.WEST, this.cpTextField, 10, SpringLayout.EAST, codigoPostal);
@@ -137,7 +151,8 @@ public class AniadirInmueble extends PanelInterfaz implements Nombrable {
 		layout.putConstraint(SpringLayout.NORTH, separator, -5, SpringLayout.NORTH, this.localidadTextField);
 		separator.setPreferredSize(new Dimension(2, 220));
 		separator.setForeground(new Color(200, 200, 200));
-
+		caracteristicas = buildPanelCaracteristicas();
+		this.add(caracteristicas);
 		layout.putConstraint(SpringLayout.WEST, caracteristicas, 0, SpringLayout.EAST, separator);
 		layout.putConstraint(SpringLayout.NORTH, caracteristicas, 5, SpringLayout.NORTH, separator);
 	}

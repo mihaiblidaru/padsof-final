@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import app.clases.MiVacaPiso;
@@ -19,8 +20,6 @@ import app.clases.opiniones.Comentario;
 import app.clases.opiniones.Numerica;
 import app.clases.opiniones.Opinion;
 import app.clases.users.Cliente;
-import app.clases.users.Demandante;
-import app.clases.users.Ofertante;
 import app.clases.users.Rol;
 import app.clases.users.UsuarioNoPermisoException;
 import app.clases.users.UsuarioYaTieneReservaException;
@@ -293,15 +292,17 @@ public class Controller {
 	 */
 	public List<Integer> ofertanteGetMisOfertas() {
 		List<Integer> result = new ArrayList<>();
-		List<Integer> inmuebles = model.getOfertanteLogueado().getInmuebles();
-		inmuebles.stream().forEach(i -> {
-			try {
-				result.addAll(model.getInmuebleById(i).getOfertas());
-			} catch (SQLException e) {
-				DialogFactory.internalError(e.getMessage());
-				System.exit(-1);
-			}
-		});
+		if (model.getOfertanteLogueado() != null) {
+			List<Integer> inmuebles = model.getOfertanteLogueado().getInmuebles();
+			inmuebles.stream().forEach(i -> {
+				try {
+					result.addAll(model.getInmuebleById(i).getOfertas());
+				} catch (SQLException e) {
+					DialogFactory.internalError(e.getMessage());
+					System.exit(-1);
+				}
+			});
+		}
 
 		return result;
 	}
@@ -545,14 +546,13 @@ public class Controller {
 
 	public List<Integer> adminGetDemandantesProblemaPagos() {
 		try {
-			List<Integer> resultados = model.getUsuariosProblemaPago();
+			Map<Integer, String> resultados = model.getUsuariosProblemaPago();
 			List<Integer> pagos = new ArrayList<Integer>();
-			for (Integer id : resultados) {
-				if (model.getClienteById(resultados.get(id)) instanceof Ofertante) {
+			for (Integer id : resultados.keySet()) {
+				if (resultados.get(id).equals("D")) {
 					pagos.add(id);
 				}
 			}
-
 			return pagos;
 		} catch (SQLException e) {
 			DialogFactory.internalError(e.getMessage());
@@ -569,15 +569,14 @@ public class Controller {
 	 */
 	public List<Integer> adminGetOfertantesProblemaCobros() {
 		try {
-			List<Integer> resultados = model.getUsuariosProblemaPago();
-			List<Integer> cobros = new ArrayList<Integer>();
-
-			for (Integer id : resultados) {
-				if (model.getClienteById(resultados.get(id)) instanceof Demandante) {
-					cobros.add(id);
+			Map<Integer, String> resultados = model.getUsuariosProblemaPago();
+			List<Integer> pagos = new ArrayList<Integer>();
+			for (Integer id : resultados.keySet()) {
+				if (resultados.get(id).equals("O") || resultados.get(id).equals("OD")) {
+					pagos.add(id);
 				}
 			}
-			return cobros;
+			return pagos;
 		} catch (SQLException e) {
 			DialogFactory.internalError(e.getMessage());
 			System.exit(-1);
@@ -589,9 +588,11 @@ public class Controller {
 	/**
 	 * Devuelve una lista completa con los ids de los usuarios con problemas de pago
 	 * 
+	 * @return
+	 * 
 	 * @return una lista completa con los ids de los usuarios con problemas de pago
 	 */
-	public List<Integer> adminGetUsuariosProblemaPagos() {
+	public Map<Integer, String> adminGetUsuariosProblemaPagos() {
 		try {
 			return model.getUsuariosProblemaPago();
 		} catch (SQLException e) {
@@ -655,7 +656,7 @@ public class Controller {
 			System.exit(-1);
 		}
 
-		Map<Integer, Opinion> opiniones = oferta.getOpiniones();
+		Map<Integer, Opinion> opiniones = new TreeMap<>(oferta.getOpiniones());
 
 		List<Integer> noComentarios = opiniones.keySet().stream().filter(k -> !(opiniones.get(k) instanceof Comentario))
 				.collect(Collectors.toList());

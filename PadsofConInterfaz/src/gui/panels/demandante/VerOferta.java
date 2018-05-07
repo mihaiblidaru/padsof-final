@@ -1,5 +1,6 @@
 package gui.panels.demandante;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -25,6 +26,9 @@ import gui.components.JMultiLineLabel;
 import gui.components.fx.FxButton;
 import gui.controllers.Controller;
 import gui.dialogs.ComentarDialog;
+import gui.panels.Header;
+import gui.panels.ResultadosBusqueda;
+import gui.panels.SearchMenu;
 import gui.panels.oferta.comentario.PanelComentario;
 import gui.util.IconLoader;
 import gui.util.LimitedFlowLayout;
@@ -66,6 +70,8 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 	private JLabel star4;
 	private JLabel star5;
 	private JLabel labelValoracion;
+	private FxButton contratarBtn;
+	private FxButton reservarBtn;
 
 	public VerOferta(Gui gui) {
 		this.gui = gui;
@@ -80,13 +86,14 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void crearComponentes() {
-		Font precioFont = new Font("Comic Sans", Font.PLAIN, 50);
-		Font fianzaFont = new Font("Comic Sans", Font.PLAIN, 20);
+		Font precioFont = new Font("Comic Sans", Font.PLAIN, 37);
+		Font fianzaFont = new Font("Comic Sans", Font.PLAIN, 15);
 
 		direccion = new JMultiLineLabel("Calle Alcala, nº7, 1B, 28850, Madrid", 200, 30, true);
 		descripcion = new JMultiLineLabel(
 				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus purus elit, mattis id mauris eu, varius venenatis eros. Vestibulum quis pulvinar odio, vitae ultrices arcu. Nulla et cursus ante, ac rutrum purus. Suspendisse sed ex purus. Donec condimentum leo non interdum consectetur. Curabitur fermentum dolor eu porta sagittis. Nam ut justo quis diam efficitur fringilla. Vivamus a ornare est, eget porttitor mauris. Maecenas faucibus pretium ligula ut tempus. Donec eleifend erat ligula, ut cursus quam lacinia vitae.",
-				400, 65, true);
+				400, 100, false);
+		descripcion.setBackground(Color.RED);
 
 		desde = new JLabel("Desde");
 		fechaInicio = new JLabel("12-12-2012");
@@ -96,7 +103,9 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 		fianza = new JLabel("Fianza +150 €");
 		total = new JLabel("Total");
 		precioTotal = new JLabel("450€");
-		aniadirComentario = new FxButton(130, 25, "Añadir Comentario");
+		aniadirComentario = new FxButton(130, 30, "Añadir Comentario");
+		contratarBtn = new FxButton(100, 25, "Contratar");
+		reservarBtn = new FxButton(100, 25, "Reservar");
 
 		direccion.setAlignmentX(JTextArea.LEFT_ALIGNMENT);
 		precio.setFont(precioFont);
@@ -104,10 +113,9 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 		total.setFont(fianzaFont.deriveFont(Font.PLAIN, 30));
 		Map attributes = fianzaFont.getAttributes();
 		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-
 		precioTotal.setFont(fianzaFont.deriveFont(attributes).deriveFont(Font.PLAIN, 40));
 
-		comentarios = new JPanel(new LimitedFlowLayout(FlowLayout.RIGHT, 300));
+		comentarios = new JPanel(new LimitedFlowLayout(FlowLayout.RIGHT, 50));
 
 		scrollPane = new JScrollPane(comentarios, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -148,6 +156,8 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 		this.add(aniadirComentario);
 		this.add(grupoValoracion);
 		this.add(labelValoracion);
+		this.add(contratarBtn);
+		this.add(reservarBtn);
 
 	}
 
@@ -170,8 +180,8 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, fianza, 0, SpringLayout.HORIZONTAL_CENTER, precio);
 		layout.putConstraint(SpringLayout.NORTH, fianza, 5, SpringLayout.SOUTH, precio);
 
-		layout.putConstraint(SpringLayout.WEST, precio, 20, SpringLayout.EAST, descripcion);
-		layout.putConstraint(SpringLayout.NORTH, precio, 20, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, precio, 5, SpringLayout.EAST, descripcion);
+		layout.putConstraint(SpringLayout.NORTH, precio, 30, SpringLayout.NORTH, this);
 
 		layout.putConstraint(SpringLayout.WEST, descripcion, 30, SpringLayout.EAST, direccion);
 		layout.putConstraint(SpringLayout.NORTH, descripcion, 10, SpringLayout.NORTH, this);
@@ -184,6 +194,13 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, precioTotal, 0, SpringLayout.HORIZONTAL_CENTER, total);
 		layout.putConstraint(SpringLayout.NORTH, precioTotal, 5, SpringLayout.SOUTH, total);
+
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, contratarBtn, 0, SpringLayout.HORIZONTAL_CENTER,
+				precioTotal);
+		layout.putConstraint(SpringLayout.NORTH, contratarBtn, 20, SpringLayout.SOUTH, precioTotal);
+
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, reservarBtn, 0, SpringLayout.HORIZONTAL_CENTER, precio);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, reservarBtn, 0, SpringLayout.VERTICAL_CENTER, contratarBtn);
 
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollPane, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.SOUTH, scrollPane, -10, SpringLayout.SOUTH, this);
@@ -246,8 +263,11 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 		this.idOferta = id;
 		SwingUtilities.invokeLater(() -> {
 			Controller c = this.gui.getController();
-			this.precio.setText(String.format("%.2f €", c.ofertaGetPrecio(id)));
-			this.fianza.setText(String.format("Fianza +%.2f €", c.ofertaGetFianza(id)));
+			float precio = c.ofertaGetPrecio(id);
+			float fianza = c.ofertaGetFianza(id);
+			this.precio.setText(String.format("%.2f €", precio));
+			this.fianza.setText(String.format("Fianza +%.2f €", fianza));
+			this.precioTotal.setText(String.format("%.2f €", precio + fianza));
 			LocalDate ini = c.ofertaGetFechaInicio(id);
 			this.fechaInicio
 					.setText(String.format("%02d/%02d/%04d", ini.getDayOfMonth(), ini.getMonthValue(), ini.getYear()));
@@ -264,6 +284,8 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 			this.direccion.setText(c.ofertaGetDireccion(id));
 			cargarValoracion(id);
 			cargarComentarios(id);
+			this.revalidate();
+			this.repaint();
 		});
 	}
 
@@ -311,6 +333,25 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 		grupoValoracion.addMouseListener(new StarGroupListener());
 
+		this.contratarBtn.setOnAction((event) -> {
+			SwingUtilities.invokeLater(() -> {
+				if (this.gui.getController().contratarOferta(idOferta)) {
+					ResultadosBusqueda rb = (ResultadosBusqueda) this.gui.getComponent(ResultadosBusqueda.NAME);
+					rb.removeOferta(idOferta);
+					this.gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
+				}
+			});
+		});
+
+		this.reservarBtn.setOnAction((event) -> {
+			SwingUtilities.invokeLater(() -> {
+				if (this.gui.getController().reservarOferta(idOferta)) {
+					ResultadosBusqueda rb = (ResultadosBusqueda) this.gui.getComponent(ResultadosBusqueda.NAME);
+					rb.removeOferta(idOferta);
+					this.gui.showOnly(Header.NAME, SearchMenu.NAME, ResultadosBusqueda.NAME);
+				}
+			});
+		});
 	}
 
 	private class StarListener implements MouseListener {
@@ -373,8 +414,6 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
@@ -394,14 +433,10 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 	}

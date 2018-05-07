@@ -51,7 +51,7 @@ public class PanelComentario extends PanelInterfaz {
 
 	@Override
 	public void crearComponentes() {
-		labelTexto = new JMultiLineLabel(texto, 500, 20, false);
+		labelTexto = new JMultiLineLabel(texto, 600, 20, false);
 		responer = new FxButton(80, 25, "Responder");
 
 		this.add(responer);
@@ -99,8 +99,10 @@ public class PanelComentario extends PanelInterfaz {
 
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
-		this.labelTexto.setNewSize(500 - nivel * DECREMENTO_POR_NIVEL, 20);
-
+		this.labelTexto.setNewSize(600 - nivel * DECREMENTO_POR_NIVEL, 20);
+		if (nivel >= 6) {
+			responer.setVisible(false);
+		}
 		setDimension();
 	}
 

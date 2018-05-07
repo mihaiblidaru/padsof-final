@@ -4,18 +4,21 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 
 import gui.Gui;
 import gui.components.ThinSolidScrollBarUi;
+import gui.controllers.Controller;
 import gui.panels.oferta.PanelOfertaBusqueda;
 import gui.util.Nombrable;
 import gui.util.PanelInterfaz;
@@ -32,16 +35,12 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 	public ResultadosBusqueda(Gui gui) {
 		this.gui = gui;
 		initialize();
-		SwingUtilities.invokeLater(() -> {
-			cargarResultados(gui.getController().getUltimasOfertas(5));
-		});
+		cargarResultados(gui.getController().getUltimasOfertas(5));
 	}
 
 	public void cargarResultados(List<Integer> resultados) {
-		SwingUtilities.invokeLater(() -> {
-			contenedor.cargarResultados(resultados);
-			this.revalidate();
-		});
+		contenedor.cargarResultados(resultados);
+		this.revalidate();
 	}
 
 	public void actualizarOfertas() {
@@ -80,16 +79,26 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 	class ContenedorOfertas extends JPanel {
 		private static final long serialVersionUID = -2181119752625080665L;
 		private final FlowLayout layout;
-		Map<Integer, PanelOfertaBusqueda> resultados = new HashMap<>();
+		private Map<Integer, PanelOfertaBusqueda> resultados = new HashMap<>();
 		private Gui gui;
+		private JLabel noResultados;
 
 		public ContenedorOfertas(Gui gui) {
 			this.gui = gui;
 			layout = new FlowLayout(FlowLayout.CENTER, 0, 10);
+			noResultados = new JLabel("No se han encontrado ofertas");
+			noResultados.setBorder(new EmptyBorder(100, 0, 0, 0));
+			noResultados.setForeground(Color.LIGHT_GRAY);
+			Font font = new Font("Arial", Font.PLAIN, 30);
+			noResultados.setFont(font);
 			this.setLayout(layout);
+			this.add(noResultados);
 		}
 
 		public Component addOferta(PanelOfertaBusqueda c) {
+			if (resultados.isEmpty()) {
+				noResultados.setVisible(false);
+			}
 			this.add(c);
 			resultados.put(c.getIdOferta(), c);
 
@@ -100,23 +109,36 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 		}
 
 		public void cargarResultados(List<Integer> r) {
+			resultados.values().stream().forEach(v -> this.remove(v));
+			resultados.clear();
+			noResultados.setVisible(true);
+			this.setPreferredSize(new Dimension(750, 300));
 			for (Integer id : r) {
 				if (!resultados.containsKey(id)) {
 					PanelOfertaBusqueda panelOferta = new PanelOfertaBusqueda(this.gui, id);
-					contenedor.addOferta(panelOferta);
+					this.addOferta(panelOferta);
 				}
 			}
-
 			this.revalidate();
+			this.repaint();
 		}
 
 		public void actualizarOfertas() {
-			resultados.values().stream().forEach(c -> c.actualizarBotones());
+			Controller c = gui.getController();
+			List<Integer> noVisibles = c.ofertanteGetMisOfertas();
+			noVisibles.forEach(id -> removeOferta(id));
+			resultados.values().stream().forEach(r -> r.actualizarBotones());
 		}
 
 		public void removeOferta(int idOferta) {
 			this.remove(resultados.remove(idOferta));
+			if (resultados.isEmpty()) {
+				noResultados.setVisible(true);
+			}
+
+			this.revalidate();
 			this.repaint();
+
 		}
 	}
 
