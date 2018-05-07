@@ -18,32 +18,86 @@ import gui.panels.oferta.PanelOfertaReservadaInterno;
 import gui.util.LimitedFlowLayout;
 import gui.util.PanelInterfaz;
 
+
+/**
+ * Esta es nuestra clase que sirve como contenedor interno de reservas
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class ContenedorReservasInterno extends PanelInterfaz {
 
 	private static final long serialVersionUID = -2138438771740403776L;
 
+	/**
+	 * Mapa de ofertas reservadas
+	 */
 	private Map<Integer, PanelOfertaReservadaInterno> reservadas = new HashMap<>();
+	
+	/**
+	 * Mapa de ofertas contratadas
+	 */
 	private Map<Integer, PanelOferta> contratadas = new HashMap<>();
 
+	/**
+	 * El layout de la interfaz
+	 */
 	private SpringLayout layout;
 
+	/**
+	 * El jlabel de las reservas
+	 */
 	private JLabel labelReservadas;
+	
+	/**
+	 * El jlabel de las reservas contratadas
+	 */
 	private JLabel labelContratadas;
+	
+	/**
+	 * El separador de las reservas
+	 */
 	private JSeparator separatorReservadas;
+	
+	/**
+	 * El separador de las reservas contratadas
+	 */
 	private JSeparator separatorContratadas;
 
+	/**
+	 * El jlabel de las no reservadas
+	 */
 	private JLabel labelNoReservadas;
 
+	/**
+	 * El jlabel de las no contratadas
+	 */
 	private JLabel labelNoContratadas;
 
+	/**
+	 * El panel de las reservadas
+	 */
 	private JPanel grupoReservadas;
 
+	/**
+	 * El panel de las reservas contratadas
+	 */
 	private JPanel grupoContratadas;
 
+	/**
+	 * Separacion entre ofertas
+	 */
 	private static final int SEPARACION_OFERTAS = 10;
 
+	/**
+	 *Ancho del panel
+	 */
 	private static final int PANEL_WIDTH = 990;
 
+	/**
+	 * Constructor de ContenedorReservasInterno
+	 */
 	public ContenedorReservasInterno() {
 		layout = new SpringLayout();
 		this.setLayout(layout);
@@ -51,6 +105,9 @@ public class ContenedorReservasInterno extends PanelInterfaz {
 
 	}
 
+	/**
+	 * Cambia la dimension del contenedor
+	 */
 	@Override
 	public void setDimension() {
 		double height = 100 + grupoReservadas.getPreferredSize().getHeight()
@@ -60,6 +117,9 @@ public class ContenedorReservasInterno extends PanelInterfaz {
 
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	public void crearComponentes() {
 		Font font = new Font("Times New Roman", Font.PLAIN, 20);
@@ -101,6 +161,9 @@ public class ContenedorReservasInterno extends PanelInterfaz {
 
 	}
 
+	/**
+	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 */
 	@Override
 	public void colocarComponentes() {
 		layout.putConstraint(SpringLayout.NORTH, labelReservadas, 10, SpringLayout.NORTH, this);
@@ -123,6 +186,11 @@ public class ContenedorReservasInterno extends PanelInterfaz {
 
 	}
 
+	
+	/**
+	 * Añade un panel de una oferta reservada
+	 * @param p panel de oferta
+	 */
 	public void addReserva(PanelOfertaReservadaInterno p) {
 		if (reservadas.isEmpty())
 			labelNoReservadas.setVisible(false);
@@ -137,6 +205,10 @@ public class ContenedorReservasInterno extends PanelInterfaz {
 		setDimension();
 	}
 
+	/**
+	 * Añade un panel de una oferta contratada
+	 * @param p panel de oferta
+	 */
 	public void addContratada(PanelOferta p) {
 		if (contratadas.isEmpty())
 			labelNoContratadas.setVisible(false);
@@ -151,12 +223,19 @@ public class ContenedorReservasInterno extends PanelInterfaz {
 		setDimension();
 	}
 
+	/**
+	 * Esta funcion registra los eventos que ocurren en la interfaz
+	 */
 	@Override
 	public void registrarEventos() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Quita el estado de reservada de una oferta con el id dado
+	 * @param idOferta id de la oferta
+	 */
 	public void removeReserva(int idOferta) {
 		if (reservadas.containsKey(idOferta)) {
 			grupoReservadas.remove(reservadas.remove(idOferta));

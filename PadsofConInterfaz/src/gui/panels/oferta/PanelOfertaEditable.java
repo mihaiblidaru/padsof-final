@@ -8,18 +8,35 @@ import gui.components.fx.FxButton;
 import gui.panels.Header;
 import gui.panels.ofertante.ofertas.EditarOferta;
 
+/**
+ * Esta es nuestra clase que sirve como panel de ofertas editables
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class PanelOfertaEditable extends PanelOferta {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -5513253061378866849L;
+	
+	/**
+	 * El boton para editar
+	 */
 	private FxButton editar;
 
+	/**
+	 * Constructor de PanelOfertaEditable
+	 * @param gui interfaz grafica
+	 * @param idOferta id de la oferta
+	 */
 	public PanelOfertaEditable(Gui gui, int idOferta) {
 		super(gui, idOferta);
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	protected void crearComponentes() {
 		super.crearComponentes();
@@ -27,6 +44,9 @@ public class PanelOfertaEditable extends PanelOferta {
 		this.add(editar);
 	}
 
+	/**
+	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 */
 	@Override
 	protected void colocarComponentes() {
 		super.colocarComponentes();
@@ -34,6 +54,9 @@ public class PanelOfertaEditable extends PanelOferta {
 		layout.putConstraint(SpringLayout.EAST, editar, -15, SpringLayout.EAST, this);
 	}
 
+	/**
+	 * Esta funcion registra los eventos que ocurren en la interfaz
+	 */
 	@Override
 	protected void registrarEventos() {
 		editar.setOnAction(e -> {
