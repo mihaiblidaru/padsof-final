@@ -14,25 +14,57 @@ import javax.swing.SwingConstants;
 import gui.Gui;
 import gui.controllers.Controller;
 
+/**
+ * Esta es nuestra clase que sirve como panel de inmuebles
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class PanelInmueble extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5513253061378866849L;
 
+	/**
+	 * La interfaz grafica
+	 */
 	protected final Gui gui;
 
+	/**
+	 * El jlabel que imprime la direccion
+	 */
 	private JLabel direccion;
 
+	/**
+	 * El layout del contenedor
+	 */
 	protected SpringLayout layout;
 
+	/**
+	 * El jlabel que imprime el numero de ofertas
+	 */
 	private JLabel numOfertas;
+	
+	/**
+	 * El id del inmueble
+	 */
 	private Integer idInmueble;
 
+	/**
+	 * Altura del panel
+	 */
 	public final static int PANEL_HEIGHT = 140;
+	
+	/**
+	 * Anchura del panel
+	 */
 	public final static int PANEL_WIDTH = 650;
 
+	/**
+	 * Constructor de PanelInmueble, crea los componentes y los coloca
+	 * @param gui interfaz grafica
+	 * @param id id del inmueble
+	 */
 	public PanelInmueble(Gui gui, Integer id) {
 		this.gui = gui;
 		this.idInmueble = id;
@@ -68,12 +100,20 @@ public class PanelInmueble extends JPanel {
 		this.cargarDatos(id);
 	}
 
+	/**
+	 * Carga los datos del inmueble con un id
+	 * @param id
+	 */
 	public void cargarDatos(Integer id) {
 		Controller c = this.gui.getController();
 		this.direccion.setText(c.inmuebleGetDireccionCompleta(id));
 		this.numOfertas.setText(String.format("%d ofertas activas", c.inmuebleGetNumOfertas(id)));
 	}
 
+	/**
+	 * Devuelve el id del inmueble
+	 * @return idInmueble id del inmueble
+	 */
 	public int getIdInmuebles() {
 		return idInmueble;
 	}

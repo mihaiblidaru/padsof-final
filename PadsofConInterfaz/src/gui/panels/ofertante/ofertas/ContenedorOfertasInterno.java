@@ -21,34 +21,100 @@ import gui.Gui;
 import gui.components.fx.FxButton;
 import gui.panels.Header;
 
+/**
+ * Esta es nuestra clase que sirve como contenedor interno de ofertas
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class ContenedorOfertasInterno extends JPanel {
 
 	private static final long serialVersionUID = -2138438771740403776L;
 
+	/**
+	 * Lista de ofertas activas
+	 */
 	private List<JComponent> activas = new ArrayList<>();
+	
+	/**
+	 * Lista de ofertas pendientes
+	 */
 	private List<JComponent> pendientes = new ArrayList<>();
+	
+	/**
+	 * Lista de ofertas rechazadas
+	 */
 	private List<JComponent> rechazadas = new ArrayList<>();
 
+	/**
+	 * El layout del contenedor
+	 */
 	private SpringLayout layout;
 
+	/**
+	 * El jlabel de las ofertas activas
+	 */
 	private JLabel labelActivas;
+	
+	/**
+	 * El jlabel de las ofertas pendientes
+	 */
 	private JLabel labelPendientes;
+	
+	/**
+	 * El jlabel de las ofertas rechazadas
+	 */
 	private JLabel labelRechazadas;
+	
+	/**
+	 * El separador de las ofertas activas
+	 */
 	private JSeparator separatorActivas;
+	
+	/**
+	 * El separador de las ofertas pendientes
+	 */
 	private JSeparator separatorPendientes;
+	/**
+	 * El separador de las ofertas rechazadas
+	 */
 	private JSeparator separatorRechazadas;
 
+	/**
+	 * El jlabel de las ofertas no activas
+	 */
 	private JLabel labelNoActivas;
 
+	/**
+	 * El jlabel de las ofertas no pendientes
+	 */
 	private JLabel labelNoPendientes;
 
+	/**
+	 * El jlabel de las ofertas no rechazadas
+	 */
 	private JLabel labelNoRechazadas;
 
+	/**
+	 * Boton para aniadir
+	 */
 	private FxButton anyadir;
 
+	/**
+	 * El numero de pixeles de separacion entre ofertas
+	 */
 	private static final int SEPARACION_OFERTAS = 10;
+	
+	/**
+	 * El numero de pixeles de separacion entre secciones
+	 */
 	private static final int SEPARACION_SECCIONES = 70;
 
+	/**
+	 * Constructor del contenedor, crea los componentes de la clase y los añade
+	 * @param gui la interfaz grafica
+	 */
 	public ContenedorOfertasInterno(Gui gui) {
 		layout = new SpringLayout();
 		this.setLayout(layout);
@@ -120,6 +186,9 @@ public class ContenedorOfertasInterno extends JPanel {
 
 	}
 
+	/**
+	 * Funcion que coloca los elementos del contenedor
+	 */
 	private void setContraits() {
 		layout.putConstraint(SpringLayout.NORTH, labelActivas, 10, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, labelActivas, 10, SpringLayout.WEST, this);
@@ -154,6 +223,11 @@ public class ContenedorOfertasInterno extends JPanel {
 		layout.putConstraint(SpringLayout.SOUTH, anyadir, -5, SpringLayout.NORTH, separatorActivas);
 	}
 
+	/**
+	 * Funcion que añade una activa
+	 * @param p componente a aniadir
+	 * @return p componente a aniadir
+	 */
 	public Component addActiva(JComponent p) {
 		if (activas.get(activas.size() - 1) == labelNoActivas) {
 			this.remove(activas.remove(activas.size() - 1));
@@ -172,6 +246,11 @@ public class ContenedorOfertasInterno extends JPanel {
 		return p;
 	}
 
+	/**
+	 * Funcion que añade una pendiente
+	 * @param p componente a aniadir
+	 * @return p componente a aniadir
+	 */
 	public Component addPendiente(JComponent p) {
 		if (pendientes.get(pendientes.size() - 1) == labelNoPendientes) {
 			this.remove(pendientes.remove(pendientes.size() - 1));
@@ -190,6 +269,11 @@ public class ContenedorOfertasInterno extends JPanel {
 		return p;
 	}
 
+	/**
+	 * Funcion que añade una rechazada
+	 * @param p componente a aniadir
+	 * @return p componente a aniadir
+	 */
 	public Component addRechazada(JComponent p) {
 		if (rechazadas.get(rechazadas.size() - 1) == labelNoRechazadas) {
 			this.remove(rechazadas.remove(rechazadas.size() - 1));
@@ -204,10 +288,16 @@ public class ContenedorOfertasInterno extends JPanel {
 		return p;
 	}
 
+	/**
+	 * Funcion que recalcula el tamaño de la interfaz grafica
+	 */
 	private void recalculateSize() {
 		layout.putConstraint(SpringLayout.SOUTH, this, 30, SpringLayout.SOUTH, rechazadas.get(rechazadas.size() - 1));
 	}
 
+	/**
+	 * Funcion que borra todo, añade los componentes y luego coloca componentes
+	 */
 	public void clearOfertas() {
 		this.removeAll();
 		this.add(labelActivas);

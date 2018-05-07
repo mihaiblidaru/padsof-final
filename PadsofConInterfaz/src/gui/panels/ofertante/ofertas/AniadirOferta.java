@@ -25,50 +25,163 @@ import gui.util.LimitedDocument;
 import gui.util.Nombrable;
 import gui.util.PanelInterfaz;
 
+
+/**
+ * Esta es nuestra clase que sirve para aniadir ofertas
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class AniadirOferta extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = 2220134063340646027L;
 
+	/**
+	 * El nombre del panel
+	 */
 	public final static String NAME = "PANEL_ANIADIR_OFERTA";
 
+	/**
+	 * La interfaz grafica
+	 */
 	protected final Gui gui;
+	
+	/**
+	 * Para añadir el precio
+	 */
 	protected FxTextField precioTextBox;
+	
+	/**
+	 * Para añadir la fianza
+	 */
 	protected FxTextField fianzaTextBox;
+	
+	/**
+	 * Para seleccionar la fecha inicial
+	 */
 	protected FxDatePicker desdeDatePicker;
+	
+	/**
+	 * Para seleccionar la fecha final
+	 */
 	protected FxDatePicker hastaDatePicker;
+	
+	/**
+	 * Para añadir la descripcion
+	 */
 	protected JTextArea descripcionTextBox;
+	
+	/**
+	 * Para añadir los meses
+	 */
 	protected FxTextField mesesTextField;
+	
+	/**
+	 * Para marcar si es vacacional
+	 */
 	protected FxCheckBox checkBoxVacacional;
+	
+	/**
+	 * Para marcar si es de vivienda
+	 */
 	protected FxCheckBox checkBoxVivienda;
 
+	/**
+	 * Caja en la que guardamos inmuebles
+	 */
 	protected JComboBox<String> comboBoxInmueble;
+	
+	/**
+	 * Lista de inmuebles
+	 */
 	protected List<Integer> inmuebles = new ArrayList<>();
 
+	/**
+	 * El titulo de la interfaz
+	 */
 	protected JLabel titulo;
+	
+	/**
+	 * El nombre de la interfaz
+	 */
 	private JLabel name;
+	
+	/**
+	 * El layout de la interfaz
+	 */
 	private SpringLayout layout;
+	
+	/**
+	 * El jlabel que imprime la fianza
+	 */
 	private JLabel fianza;
+	
+	/**
+	 * El jlabel que imprime la fecha final
+	 */
 	protected JLabel hasta;
+	
+	/**
+	 * El jlabel que imprime la fecha inicial
+	 */
 	private JLabel desde;
 
+	/**
+	 * El jlabel que imprime el precio
+	 */
 	private JLabel precio;
+	
+	/**
+	 * El jlabel que imprime el simbolo de advertencia
+	 */
 	protected JLabel warningIcon;
+	
+	/**
+	 * El jlabel que imprime la advertencia
+	 */
 	protected JLabel alarm;
+	
+	/**
+	 * El boton para confirmar
+	 */
 	protected FxButton confirmar;
+	
+	/**
+	 * El jlabel que imprime el limite
+	 */
 	JLabel limitLabel;
+	
+	/**
+	 * El jlabel que imprime la descripcion
+	 */
 	private JLabel descripcion;
+	
+	/**
+	 * Establecemos el limte en 300
+	 */
 	protected int limit = 300;
 
+	/**
+	 * Constructor de AniadirOferta
+	 * @param gui interfaz grafica
+	 */
 	public AniadirOferta(Gui gui) {
 		this.gui = gui;
 		initialize();
 	}
 
+	/**
+	 * Funcion que define las dimensiones de la interfaz
+	 */
 	@Override
 	public void setDimension() {
 		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, Gui.FRAME_HEIGHT - 20));
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	public void crearComponentes() {
 
@@ -144,6 +257,9 @@ public class AniadirOferta extends PanelInterfaz implements Nombrable {
 		this.add(titulo);
 	}
 
+	/**
+	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 */
 	public void colocarComponentes() {
 		layout = new SpringLayout();
 		this.setLayout(layout);
@@ -193,6 +309,9 @@ public class AniadirOferta extends PanelInterfaz implements Nombrable {
 
 	}
 
+	/**
+	 * Esta funcion registra los eventos que ocurren en la interfaz
+	 */
 	@Override
 	public void registrarEventos() {
 		confirmar.setOnAction(new AniadirOfertaListener(gui, precioTextBox, fianzaTextBox, desdeDatePicker,
@@ -225,6 +344,10 @@ public class AniadirOferta extends PanelInterfaz implements Nombrable {
 
 	}
 
+	/**
+	 * Esta funcion cambia la visibilidad, vuelve a cargar los datos
+	 * @param state estado de visibilidad
+	 */
 	@Override
 	public void setVisible(boolean state) {
 		super.setVisible(state);
@@ -239,6 +362,9 @@ public class AniadirOferta extends PanelInterfaz implements Nombrable {
 		}
 	}
 
+	/**
+	 * Esta funcion carga la lista de inmuebles
+	 */
 	private void cargarListaInmuebles() {
 		Controller c = gui.getController();
 		comboBoxInmueble.removeAllItems();

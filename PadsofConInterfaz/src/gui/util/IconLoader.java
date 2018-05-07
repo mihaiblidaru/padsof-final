@@ -10,9 +10,27 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+/**
+ * Esta es nuestra clase que carga nuestro icono
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
+
 public class IconLoader {
+	/**
+	 * Nuestra imagen icono
+	 */
 	private static BufferedImage errImg = null;
 
+	/**
+	 * Carga nuestra imagen icono
+	 * @param path el path para la imagen
+	 * @param width el ancho de la imagen
+	 * @param height la altura de la imagen
+	 * @return la imagen cargada
+	 */
 	public static ImageIcon load(String path, int width, int height) {
 		if (errImg == null) {
 			errImg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
