@@ -3,8 +3,19 @@ package gui.util;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+/**
+ * Esta es nuestra clase que genera mensajes de error en la interfaz gráfica en caso de que haya alguno
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class DialogFactory {
 
+	/**
+	 * 
+	 * @param fieldName
+	 */
 	public static void emptyFieldError(String fieldName) {
 		JOptionPane.showMessageDialog(new JPanel(), "El campo '" + fieldName + "' no puede estar vacio", "Error",
 				JOptionPane.ERROR_MESSAGE);

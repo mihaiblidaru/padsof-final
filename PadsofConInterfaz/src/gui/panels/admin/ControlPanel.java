@@ -72,6 +72,7 @@ public class ControlPanel extends PanelInterfaz {
 		ofertaPendiente = new JPanel();
 		ver = new JButton("Ver");
 		oferta = new JLabel("Piso cutre, una cantidad muy grande de cutre, uye");
+
 		TitledBorder title;
 		title = BorderFactory.createTitledBorder(" Ofertas nuevas");
 		TitledBorder titlep;
@@ -99,12 +100,35 @@ public class ControlPanel extends PanelInterfaz {
 		this.setBackground(Color.WHITE);
 		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, 562));
 	}
-
 	public void cargarUsuarios() {
 
 		Controller c = gui.getController();
 		pagos = c.adminGetOfertantesProblemaCobros();
 		cobros = c.adminGetDemandantesProblemaPagos();
+		
+		TitledBorder titlep;
+		titlep = BorderFactory.createTitledBorder( pagos.size() + " Usuarios con problemas de pago ");
+		TitledBorder titlec;
+		titlec = BorderFactory.createTitledBorder( cobros.size() + " Usuarios con problemas de cobro");
+		
+		this.problemaPagos.setBorder(titlep);
+		this.problemaCobros.setBorder(titlec);
+		
+	}
+	
+	public void cargarOfertas() {
+		
+		Controller c = gui.getController();
+		List<Integer> ofertas = null;
+		
+		ofertas = c.adminGetOfertasPendientes();
+		
+		TitledBorder title;
+		title = BorderFactory.createTitledBorder( ofertas.size() +" Ofertas nuevas");
+		this.ofertaPendiente.setBorder(title);
+		
+		while
+		
 
 	}
 }
