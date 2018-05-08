@@ -18,17 +18,44 @@ import gui.util.GuiConstants;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+/**
+ * Esta clase nos sirve para trabajar con el listener de login
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ */
 public class LoginButtonHandler implements EventHandler<ActionEvent> {
+	
+	/**
+	 * La interfaz grafica
+	 */
 	private Gui gui;
+	
+	/**
+	 * Para poner el usuario
+	 */
 	private FxTextField userTextFied;
+	
+	/**
+	 * Para poner la contraseña
+	 */
 	private FxPasswordField passwordTextField;
 
+	/**
+	 * Constructor de LoginButtonHandler
+	 * @param gui interfaz grafica
+	 * @param userTextFied para poner el usuario
+	 * @param passwordTextField para poner la contraseña
+	 */
 	public LoginButtonHandler(Gui gui, FxTextField userTextFied, FxPasswordField passwordTextField) {
 		this.gui = gui;
 		this.userTextFied = userTextFied;
 		this.passwordTextField = passwordTextField;
 	}
 
+	/**
+	 * Esta funcion hace el login con los datos cogido en la clae
+	 * @param event evento realizado en la interfaz
+	 */
 	@Override
 	public void handle(ActionEvent event) {
 

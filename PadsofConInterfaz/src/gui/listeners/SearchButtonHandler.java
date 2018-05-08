@@ -16,14 +16,50 @@ import gui.panels.ResultadosBusqueda;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+/**
+ * Esta clase nos sirve para trabajar con el listener de login
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ */
 public class SearchButtonHandler implements EventHandler<ActionEvent> {
+	/**
+	 * Interfaz graficca
+	 */
 	private final Gui gui;
+	
+	/**
+	 * Aqui ponemos la localidad o el codigo postal
+	 */
 	private final FxTextField localidadOCPField;
+	
+	/**
+	 * Para seleccionar la fecha inicial
+	 */
 	private final FxDatePicker desdeDatePicker;
+	
+	/**
+	 * Para seleccionar la fecha final
+	 */
 	private final FxDatePicker hastaDatePicker;
+	
+	/**
+	 * Para marcar si es vacacional
+	 */
 	private final FxCheckBox checkBoxVacacional;
+	
+	/**
+	 * Expresion regular para filtrar solo numeros
+	 */
 	private static final String regexOnlyDigits = "^\\d*\\d";
 
+	/**
+	 * Constructor de SearchButtonHandler
+	 * @param gui interfaz grafica
+	 * @param localidadOCPField Aqui ponemos la localidad o el codigo postal
+	 * @param desdeDatePicker Para seleccionar la fecha inicial
+	 * @param hastaDatePicker Para seleccionar la fecha final
+	 * @param checkBoxVacacional Para marcar si es vacacional
+	 */
 	public SearchButtonHandler(Gui gui, FxTextField localidadOCPField, FxDatePicker desdeDatePicker,
 			FxDatePicker hastaDatePicker, FxCheckBox checkBoxVacacional) {
 		super();
@@ -34,6 +70,10 @@ public class SearchButtonHandler implements EventHandler<ActionEvent> {
 		this.checkBoxVacacional = checkBoxVacacional;
 	}
 
+	/**
+	 * Esta funcion haceuna busqueda con los datos obtenidos con la clase
+	 * @param event evento realizado en la interfaz
+	 */
 	@Override
 	public void handle(ActionEvent event) {
 		SwingUtilities.invokeLater(() -> {

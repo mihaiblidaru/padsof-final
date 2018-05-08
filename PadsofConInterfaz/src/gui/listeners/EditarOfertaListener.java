@@ -80,11 +80,7 @@ public class EditarOfertaListener implements EventHandler<ActionEvent> {
 	 * @param descripcionTextBox para aniadur descripcion
 	 * @param mesesTextField para aniadur meses
 	 * @param checkBoxVacacional para aniadur si es vacacional
-	 */
-	
-	
-	
-	 
+	 */	 
 	public EditarOfertaListener(Gui gui, ParameterReference<PanelOferta> panelOferta, FxTextField precioTextBox,
 			FxTextField fianzaTextBox, FxDatePicker desdeDatePicker, FxDatePicker hastaDatePicker,
 			JTextArea descripcionTextBox, FxTextField mesesTextField, FxCheckBox checkBoxVacacional) {
@@ -100,6 +96,10 @@ public class EditarOfertaListener implements EventHandler<ActionEvent> {
 		this.panelOferta = panelOferta;
 	}
 
+	/**
+	 * Edita una oferta utilizando los datos que ha conseguido en el listener
+	 * @param event evento ocurrido en el listener
+	 */
 	@Override
 	public void handle(ActionEvent event) {
 		SwingUtilities.invokeLater(() -> {
