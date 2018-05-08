@@ -23,30 +23,67 @@ import gui.panels.oferta.PanelOfertaBusqueda;
 import gui.util.Nombrable;
 import gui.util.PanelInterfaz;
 
+/**
+ * Esta clase nos sirve para trabajar con los resultados de la busqueda
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ */
 public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 
+	/**
+	 * Altura del panel
+	 */
 	private static final int PANEL_HEIGHT = 562;
+	
+	/**
+	 * Altura del panel
+	 */
 	private static final int PANEL_WIDTH = 815;
 	private static final long serialVersionUID = 8638372520699078390L;
+	
+	/**
+	 * Nombre del panel
+	 */
 	public final static String NAME = "RESULTADOS_BUSQUEDA";
+	/**
+	 * Interfaz grafica
+	 */
 	private final Gui gui;
+	
+	/**
+	 * Contenedor de las ofertas
+	 */
 	private ContenedorOfertas contenedor;
 
+	/**
+	 * Constructor de ResultadosBusquedas
+	 * @param gui interfaz grafica
+	 */
 	public ResultadosBusqueda(Gui gui) {
 		this.gui = gui;
 		initialize();
 		cargarResultados(gui.getController().getUltimasOfertas(5));
 	}
 
+	/**
+	 * Carga los resultados de una busqueda
+	 * @param resultados lista de id al hacer una busqueda
+	 */
 	public void cargarResultados(List<Integer> resultados) {
 		contenedor.cargarResultados(resultados);
 		this.revalidate();
 	}
 
+	/**
+	 * Actualza la ofertas del contenedor
+	 */
 	public void actualizarOfertas() {
 		contenedor.actualizarOfertas();
 	}
 
+	/**
+	 * Crea los componentes del resultado de busqueda
+	 */
 	@Override
 	public void crearComponentes() {
 		contenedor = new ContenedorOfertas(gui);
@@ -61,28 +98,62 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 
 	}
 
+	/**
+	 * Coloca los componentes del LoginPanel utilizando un springLayout
+	 */
 	@Override
 	public void colocarComponentes() {
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);
 	}
 
+	/**
+	 * Registra los eventos que ocurren en el loginPanel
+	 */
 	@Override
 	public void registrarEventos() {
 	}
 
+	/**
+	 * Define la dimension de la interfaz grafica
+	 */
 	@Override
 	public void setDimension() {
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 	}
 
+	/**
+	 * Esta clase es un contenedor de las ofertas
+	 * @author Mihai Blidaru
+	 * @author Sergio Dominguez
+	 */
 	class ContenedorOfertas extends JPanel {
 		private static final long serialVersionUID = -2181119752625080665L;
+		
+		/**
+		 * El layout
+		 */
 		private final FlowLayout layout;
+		
+		/**
+		 * Mapa de resultados de la busqueda
+		 */
 		private Map<Integer, PanelOfertaBusqueda> resultados = new HashMap<>();
+		
+		/**
+		 * Interfaz grafica
+		 */
 		private Gui gui;
+		
+		/**
+		 * Label al no haber resutados
+		 */
 		private JLabel noResultados;
 
+		/**
+		 * Constructor de ContenedorOfertas
+		 * @param gui interfaz grafica
+		 */
 		public ContenedorOfertas(Gui gui) {
 			this.gui = gui;
 			layout = new FlowLayout(FlowLayout.CENTER, 0, 10);
@@ -95,6 +166,11 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 			this.add(noResultados);
 		}
 
+		/**
+		 * Añade el panel de una oferta tras una busqueda
+		 * @param c panel a añadir
+		 * @return c pañel añadido
+		 */
 		public Component addOferta(PanelOfertaBusqueda c) {
 			if (resultados.isEmpty()) {
 				noResultados.setVisible(false);
@@ -108,6 +184,10 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 			return c;
 		}
 
+		/**
+		 * Carga los resultados tras una busqueda
+		 * @param r lista de resultados tras una busqueda
+		 */
 		public void cargarResultados(List<Integer> r) {
 			resultados.values().stream().forEach(v -> this.remove(v));
 			resultados.clear();
@@ -123,6 +203,9 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 			this.repaint();
 		}
 
+		/**
+		 * Actualiza las ofertas actualizando sus botones
+		 */
 		public void actualizarOfertas() {
 			Controller c = gui.getController();
 			List<Integer> noVisibles = c.ofertanteGetMisOfertas();
@@ -130,6 +213,10 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 			resultados.values().stream().forEach(r -> r.actualizarBotones());
 		}
 
+		/**
+		 * Borrra una oferta de la interfaz
+		 * @param idOferta id de la oferta a borrar
+		 */
 		public void removeOferta(int idOferta) {
 			this.remove(resultados.remove(idOferta));
 			if (resultados.isEmpty()) {
@@ -142,6 +229,10 @@ public class ResultadosBusqueda extends PanelInterfaz implements Nombrable {
 		}
 	}
 
+	/**
+	 * Borra una oferta del contenedor
+	 * @param idOferta id de la oferta a borrar
+	 */
 	public void removeOferta(int idOferta) {
 		contenedor.removeOferta(idOferta);
 		this.revalidate();

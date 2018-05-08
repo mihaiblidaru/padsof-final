@@ -23,31 +23,97 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+
+/**
+ * Esta clase nos sirve para trabajar con el panel de login de la interfaz grafica
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ */
 public class LoginPanel extends PanelInterfaz implements Nombrable {
 
+	/**
+	 * Altura del panel
+	 */
 	private static final int PANEL_HEIGHT = 180;
+	
+	/**
+	 * Anchura del panel
+	 */
 	private static final int PANEL_WIDTH = 300;
 	private static final long serialVersionUID = -3260581588702723617L;
+	
+	/**
+	 * Nombre del panel
+	 */
 	public final static String NAME = "LOGIN_PANEL";
+	
+	/**
+	 * Interfaz grafica
+	 */
 	private Gui gui;
+	
+	/**
+	 * El layout del panel
+	 */
 	private SpringLayout layout;
 
+	/**
+	 * Donde poner el texto del usuario
+	 */
 	private FxTextField textUsuario;
+	
+	/**
+	 * Donde poner la contraseña del usuario
+	 */
 	private FxPasswordField textPassword;
+	
+	/**
+	 * Fuente del titulo
+	 */
 	private Font titleFont;
+	
+	/**
+	 * Label del titulo
+	 */
 	private JLabel labelTitulo;
+	
+	/**
+	 * Label del usuario
+	 */
 	private JLabel labelUsuario;
+	
+	/**
+	 * Label del password
+	 */
 	private JLabel labelPassword;
+	
+	/**
+	 * Boton de login
+	 */
 	private FxButton loginBtn;
+	/**
+	 * Boton de volver
+	 */
 	private FxButton volverBtn;
+	
+	/**
+	 * Grupo de botones
+	 */
 	private JPanel grupoBotones;
 
+	/**
+	 * Constructor de LoginPanel
+	 * @param gui interfaz grafica
+	 */
 	public LoginPanel(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createEtchedBorder());
 		initialize();
 	}
 
+	/**
+	 * Define la dimension de la interfaz grafica
+	 */
 	@Override
 	public void setVisible(boolean state) {
 		super.setVisible(state);
@@ -57,6 +123,9 @@ public class LoginPanel extends PanelInterfaz implements Nombrable {
 		}
 	}
 
+	/**
+	 * Crea los componentes del panel de login
+	 */
 	@Override
 	public void crearComponentes() {
 		ResourceBundle rb = ResourceBundle.getBundle("locale.Lang");
@@ -84,6 +153,9 @@ public class LoginPanel extends PanelInterfaz implements Nombrable {
 		add(grupoBotones);
 	}
 
+	/**
+	 * Coloca los componentes del LoginPanel utilizando un springLayout
+	 */
 	@Override
 	public void colocarComponentes() {
 		this.layout = new SpringLayout();
@@ -112,6 +184,9 @@ public class LoginPanel extends PanelInterfaz implements Nombrable {
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, grupoBotones, 0, SpringLayout.HORIZONTAL_CENTER, this);
 	}
 
+	/**
+	 * Registra los eventos que ocurren en el loginPanel
+	 */
 	@Override
 	public void registrarEventos() {
 		loginBtn.setOnAction(new LoginButtonHandler(gui, textUsuario, textPassword));
@@ -133,6 +208,9 @@ public class LoginPanel extends PanelInterfaz implements Nombrable {
 
 	}
 
+	/**
+	 * Define la dimension de la interfaz grafica
+	 */
 	@Override
 	public void setDimension() {
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));

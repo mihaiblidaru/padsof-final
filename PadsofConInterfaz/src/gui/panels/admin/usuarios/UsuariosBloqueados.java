@@ -16,14 +16,36 @@ import gui.components.ThinSolidScrollBarUi;
 import gui.components.fx.FxButton;
 import gui.components.fx.FxTextField;
 
+/**
+ * Esta es nuestra clase que sirve para trabajar con los usuarios con problemas de pagos
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class UsuariosBloqueados extends JPanel {
 
 	private static final long serialVersionUID = 7615793439529902683L;
+	
+	/**
+	 * Nombre del panel
+	 */
 	public static final String NAME = "USUARIOS_PROBLEMA_PAGO";
 
+	/**
+	 * Interfaz grafica
+	 */
 	private final Gui gui;
+	
+	/**
+	 * Contenedor de usuarios
+	 */
 	private ContenedorUsuarios cu;
 
+	/**
+	 * Constructor de UsuariosBloqueados
+	 * @param gui interfaz grafica
+	 */
 	public UsuariosBloqueados(Gui gui) {
 		this.gui = gui;
 		this.setPreferredSize(new Dimension(Gui.FRAME_WIDTH, 400));
@@ -31,6 +53,9 @@ public class UsuariosBloqueados extends JPanel {
 		initialize();
 	}
 
+	/**
+	 * Crea los paneles y los coloca
+	 */
 	private void initialize() {
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);
@@ -73,6 +98,9 @@ public class UsuariosBloqueados extends JPanel {
 		});
 	}
 
+	/**
+	 * Carga los usuarios y carga la interfaz
+	 */
 	public void cargarUsuarios() {
 		cu.cargarUsuarios();
 		this.revalidate();

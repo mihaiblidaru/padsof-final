@@ -24,45 +24,139 @@ import gui.util.PanelInterfaz;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+/**
+ * Esta clase nos sirve para trabajar con el header de la interfaz grafica
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ */
 public class Header extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = -5230943621476766861L;
+	/**
+	 * Nombre del panel
+	 */
 	public final static String NAME = "HEADER";
+	/**
+	 * Interfaz grafica
+	 */
 	private Gui gui;
 
+	/**
+	 * Los botones del admin
+	 */
 	public final static int BOTONES_ADMIN = 1;
+	
+	/**
+	 * Los botones del ofertante
+	 */
 	public final static int BOTONES_OFERTANTE = 2;
+	
+	/**
+	 * Los botones del demandante
+	 */
 	public final static int BOTONES_DEMANDANTE = 3;
+	
+	/**
+	 * Los botones del ofertante y demandante
+	 */
 	public final static int BOTONES_OFERTANTE_DEMANDANTE = 4;
+	
+	/**
+	 * Los botones del usuario no registrado
+	 */
 	public final static int BOTONES_NO_REGISTRADO = 5;
 
+	/**
+	 * Altura del panel
+	 */
 	private static final int PANEL_HEIGHT = 30;
+	
+	/**
+	 * Anchura del panel
+	 */
 	private static final int PANEL_WIDTH = Gui.FRAME_WIDTH;
 
+	/**
+	 * El label con el nombre de la aplicacion
+	 */
 	private JLabel appName;
+	
+	/**
+	 * Boton para las ofertas del admin
+	 */
 	private FxButton adminOfertas;
+	
+	/**
+	 * Boton para los usuarios del admin
+	 */
 	private FxButton adminUsuarios;
+	
+	/**
+	 * Boton para mis reservas
+	 */
 	private FxButton misReservasButton;
+	
+	/**
+	 * Boton para hacer logout
+	 */
 	private FxButton logoutButton;
+	
+	/**
+	 * Boton para hacer login
+	 */
 	private FxButton loginButton;
+	
+	/**
+	 * Boton para mis inmuebles
+	 */
 	private FxButton misInmueblesButton;
+	
+	/**
+	 * Boton para mis ofertas
+	 */
 	private FxButton misOfertasButton;
+	
+	/**
+	 * El layout del header
+	 */
 	private SpringLayout layout;
+	
+	/**
+	 * El grupo de botones del usuario
+	 */
 	private JPanel grupoBotonesUsuario;
+	
+	/**
+	 * El grupo de botones del admin
+	 */
 	private JPanel grupoBotonesAdmin;
+	
+	/**
+	 * Boton de busqueda
+	 */
 	private FxButton botonBusqueda;
 
+	/**
+	 * Constructor de Header
+	 * @param gui interfaz grafica
+	 */
 	public Header(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
 		initialize();
 	}
 
+	/**
+	 * Define la dimension de la interfaz grafica
+	 */
 	@Override
 	public void setDimension() {
 		this.setPreferredSize(new Dimension(PANEL_WIDTH - 6, PANEL_HEIGHT));
 	}
 
+	/**
+	 * Crea los componentes del header
+	 */
 	@Override
 	public void crearComponentes() {
 		this.loginButton = new FxButton(50, 25, "Login");
@@ -102,6 +196,9 @@ public class Header extends PanelInterfaz implements Nombrable {
 
 	}
 
+	/**
+	 * Coloca los componentes del Header utilizando un springLayout
+	 */
 	@Override
 	public void colocarComponentes() {
 		this.layout = new SpringLayout();
@@ -126,6 +223,9 @@ public class Header extends PanelInterfaz implements Nombrable {
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, grupoBotonesUsuario, 0, SpringLayout.VERTICAL_CENTER, this);
 	}
 
+	/**
+	 * Registra los eventos que ocurren en el header
+	 */
 	@Override
 	public void registrarEventos() {
 		botonBusqueda.setOnAction(e -> {
@@ -172,6 +272,9 @@ public class Header extends PanelInterfaz implements Nombrable {
 		});
 	}
 
+	/**
+	 * Handler del boton de hacer logout
+	 */
 	EventHandler<ActionEvent> logoutButtonHandler = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent e) {
@@ -193,10 +296,18 @@ public class Header extends PanelInterfaz implements Nombrable {
 		}
 	};
 
+	/**
+	 * Cambia la visibilidad del nombre de la app
+	 * @param state
+	 */
 	public void appNameSetVisible(boolean state) {
 		appName.setVisible(state);
 	}
 
+	/**
+	 * Funcion que se encarga de cambiar la visibilidad de los grupos de botones
+	 * @param grupoBotones grupo de botones
+	 */
 	public void verBotones(int grupoBotones) {
 		grupoBotonesAdmin.setVisible(false);
 		this.loginButton.setVisible(false);
