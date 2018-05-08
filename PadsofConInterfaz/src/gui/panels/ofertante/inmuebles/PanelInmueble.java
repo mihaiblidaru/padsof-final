@@ -12,6 +12,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import gui.Gui;
+import gui.components.JMultiLineLabel;
 import gui.controllers.Controller;
 
 /**
@@ -33,7 +34,7 @@ public class PanelInmueble extends JPanel {
 	/**
 	 * El jlabel que imprime la direccion
 	 */
-	private JLabel direccion;
+	private JMultiLineLabel direccion;
 
 	/**
 	 * El layout del contenedor
@@ -44,17 +45,19 @@ public class PanelInmueble extends JPanel {
 	 * El jlabel que imprime el numero de ofertas
 	 */
 	private JLabel numOfertas;
-	
+
 	/**
 	 * El id del inmueble
 	 */
 	private Integer idInmueble;
 
+	private JMultiLineLabel caracteristicas;
+
 	/**
 	 * Altura del panel
 	 */
 	public final static int PANEL_HEIGHT = 140;
-	
+
 	/**
 	 * Anchura del panel
 	 */
@@ -62,8 +65,11 @@ public class PanelInmueble extends JPanel {
 
 	/**
 	 * Constructor de PanelInmueble, crea los componentes y los coloca
-	 * @param gui interfaz grafica
-	 * @param id id del inmueble
+	 * 
+	 * @param gui
+	 *            interfaz grafica
+	 * @param id
+	 *            id del inmueble
 	 */
 	public PanelInmueble(Gui gui, Integer id) {
 		this.gui = gui;
@@ -83,10 +89,12 @@ public class PanelInmueble extends JPanel {
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, separator, 0, SpringLayout.VERTICAL_CENTER, this);
 
 		Font dirFont = new Font("Times New Roman", Font.PLAIN, 18);
-		direccion = new JLabel("Calle Alcala, nº7, 1B, 28850, Madrid");
+		direccion = new JMultiLineLabel("Calle Alcala, nº7, 1B, 28850, Madrid", 295, 100, false);
 		direccion.setFont(dirFont);
 		this.add(direccion);
 
+		caracteristicas = new JMultiLineLabel("Caracteristicas:", 300, 120, true);
+		this.add(caracteristicas);
 		layout.putConstraint(SpringLayout.WEST, direccion, 10, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, direccion, 10, SpringLayout.NORTH, this);
 
@@ -97,21 +105,27 @@ public class PanelInmueble extends JPanel {
 		layout.putConstraint(SpringLayout.EAST, numOfertas, -10, SpringLayout.WEST, separator);
 		layout.putConstraint(SpringLayout.SOUTH, numOfertas, -15, SpringLayout.SOUTH, this);
 
+		layout.putConstraint(SpringLayout.WEST, caracteristicas, 10, SpringLayout.EAST, separator);
+		layout.putConstraint(SpringLayout.NORTH, caracteristicas, 0, SpringLayout.NORTH, direccion);
+
 		this.cargarDatos(id);
 	}
 
 	/**
 	 * Carga los datos del inmueble con un id
+	 * 
 	 * @param id
 	 */
 	public void cargarDatos(Integer id) {
 		Controller c = this.gui.getController();
 		this.direccion.setText(c.inmuebleGetDireccionCompleta(id));
 		this.numOfertas.setText(String.format("%d ofertas activas", c.inmuebleGetNumOfertas(id)));
+		this.caracteristicas.setText("Caracteristicas:\n" + c.inmuebleGetCaracteristicas(id));
 	}
 
 	/**
 	 * Devuelve el id del inmueble
+	 * 
 	 * @return idInmueble id del inmueble
 	 */
 	public int getIdInmuebles() {

@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import app.clases.MiVacaPiso;
+import app.clases.inmueble.Caracteristica;
 import app.clases.inmueble.Inmueble;
 import app.clases.inmueble.InmuebleDuplicadoException;
 import app.clases.ofertas.Estado;
@@ -1002,5 +1003,23 @@ public class Controller {
 			System.exit(-1);
 		}
 		return null;
+	}
+
+	/**
+	 * Devuelve las caracteristicas de un inmueble como cadena
+	 * 
+	 * @param id
+	 *            id del inmueble
+	 * @return las caracteristicas de un inmueble como cadena
+	 */
+	public String inmuebleGetCaracteristicas(Integer id) {
+		List<Caracteristica> cars = null;
+		try {
+			cars = model.getInmuebleById(id).getCaracteristica();
+		} catch (SQLException e) {
+			DialogFactory.internalError(e.getMessage());
+			System.exit(-1);
+		}
+		return cars.stream().map(c -> c.getKey() + ": " + c.getValor()).collect(Collectors.joining("\n"));
 	}
 }

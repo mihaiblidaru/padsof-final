@@ -21,8 +21,6 @@ import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 
-import com.sun.xml.internal.bind.v2.util.CollisionCheckStack;
-
 import gui.Gui;
 import gui.components.JMultiLineLabel;
 import gui.components.fx.FxButton;
@@ -37,6 +35,13 @@ import gui.util.LimitedFlowLayout;
 import gui.util.Nombrable;
 import gui.util.PanelInterfaz;
 
+/**
+ * Panel en el que se ven los detalles de la oferta.
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class VerOferta extends PanelInterfaz implements Nombrable {
 
 	/**
@@ -44,12 +49,12 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 	 */
 	public static final String NAME = "VISTA_OFERTA";
 	private static final long serialVersionUID = 8592039965953760934L;
-	
+
 	/**
 	 * Altura del panel
 	 */
 	private static final int PANEL_HEIGHT = 560;
-	
+
 	/**
 	 * Anchura del panel
 	 */
@@ -59,42 +64,42 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 	 * Interfaz grafica
 	 */
 	private Gui gui;
-	
+
 	/**
 	 * Layout del panel
 	 */
 	private SpringLayout layout;
-	
+
 	/**
 	 * Label que imprime la direccion
 	 */
 	private JMultiLineLabel direccion;
-	
+
 	/**
 	 * Labe que imprime la fecha inicial
 	 */
 	private JLabel fechaInicio;
-	
+
 	/**
 	 * Label que imprime hasta
 	 */
 	private JLabel hasta;
-	
+
 	/**
 	 * Labe que imprime la fecha final
 	 */
 	private JLabel fechaFin;
-	
+
 	/**
 	 * Label que imprime hasta
 	 */
 	private JLabel desde;
-	
+
 	/**
 	 * Label que imprime la descripcion
 	 */
 	private JMultiLineLabel descripcion;
-	
+
 	/**
 	 * Label que imprime el precio
 	 */
@@ -103,27 +108,27 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 	 * Label que imprime la fianza
 	 */
 	private JLabel fianza;
-	
+
 	/**
 	 * Label que imprime total
 	 */
 	private JLabel total;
-	
+
 	/**
 	 * Label que imprime el precio total
 	 */
 	private JLabel precioTotal;
-	
+
 	/**
 	 * Panel de los comentarios
 	 */
 	private JPanel comentarios;
-	
+
 	/**
 	 * Panel deslizable
 	 */
 	private JScrollPane scrollPane;
-	
+
 	/**
 	 * Boton para aniadir un comentario
 	 */
@@ -133,67 +138,67 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 	 * Id de la oferta
 	 */
 	protected Integer idOferta;
-	
+
 	/**
 	 * Panel para las valoraciones
 	 */
 	private JPanel grupoValoracion;
-	
+
 	/**
 	 * Icono vacio
 	 */
 	private ImageIcon empty;
-	
+
 	/**
 	 * Icono lleno
 	 */
 	private ImageIcon full;
-	
+
 	/**
 	 * la valoracion inicial
 	 */
 	protected boolean[] valoracionInicial = new boolean[5];
-	
+
 	/**
 	 * Si esta valorado
 	 */
 	boolean yaValorado;
-	
+
 	/**
 	 * La primera estrella
 	 */
 	private JLabel star1;
-	
+
 	/**
 	 * La segunda estrella
 	 */
 	private JLabel star2;
-	
+
 	/**
 	 * La tercera estrella
 	 */
 	private JLabel star3;
-	
+
 	/**
 	 * La cuarta estrella
 	 */
 	private JLabel star4;
-	
+
 	/**
 	 * La quinta estrella
 	 */
 	private JLabel star5;
-	
+
 	/**
 	 * El label de la valoracion
 	 */
 	private JLabel labelValoracion;
-	
+
 	/**
 	 * El boton para contratar
 	 */
 	private FxButton contratarBtn;
-	
+
 	/**
 	 * El boton para reservar
 	 */
@@ -201,7 +206,9 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 	/**
 	 * Contructor de VerOferta
-	 * @param gui interfaz grafica
+	 * 
+	 * @param gui
+	 *            interfaz grafica
 	 */
 	public VerOferta(Gui gui) {
 		this.gui = gui;
@@ -217,9 +224,10 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	
+
 	/**
-	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz
+	 * grafica
 	 */
 	@Override
 	public void crearComponentes() {
@@ -299,7 +307,8 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 	}
 
 	/**
-	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 * Esta funcion coloca los componentes en la interfaz grafica utilizando un
+	 * SpringLayout
 	 */
 	@Override
 	public void colocarComponentes() {
@@ -361,7 +370,9 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 	/**
 	 * Esta funcion carga todos los comentarios de la oferta
-	 * @param id id de la oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
 	 */
 	public void cargarComentarios(Integer id) {
 		Controller c = gui.getController();
@@ -381,7 +392,9 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 	/**
 	 * Coloca el panel del comentario
-	 * @param p panel del comentario
+	 * 
+	 * @param p
+	 *            panel del comentario
 	 */
 	private void colocarComentario(PanelComentario p) {
 		if (p.getPadre() == null) {
@@ -409,7 +422,9 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 	/**
 	 * Carga los datos de la oferta con un id
-	 * @param id id de la oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
 	 */
 	public void cargarDatos(Integer id) {
 		this.idOferta = id;
@@ -443,7 +458,9 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 	/**
 	 * Carga las valoraciones de la oferta
-	 * @param id id de la oferta
+	 * 
+	 * @param id
+	 *            id de la oferta
 	 */
 	protected void cargarValoracion(Integer id) {
 		Controller c = gui.getController();
@@ -515,6 +532,7 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 	/**
 	 * Esta clase es un listener para las estrelas de la valoracion con el raton
+	 * 
 	 * @author Mihai Blidaru
 	 * @author Sergio Dominguez
 	 */
@@ -525,8 +543,11 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 		/**
 		 * Constructor de StarListener
-		 * @param group panel de las estrellas
-		 * @param index indice de la estrellas
+		 * 
+		 * @param group
+		 *            panel de las estrellas
+		 * @param index
+		 *            indice de la estrellas
 		 */
 		public StarListener(JPanel group, int index) {
 			this.group = group;
@@ -540,7 +561,9 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 		/**
 		 * Esta funcion sirve para capturar un click de raton
-		 * @param e click de raton
+		 * 
+		 * @param e
+		 *            click de raton
 		 */
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -553,7 +576,9 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 		/**
 		 * Esta funcion sirve para rellenar las estrellas una vez pulsado
-		 * @param e click del raton
+		 * 
+		 * @param e
+		 *            click del raton
 		 */
 		@Override
 		public void mouseEntered(MouseEvent e) {
@@ -593,6 +618,7 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 	/**
 	 * Esta clase es un listener del grupo de estrellas
+	 * 
 	 * @author Mihai Blidaru
 	 * @author Sergio Dominguez
 	 */
@@ -615,7 +641,9 @@ public class VerOferta extends PanelInterfaz implements Nombrable {
 
 		/**
 		 * Esta funcion sirve para rellenar las valoraciones
-		 * @param e click de raton
+		 * 
+		 * @param e
+		 *            click de raton
 		 */
 		@Override
 		public void mouseExited(MouseEvent e) {

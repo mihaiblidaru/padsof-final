@@ -1,6 +1,5 @@
 package app.clases.data;
 
-import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Connection;
@@ -26,7 +25,7 @@ public class DBManager {
 	/**
 	 * Nombre del driver usado para conectarse a la base de datos
 	 */
-	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	//private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
 	/**
 	 * Nombre de la base de datos
@@ -75,45 +74,6 @@ public class DBManager {
 	 * Pool de conexiones. Usado para minimizar el coste de crear una nueva conexion
 	 * cada vez que se necesita un recurso de la base de datos.
 	 */
-	//private static ComboPooledDataSource connectionPool = null;
-
-	/**
-	 * Inicializa el pool de conexiones
-	 * 
-	 * @throws PropertyVetoException
-	 *             ocurre cuando no se encuentra el driver necesario para las
-	 *             conexiones
-	 */
-	private static void initializeConnectionPool() throws PropertyVetoException {
-		/*connectionPool = new BasicDataSource();
-		connectionPool.setDriverClassName(JDBC_DRIVER);
-		connectionPool.setUrl(DB_URL);
-		connectionPool.setInitialSize(34);
-		connectionPool.setUsername(DB_USER);
-		connectionPool.setPassword(DB_PASS);
-		connectionPool.setMaxOpenPreparedStatements(100);
-		connectionPool.setMinIdle(89);
-		connectionPool.setMaxIdle(233);
-		connectionPool.setValidationQuery("SELECT 1");
-		connectionPool.setTestOnBorrow(true);
-		connectionPool.setTimeBetweenEvictionRunsMillis(34000);
-		connectionPool.setMinEvictableIdleTimeMillis(55000);*/
-
-		/*connectionPool = new ComboPooledDataSource();
-		connectionPool.setDriverClass(JDBC_DRIVER);
-		connectionPool.setJdbcUrl(DB_URL);
-		connectionPool.setUser(DB_USER);
-		connectionPool.setPassword(DB_PASS);
-		connectionPool.setMaxStatements(50);
-		connectionPool.setMinPoolSize(10);
-		connectionPool.setMaxPoolSize(50);
-		connectionPool.setMaxStatementsPerConnection(30);
-		connectionPool.setInitialPoolSize(10);
-		connectionPool.setMaxIdleTime(50);
-		connectionPool.setTestConnectionOnCheckin(false);
-		connectionPool.setTestConnectionOnCheckout(false);
-		connectionPool.setPreferredTestQuery("SELECT 1");*/
-	}
 
 	private static JDBC4Connection connection = null;
 

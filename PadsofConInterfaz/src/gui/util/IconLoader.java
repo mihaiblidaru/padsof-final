@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
- * Esta es nuestra clase que carga nuestro icono
+ * Esta es nuestra clase que carga imagenes
  * 
  * @author Mihai Blidaru
  * @author Sergio Dominguez
@@ -25,10 +25,14 @@ public class IconLoader {
 	private static BufferedImage errImg = null;
 
 	/**
-	 * Carga nuestra imagen icono
-	 * @param path el path para la imagen
-	 * @param width el ancho de la imagen
-	 * @param height la altura de la imagen
+	 * Carga una imagen como ImageIcon
+	 * 
+	 * @param path
+	 *            el path para la imagen
+	 * @param width
+	 *            el ancho de la imagen
+	 * @param height
+	 *            la altura de la imagen
 	 * @return la imagen cargada
 	 */
 	public static ImageIcon load(String path, int width, int height) {
