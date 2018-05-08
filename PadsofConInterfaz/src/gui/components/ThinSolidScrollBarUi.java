@@ -12,16 +12,36 @@ import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+/**
+ * Barra deslizable de color solido, si flechas
+ * de dimension variable
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class ThinSolidScrollBarUi extends BasicScrollBarUI {
 
+	/**
+	 * Ancho del scrollbar
+	 */
 	public int width;
 
+	private final Dimension d = new Dimension();
+
+	/**
+	 * Inicializa un nuevo scrollbarui
+	 * 
+	 * @param width
+	 *            ancho del scrollbar
+	 */
 	public ThinSolidScrollBarUi(int width) {
 		this.width = width;
 	}
 
-	private final Dimension d = new Dimension();
-
+	/**
+	 * Crea un boton vacio invisible
+	 */
 	@Override
 	protected JButton createDecreaseButton(int orientation) {
 		return new JButton() {
@@ -34,12 +54,12 @@ public class ThinSolidScrollBarUi extends BasicScrollBarUI {
 		};
 	}
 
+	/**
+	 * Crea un boton vacio invisible
+	 */
 	@Override
 	protected JButton createIncreaseButton(int orientation) {
 		return new JButton() {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 9165356859523155025L;
 
 			@Override
@@ -49,12 +69,18 @@ public class ThinSolidScrollBarUi extends BasicScrollBarUI {
 		};
 	}
 
+	/**
+	 * Pinta el fondo del scrollbar
+	 */
 	@Override
 	protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
-		g.setColor(Color.white);
+		g.setColor(Color.WHITE);
 		g.drawRect(r.x, r.y, r.width, r.height);
 	}
 
+	/**
+	 * Pinta el propio scrollbar
+	 */
 	@Override
 	protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
 		Graphics2D g2 = (Graphics2D) g.create();
@@ -76,6 +102,10 @@ public class ThinSolidScrollBarUi extends BasicScrollBarUI {
 		g2.dispose();
 	}
 
+	/**
+	 * Cambia los limites del scrollbar
+	 * 
+	 */
 	@Override
 	protected void setThumbBounds(int x, int y, int width, int height) {
 		super.setThumbBounds(x, y, width, height);

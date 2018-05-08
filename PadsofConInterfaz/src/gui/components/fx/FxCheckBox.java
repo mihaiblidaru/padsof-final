@@ -9,11 +9,36 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
+/**
+ * Clase que permite usa CheckBox'es
+ * de javafx en swing
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class FxCheckBox extends FxWrapper {
 	private static final long serialVersionUID = -6084390837327862411L;
+	/**
+	 * Texto que acompaña al checkbox
+	 */
 	private final String placeholder;
+
+	/**
+	 * El checbox en si
+	 */
 	private CheckBox checkBox = null;
 
+	/**
+	 * Crea un nuevo checkbox
+	 * 
+	 * @param width
+	 *            ancho del checkbox + texto
+	 * @param height
+	 *            alto del checkbox + texto
+	 * @param placeholder
+	 *            texto que acompaña al checkbox
+	 */
 	public FxCheckBox(int width, int height, String placeholder) {
 		super(width, height);
 		this.placeholder = placeholder;
@@ -30,6 +55,11 @@ public class FxCheckBox extends FxWrapper {
 
 	}
 
+	/**
+	 * Inicializa el componente de javafx
+	 * 
+	 * @return el componente creado
+	 */
 	private Scene createScene() {
 		Group root = new Group();
 		Scene scene = new Scene(root, this.getWidth(), this.getHeight());
@@ -44,30 +74,33 @@ public class FxCheckBox extends FxWrapper {
 		return scene;
 	}
 
-	public String getText() {
-		return this.checkBox.getText();
-
-	}
-
-	public void setText(String value) {
-		Platform.runLater(() -> this.checkBox.setText(value));
-
-	}
-
+	/**
+	 * Devuelve si el checkbox está selecionado o no
+	 * 
+	 * @return si el checkbox está selecionado o no
+	 */
 	public final boolean isSelected() {
 		return checkBox.isSelected();
 	}
 
+	/**
+	 * Cambia el estado de seleccion del checkbox
+	 * 
+	 * @param value
+	 *            nuevo valor del checkbox
+	 */
 	public final void setSelected(boolean value) {
 		Platform.runLater(() -> checkBox.setSelected(value));
 	}
 
+	/**
+	 * Cambia el manejador del evento que se dispara cuando el usuario
+	 * hace click en el checkbox
+	 * 
+	 * @param arg0
+	 *            manejador del evento
+	 */
 	public final void setOnAction(EventHandler<ActionEvent> arg0) {
 		Platform.runLater(() -> checkBox.setOnAction(arg0));
 	}
-
-	public void fire() {
-		checkBox.fire();
-	}
-
 }

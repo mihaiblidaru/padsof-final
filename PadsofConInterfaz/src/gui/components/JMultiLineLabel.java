@@ -6,15 +6,42 @@ import java.awt.FontMetrics;
 
 import javax.swing.JTextArea;
 
+/**
+ * Label Multilinea implementado usando un
+ * JTextArea.
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class JMultiLineLabel extends JTextArea {
-	private String fullText;
-	private boolean fixed;
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = -3350083011830553008L;
 
+	/**
+	 * Texto completo del label
+	 */
+	private String fullText;
+
+	/**
+	 * Crea un nuevo Label multilinea. Si se fija la altura y el texto ocupa más
+	 * del tamaño visible, este será recortado al numero de lineas completamente
+	 * visibles
+	 * 
+	 * @param string
+	 *            cadena contenida en este label
+	 * @param width
+	 *            ancho del componente
+	 * @param height
+	 *            alto del componente
+	 * @param fixed
+	 *            true si el alto es fijo o false si es flexible
+	 */
 	public JMultiLineLabel(String string, int width, int height, boolean fixed) {
 		super(string.trim());
-		this.fullText = string.trim();
-		this.fixed = fixed;
+		this.setFullText(string.trim());
 		setLineWrap(true);
 		setWrapStyleWord(true);
 		this.setEditable(false);
@@ -40,6 +67,14 @@ public class JMultiLineLabel extends JTextArea {
 		}
 	}
 
+	/**
+	 * Cambia el tamaño del label
+	 * 
+	 * @param width
+	 *            ancho del componente
+	 * @param height
+	 *            alto del componente
+	 */
 	public void setNewSize(int width, int height) {
 		this.setPreferredSize(new Dimension(width, height));
 		this.setMaximumSize(getPreferredSize());
@@ -47,6 +82,9 @@ public class JMultiLineLabel extends JTextArea {
 		this.recalculateHeight();
 	}
 
+	/**
+	 * Recalcula la altura del componente
+	 */
 	public void recalculateHeight() {
 		Font font = this.getFont();
 		FontMetrics fontMetrics = this.getFontMetrics(font);
@@ -60,6 +98,14 @@ public class JMultiLineLabel extends JTextArea {
 
 	}
 
+	/**
+	 * Devuelve el número de lineas reales(teniendo en cuenta el word wrap).
+	 * Funciona correctamente solo si la fuente usada es de tipo Monospace ya que
+	 * para calcular el numero de lineas se necesita una medida exacta del ancho de
+	 * cada linea.
+	 * 
+	 * @return el numero de lineas del label
+	 */
 	@Override
 	public int getLineCount() {
 		Font font = this.getFont();
@@ -81,6 +127,25 @@ public class JMultiLineLabel extends JTextArea {
 		int fontHeight = fontMetrics.getHeight();
 
 		return this.getMaximumSize().height / fontHeight;
+	}
+
+	/**
+	 * Devuelve el texto completo del label
+	 * 
+	 * @return el texto completo del label
+	 */
+	public String getFullText() {
+		return fullText;
+	}
+
+	/**
+	 * Cambia el texto del label
+	 * 
+	 * @param fullText
+	 *            el texto del label
+	 */
+	public void setFullText(String fullText) {
+		this.fullText = fullText;
 	}
 
 }

@@ -15,31 +15,78 @@ import gui.listeners.SearchButtonHandler;
 import gui.util.Nombrable;
 import gui.util.PanelInterfaz;
 
+/**
+ * Esta clase nos sirve para trabajar con el menu de busqueda
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ */
 public class SearchMenu extends PanelInterfaz implements Nombrable {
 
 	private static final long serialVersionUID = 3588062913427566780L;
+	/**
+	 * Nombre del panel
+	 */
 	public final static String NAME = "SEARCH_MENU";
 
+	/**
+	 * Selecciona si es vacacional
+	 */
 	private FxCheckBox checkBoxVacacional;
+	
+	/**
+	 * Selecciona si es vivienda
+	 */
 	private FxCheckBox checkBoxVivienda;
+	
+	/**
+	 * Donde se escribe la localidad
+	 */
 	private FxTextField localidad;
+	
+	/**
+	 * Selecciona la fecha inicial
+	 */
 	private FxDatePicker desde;
+	
+	/**
+	 * Selecciona la fecha final
+	 */
 	private FxDatePicker hasta;
+	
+	/**
+	 * Boton para buscar
+	 */
 	private FxButton buscar;
+	/**
+	 * El layout
+	 */
 	private SpringLayout layout;
+	/**
+	 * La interfaz grafica
+	 */
 	private Gui gui;
 
+	/**
+	 * Constructor de SearchMenu
+	 * @param gui interfaz grafica
+	 */
 	public SearchMenu(Gui gui) {
 		this.gui = gui;
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.LIGHT_GRAY));
 		initialize();
 	}
 
+	/**
+	 * Define la dimension de la interfaz grafica
+	 */
 	@Override
 	public void setDimension() {
 		this.setPreferredSize(new Dimension(180, Gui.FRAME_HEIGHT));
 	}
 
+	/**
+	 * Crea los componentes del resultado de busqueda
+	 */
 	@Override
 	public void crearComponentes() {
 		checkBoxVacacional = new FxCheckBox(100, 20, "Vacacional");
@@ -59,6 +106,9 @@ public class SearchMenu extends PanelInterfaz implements Nombrable {
 		checkBoxVacacional.setSelected(true);
 	}
 
+	/**
+	 * Coloca los componentes del LoginPanel utilizando un springLayout
+	 */
 	@Override
 	public void colocarComponentes() {
 		layout = new SpringLayout();
@@ -83,6 +133,9 @@ public class SearchMenu extends PanelInterfaz implements Nombrable {
 
 	}
 
+	/**
+	 * Registra los eventos que ocurren en el loginPanel
+	 */
 	@Override
 	public void registrarEventos() {
 		checkBoxVacacional.setOnAction(event -> {

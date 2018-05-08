@@ -3,7 +3,6 @@ package gui.panels;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -128,14 +127,13 @@ public class LoginPanel extends PanelInterfaz implements Nombrable {
 	 */
 	@Override
 	public void crearComponentes() {
-		ResourceBundle rb = ResourceBundle.getBundle("locale.Lang");
 		this.titleFont = new Font("Comic Sans", Font.PLAIN, 35);
-		this.labelTitulo = new JLabel(rb.getString("app.name"));
-		this.labelUsuario = new JLabel(rb.getString("panels.login.user"));
-		this.textUsuario = new FxTextField(170, 25, rb.getString("panels.login.userInstruction"));
-		this.labelPassword = new JLabel(rb.getString("panels.login.password"));
-		this.textPassword = new FxPasswordField(170, 25, rb.getString("panels.login.password"));
-		this.loginBtn = new FxButton(80, 30, rb.getString("panels.login.loginBtn"));
+		this.labelTitulo = new JLabel("TuVacaPiso");
+		this.labelUsuario = new JLabel("Usuario");
+		this.textUsuario = new FxTextField(170, 25, "Introduce tu usuario");
+		this.labelPassword = new JLabel("Contraseña");
+		this.textPassword = new FxPasswordField(170, 25, "Introduce tu contraseña");
+		this.loginBtn = new FxButton(80, 30, "Entrar");
 		this.volverBtn = new FxButton(80, 30, "Volver");
 		this.grupoBotones = new JPanel();
 

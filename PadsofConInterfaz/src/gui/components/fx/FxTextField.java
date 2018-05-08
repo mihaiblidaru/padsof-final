@@ -8,10 +8,28 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 
+/**
+ * Clase que permite usar campos de texto
+ * de javafx en swing
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class FxTextField extends FxWrapper {
 	private static final long serialVersionUID = -6084390837327862411L;
+	/**
+	 * Texto indicativo del campo
+	 */
 	private final String placeholder;
+
+	/**
+	 * El componente del panel
+	 */
 	private TextField textfield = null;
+	/**
+	 * Expresion regular para filtar solo numertos con decimales
+	 */
 	private final static String onlyFloatRegex = "^[0-9]*(?:\\.[0-9]*)?";
 
 	public FxTextField(int width, int height, String placeholder) {
@@ -30,6 +48,11 @@ public class FxTextField extends FxWrapper {
 
 	}
 
+	/**
+	 * Inicializa el componente de javafx
+	 * 
+	 * @return el componente creado
+	 */
 	private Scene createScene() {
 		Group root = new Group();
 		Scene scene = new Scene(root, this.getWidth(), this.getHeight());
@@ -44,16 +67,30 @@ public class FxTextField extends FxWrapper {
 		return scene;
 	}
 
+	/**
+	 * Devuelve el texto del campo de texto
+	 * 
+	 * @return el texto del campo de texto
+	 */
 	public String getText() {
 		return this.textfield.getText();
 
 	}
 
+	/**
+	 * Cambia el texto del campo de texto
+	 * 
+	 * @param value
+	 *            nuevo valor del texto
+	 */
 	public void setText(String value) {
 		Platform.runLater(() -> this.textfield.setText(value));
 
 	}
 
+	/**
+	 * limita este campo de text a solo numeros enteros positivos
+	 */
 	public void setOnlyInteger() {
 		Platform.runLater(() -> {
 			textfield.textProperty().addListener(new ChangeListener<String>() {
@@ -67,6 +104,9 @@ public class FxTextField extends FxWrapper {
 		});
 	}
 
+	/**
+	 * Limita este campo de texto a solo numeros positivos con decimales
+	 */
 	public void setOnlyFloat() {
 		Platform.runLater(() -> {
 			textfield.textProperty().addListener(new ChangeListener<String>() {
@@ -80,6 +120,12 @@ public class FxTextField extends FxWrapper {
 		});
 	}
 
+	/**
+	 * Impone un limite máximo de caracteres en este campo
+	 * 
+	 * @param limit
+	 *            limite de caracteres
+	 */
 	public void setCharLimit(int limit) {
 		Platform.runLater(() -> {
 			textfield.textProperty().addListener(new ChangeListener<String>() {

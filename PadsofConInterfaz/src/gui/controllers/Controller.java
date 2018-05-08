@@ -30,9 +30,21 @@ import gui.util.DialogFactory;
 import gui.util.GuiConstants;
 
 public class Controller {
+	/**
+	 * Modelo del controlador
+	 */
 	private MiVacaPiso model;
+	/**
+	 * Interfaz del controlador
+	 */
 	private Gui gui;
 
+	/**
+	 * Crea un nuevo controlador para la aplicacion
+	 * 
+	 * @param gui
+	 *            interfaz grafica para este controlador
+	 */
 	public Controller(Gui gui) {
 		this.gui = gui;
 		try {
@@ -43,8 +55,15 @@ public class Controller {
 		}
 	}
 
-	//equivalencias entre la clase interna rol y la vista
-
+	/**
+	 * Devuelve la equivalencia entre la clase interna Rol y las constantes deifinas
+	 * para la interfaz
+	 * 
+	 * @param rol
+	 *            rol usado en la transformacion
+	 * @return la equivalencia entre la clase interna Rol y las constantes deifinas
+	 *         para la interfaz
+	 */
 	private String getEquivalenciaRol(Rol rol) {
 		if (rol == Rol.A) {
 			return GuiConstants.ROL_ADMIN;
@@ -61,6 +80,17 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Devuelve la equivalencia entre la clase interna Estado y las constantes
+	 * deifinas
+	 * para la interfaz
+	 * 
+	 * @param estado
+	 *            rol usado en la transformacion
+	 * @return la equivalencia entre la clase interna Estado y las constantes
+	 *         deifinas
+	 *         para la interfaz
+	 */
 	private String getEquivalenciaEstado(Estado estado) {
 		if (estado == Estado.ACEPTADA) {
 			return GuiConstants.ESTADO_ACEPTADA;
@@ -77,6 +107,15 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Realiza el login en el sistema
+	 * 
+	 * @param user
+	 *            usuario
+	 * @param password
+	 *            contraseña
+	 * @return el rol del usuario despues del login
+	 */
 	public String login(String user, String password) {
 		try {
 			return getEquivalenciaRol(model.login(user, password));
@@ -376,7 +415,7 @@ public class Controller {
 	 *            claves de las caracteristicas
 	 * @param valores
 	 *            valores de las caracteristicas
-	 * @return
+	 * @return el estado de la accion
 	 */
 	public boolean addInmueble(String localidad, int cp, String direccion, List<String> claves, List<String> valores) {
 		try {
@@ -392,9 +431,31 @@ public class Controller {
 		return false;
 	}
 
-	public Integer addOfertaVivienda(LocalDate fechaInicio, int n_meses, float precio, float fianza, String descripcion,
-			Integer idInmueble) throws UsuarioNoPermisoException {
-		return model.addOferta(fechaInicio, n_meses, precio, fianza, descripcion, idInmueble);
+	/**
+	 * Añade una nueva oferta de tipo Vivienda
+	 * 
+	 * @param fechaInicio
+	 *            fecha de inicio de la oferta
+	 * @param n_meses
+	 *            numero de meses de la oferta
+	 * @param precio
+	 *            precio de la oferta
+	 * @param fianza
+	 *            fianza de la oferta
+	 * @param descripcion
+	 *            descripcion de la oferta
+	 * @param idInmueble
+	 *            id del inmueble de la oferta
+	 * @return el estado de la accion
+	 */
+	public boolean addOfertaVivienda(LocalDate fechaInicio, int n_meses, float precio, float fianza, String descripcion,
+			Integer idInmueble) {
+		try {
+			return model.addOferta(fechaInicio, n_meses, precio, fianza, descripcion, idInmueble) != null;
+		} catch (UsuarioNoPermisoException e) {
+			DialogFactory.noPermisionError();
+		}
+		return false;
 	}
 
 	/**
@@ -588,8 +649,6 @@ public class Controller {
 	/**
 	 * Devuelve una lista completa con los ids de los usuarios con problemas de pago
 	 * 
-	 * @return
-	 * 
 	 * @return una lista completa con los ids de los usuarios con problemas de pago
 	 */
 	public Map<Integer, String> adminGetUsuariosProblemaPagos() {
@@ -742,6 +801,7 @@ public class Controller {
 	 *            id de la oferta
 	 * @param hasta
 	 *            Fecha de fin de la oferta
+	 * @return el estado de la accion
 	 */
 	public boolean ofertaSetFechaFin(int id, LocalDate hasta) {
 		try {
@@ -762,6 +822,7 @@ public class Controller {
 	 *            id de la oferta
 	 * @param meses
 	 *            número de meses de la oferta
+	 * @return el estado de la accion
 	 */
 	public boolean ofertaSetNumMeses(int id, int meses) {
 		try {
@@ -812,6 +873,7 @@ public class Controller {
 	 *            id de la oferta que se va a valorar
 	 * @param valor
 	 *            valor numerico de la opinion
+	 * @return el estado de la accion
 	 */
 	public boolean ofertaValorar(Integer idOferta, int valor) {
 		try {
@@ -870,6 +932,15 @@ public class Controller {
 		return false;
 	}
 
+	/**
+	 * Cambia la tarjeta de credito de un usuario
+	 * 
+	 * @param idUsuario
+	 *            id del usuario
+	 * @param text
+	 *            la nueva tarjeta de credito
+	 * @return el estado del la accion
+	 */
 	public boolean cambiarTarjeta(Integer idUsuario, String text) {
 		try {
 			return model.getClienteById(idUsuario).setCcard(text);
@@ -882,6 +953,13 @@ public class Controller {
 		return false;
 	}
 
+	/**
+	 * Devuelve el nombre de un usuario
+	 * 
+	 * @param id
+	 *            id del usuario
+	 * @return el nombre del usuario dado su id
+	 */
 	public String usuarioGetNombre(Integer id) {
 		try {
 			return model.getClienteById(id).getNombre();
@@ -892,6 +970,13 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Devuelve la tarjeta de un usuario
+	 * 
+	 * @param id
+	 *            id del usuario
+	 * @return la tarjeta del usuario dado su id
+	 */
 	public String usuarioGetTarjeta(int id) {
 		try {
 			return model.getClienteById(id).getCcard();
@@ -902,6 +987,13 @@ public class Controller {
 		return null;
 	}
 
+	/**
+	 * Busca por nombre a un usuario con problema de pagos
+	 * 
+	 * @param nombre
+	 *            nombre del usuario
+	 * @return el id y el rol del usuario
+	 */
 	public Map<Integer, String> adminGetUsuarioProblemaPagos(String nombre) {
 		try {
 			return model.getUsuarioProblemaPagos(nombre);

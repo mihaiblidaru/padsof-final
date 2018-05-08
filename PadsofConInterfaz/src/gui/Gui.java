@@ -35,27 +35,76 @@ import gui.panels.ofertante.ofertas.MisOfertas;
 import gui.util.DialogFactory;
 import gui.util.Nombrable;
 
+/**
+ * Clase principal de la interfaz.Crea y contiene todos los demas elementos de
+ * la interfaz
+ * 
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class Gui extends JFrame {
 
 	private static final long serialVersionUID = -8417053675962769827L;
+	/**
+	 * Ancho de la ventana
+	 */
 	public static int FRAME_WIDTH = 1000;
+
+	/**
+	 * Alto de la ventana
+	 */
 	public static int FRAME_HEIGHT = 621;
 
 	/**
 	 * Controlador de la aplicacion
 	 */
 	private Controller controller;
+
+	/**
+	 * Panel principal del frame
+	 */
 	private JPanel contentPane;
+
+	/**
+	 * LayoutManager aplicado al panel principal
+	 */
 	private SpringLayout layout;
 
+	/**
+	 * Añade un controlador a la interfaz
+	 * 
+	 * @param controller
+	 *            controlador de la aplicacion
+	 */
 	public void SetController(Controller controller) {
 		this.controller = controller;
 	}
 
+	/**
+	 * Bloqueo para el fichero usado para comprobar si la aplicacion ya se esta
+	 * ejecutando
+	 */
 	private FileLock lock;
+
+	/**
+	 * Canal al fichero usado para comprobar si la aplicacion ya se esta
+	 * ejecutando
+	 */
 	private FileChannel channel;
+
+	/**
+	 * Fichero usado para comprobar si la aplicacion ya se está ejecutando
+	 */
 	private File file;
 
+	/**
+	 * Punto de entrada en la aplicacion
+	 * 
+	 * @param args
+	 *            argumentos del programa
+	 */
 	public static void main(String[] args) {
 		Gui gui = new Gui();
 		UIManager.put("Panel.background", Color.WHITE);
@@ -81,6 +130,9 @@ public class Gui extends JFrame {
 
 	}
 
+	/**
+	 * Realiza algunos ajustes basicos de la interfaz y ajustes globales
+	 */
 	private void initialize() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setBounds((int) (screenSize.getWidth() / 2 - FRAME_WIDTH / 2),
@@ -96,6 +148,9 @@ public class Gui extends JFrame {
 		getContentPane().setLayout(this.layout);
 	}
 
+	/**
+	 * Crea todos los paneles principales de la interfaz
+	 */
 	private void createPanels() {
 		Header header = new Header(this);
 		AdminView adminView = new AdminView(this);
@@ -172,10 +227,23 @@ public class Gui extends JFrame {
 
 	}
 
+	/**
+	 * Devuelve el controler asociado a este frame
+	 * 
+	 * @returnel controler asociado a este frame
+	 */
 	public Controller getController() {
 		return this.controller;
 	}
 
+	/**
+	 * Dado el nombre de un panel cambia su visibilidad
+	 * 
+	 * @param panelName
+	 *            Nombre del panel
+	 * @param state
+	 *            nuevo estado del panel
+	 */
 	public void setVisiblePane(String panelName, boolean state) {
 		Component c = getComponent(panelName);
 		if (c != null) {
@@ -183,6 +251,13 @@ public class Gui extends JFrame {
 		}
 	}
 
+	/**
+	 * Oculta todos los paneles de la interfaz dejando visibles solo
+	 * los que se indican como parametros
+	 * 
+	 * @param panelsName
+	 *            nombre de los paneles que se van a marcar como visivles
+	 */
 	public void showOnly(String... panelsName) {
 		Stream.of(this.contentPane.getComponents()).forEach(c -> c.setVisible(false));
 
@@ -191,6 +266,13 @@ public class Gui extends JFrame {
 		Stream.of(this.contentPane.getComponents()).filter(contains).forEach(c -> c.setVisible(true));
 	}
 
+	/**
+	 * Devuelve un subcomponente de este frame dado su nombre
+	 * 
+	 * @param panelName
+	 *            nombre del panel buscado
+	 * @return el subcomponente buscado
+	 */
 	public Component getComponent(String panelName) {
 		Component[] components = this.contentPane.getComponents();
 		Component res = null;
@@ -203,6 +285,12 @@ public class Gui extends JFrame {
 		return res;
 	}
 
+	/**
+	 * Comprueba si la aplicacion ya se encuentra ejecutando
+	 * usando un filelock
+	 * 
+	 * @return true si la aplicacion ya se esta ejecutando o false en caso contrario
+	 */
 	@SuppressWarnings("resource")
 	public boolean isAppActive() {
 		try {
@@ -212,44 +300,56 @@ public class Gui extends JFrame {
 			try {
 				lock = channel.tryLock();
 			} catch (OverlappingFileLockException e) {
-				closeLock();
+				try {
+					lock.release();
+				} catch (Exception e1) {
+				}
+				try {
+					channel.close();
+				} catch (Exception e1) {
+				}
 				return true;
 			}
 
 			if (lock == null) {
-				closeLock();
+				try {
+					lock.release();
+				} catch (Exception e1) {
+				}
+				try {
+					channel.close();
+				} catch (Exception e1) {
+				}
 				return true;
 			}
 
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				public void run() {
-					closeLock();
-					deleteFile();
+					try {
+						lock.release();
+					} catch (Exception e) {
+					}
+					try {
+						channel.close();
+					} catch (Exception e) {
+					}
+					try {
+						file.delete();
+					} catch (Exception e) {
+					}
 				}
 			});
 			return false;
 		} catch (Exception e) {
-			closeLock();
+			try {
+				lock.release();
+			} catch (Exception e1) {
+			}
+			try {
+				channel.close();
+			} catch (Exception e1) {
+			}
 			return true;
-		}
-	}
-
-	private void closeLock() {
-		try {
-			lock.release();
-		} catch (Exception e) {
-		}
-		try {
-			channel.close();
-		} catch (Exception e) {
-		}
-
-	}
-
-	private void deleteFile() {
-		try {
-			file.delete();
-		} catch (Exception e) {
 		}
 	}
 
