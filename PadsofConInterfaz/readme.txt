@@ -35,5 +35,12 @@ aunque alli encontramos otros bugs de swing donde algunos componentes estan desp
 
 El sistema operativo sobre cual hemos probado es Windows 10.
 
+
+Hemos añadido varios usuarios para hacer que la prueba sea mas rapida:
+Para los tres, la contraseña es 1233 y los nombres de usuario son:
+o          - tiene rol de ofertante
+d          - rol de demandante
+od         - rol de ofertante demandante
+
 Mihai Blidaru
 Sergio Dominguez
