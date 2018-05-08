@@ -114,7 +114,7 @@ public class PanelInmueble extends JPanel {
 	/**
 	 * Carga los datos del inmueble con un id
 	 * 
-	 * @param id
+	 * @param id id del inmueble
 	 */
 	public void cargarDatos(Integer id) {
 		Controller c = this.gui.getController();

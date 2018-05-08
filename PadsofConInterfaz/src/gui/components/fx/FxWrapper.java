@@ -74,6 +74,7 @@ public abstract class FxWrapper extends JFXPanel {
 	/**
 	 * Añade un manejador de eventos al comonente
 	 * 
+	 * @param <T> tipo de evento
 	 * @param eventType
 	 *            tipo de evento a escuchar
 	 * @param eventHandler

@@ -230,7 +230,7 @@ public class Gui extends JFrame {
 	/**
 	 * Devuelve el controler asociado a este frame
 	 * 
-	 * @returnel controler asociado a este frame
+	 * @return controler asociado a este frame
 	 */
 	public Controller getController() {
 		return this.controller;

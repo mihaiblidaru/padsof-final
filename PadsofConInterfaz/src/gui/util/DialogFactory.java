@@ -14,7 +14,7 @@ public class DialogFactory {
 
 	/**
 	 * Genera un mensaje de error si un campo esta vacio
-	 * @param fieldName
+	 * @param fieldName nombre del campo
 	 */
 	public static void emptyFieldError(String fieldName) {
 		JOptionPane.showMessageDialog(new JPanel(), "El campo '" + fieldName + "' no puede estar vacio", "Error",
@@ -23,7 +23,7 @@ public class DialogFactory {
 
 	/**
 	 * Genera un mensaje de error si se ha producido un error
-	 * @param motivo
+	 * @param motivo motivo de error
 	 */
 	public static void internalError(String motivo) {
 		JOptionPane.showMessageDialog(new JPanel(), "Se ha producido un error interno:" + motivo, "Error",
@@ -32,7 +32,7 @@ public class DialogFactory {
 
 	/**
 	 * Genera un mensaje de error 
-	 * @param message
+	 * @param message mensaje de error
 	 */
 	public static void simpleErrorMessage(String message) {
 		JOptionPane.showMessageDialog(new JPanel(), message, "Error", JOptionPane.ERROR_MESSAGE);
@@ -40,7 +40,7 @@ public class DialogFactory {
 
 	/**
 	 * Genera un mensaje de error si un campo tiene un valor invalido
-	 * @param string
+	 * @param string nombre del campo
 	 */
 	public static void invalidValueError(String string) {
 		JOptionPane.showMessageDialog(new JPanel(), "El valor del campo '" + string + "' es inválido", "Error",

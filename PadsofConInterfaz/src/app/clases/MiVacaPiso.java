@@ -132,7 +132,7 @@ public class MiVacaPiso {
 	 * @param id
 	 *            id de la oferta
 	 * @return La oferta con ese id o null si no existe una oferta asociada a ese id
-	 * @throws SQLException
+	 * @throws SQLException si error interno
 	 */
 	public Oferta getOfertaById(int id) throws SQLException {
 		if (!this.listaOfertas.containsKey(id)) {
@@ -153,7 +153,7 @@ public class MiVacaPiso {
 	 *            id del inmueble
 	 * @return El inmueble con ese id o null si no existe un inmueble asociado a ese
 	 *         id
-	 * @throws SQLException
+	 * @throws SQLException si error interno
 	 */
 	public Inmueble getInmuebleById(int id) throws SQLException {
 		if (!this.listaInmuebles.containsKey(id)) {
@@ -173,7 +173,7 @@ public class MiVacaPiso {
 	 * @param id
 	 *            el id del cliente
 	 * @return El cliente que tiene asociado ese id
-	 * @throws SQLException
+	 * @throws SQLException si error interno
 	 */
 	public Cliente getClienteById(int id) throws SQLException {
 		if (!this.listaUsuarios.containsKey(id)) {
@@ -189,7 +189,7 @@ public class MiVacaPiso {
 	 *            el id de la reserva
 	 * @return La reserva que tiene ese id o null si no existe una reserva con ese
 	 *         id
-	 * @throws SQLException
+	 * @throws SQLException si error interno
 	 */
 	public Reserva getReservaById(Integer id) throws SQLException {
 		if (!this.listaReservas.containsKey(id)) {
@@ -614,7 +614,7 @@ public class MiVacaPiso {
 	 *             si el usuario no es un ofertante
 	 * @throws InmuebleDuplicadoException
 	 *             si el ya existe ese inmueble
-	 * @throws SQLException
+	 * @throws SQLException si error interno
 	 */
 	public Integer addInmueble(String localidad, int cp, String direccion, List<String> claves, List<String> valores)
 			throws UsuarioNoPermisoException, InmuebleDuplicadoException, SQLException {
@@ -733,7 +733,7 @@ public class MiVacaPiso {
 	 * @return true si se añade correctamente, si no false
 	 * @throws UsuarioNoPermisoException
 	 *             si el usuario no es demandante
-	 * @throws SQLException
+	 * @throws SQLException si error interno
 	 */
 	public boolean addComentario(int idOferta, String comentario, Integer idPadre)
 			throws UsuarioNoPermisoException, SQLException {

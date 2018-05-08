@@ -72,7 +72,7 @@ public class EditarOfertaListener implements EventHandler<ActionEvent> {
 	/**
 	 * Constructor de EdirtarOfertaListener
 	 * @param gui interfaz grafica
-	 * @param panelOferta
+	 * @param panelOferta pnael de la oferta
 	 * @param precioTextBox para aniadur precio
 	 * @param fianzaTextBox para aniadur fianza
 	 * @param desdeDatePicker para aniadur desde

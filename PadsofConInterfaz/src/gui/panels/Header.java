@@ -298,7 +298,7 @@ public class Header extends PanelInterfaz implements Nombrable {
 
 	/**
 	 * Cambia la visibilidad del nombre de la app
-	 * @param state
+	 * @param state nuevo estado de visibilidad
 	 */
 	public void appNameSetVisible(boolean state) {
 		appName.setVisible(state);
