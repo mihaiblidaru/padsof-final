@@ -22,19 +22,62 @@ import gui.util.DialogFactory;
 import gui.util.LimitCounter;
 import gui.util.LimitedDocument;
 
+/**
+ * Dialogo que permite añadir/contestar un comentario
+ * de una oferta
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class ComentarDialog extends JDialog {
 
 	private static final long serialVersionUID = -889156607009791316L;
-	private JButton btnOk;
-	private JButton btnCancel;
+	/**
+	 * Limite de caracteres del comentario
+	 */
 	private int limit = 200;
+
+	/**
+	 * Label que indica el limite de caracteres restantes
+	 */
 	private JLabel limitLabel;
+	/**
+	 * Textarea del comentario
+	 */
 	private JTextArea comentarioTextBox;
+
+	/**
+	 * Id del la oferta
+	 */
 	private Integer idOferta;
+
+	/**
+	 * Id del comentario padre
+	 */
 	private Integer idPadre;
+
+	/**
+	 * Frame padre de este dialogo
+	 */
 	private Gui gui;
+
+	/**
+	 * Valor de retorno del dialogo
+	 */
 	private boolean value;
 
+	/**
+	 * Construye la ventana con todos su componentes, los coloca
+	 * y registra los manejadores de enventos necesarios
+	 * 
+	 * @param gui
+	 *            Frame padre de este dialogo
+	 * @param idOferta
+	 *            id de la oferta
+	 * @param idPadre
+	 *            id del comentario padre
+	 */
 	public ComentarDialog(Gui gui, Integer idOferta, Integer idPadre) {
 		super(gui, "Introduce tu comentario", true);
 		this.gui = gui;
@@ -120,6 +163,9 @@ public class ComentarDialog extends JDialog {
 		pack();
 	}
 
+	/**
+	 * Envia un comentario al sitema usando la funcion del controlador
+	 */
 	private void enviarComentario() {
 		if (comentarioTextBox.getText().trim().isEmpty()) {
 			DialogFactory.emptyFieldError("comentario");
@@ -131,6 +177,11 @@ public class ComentarDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * Devuelve el valor de retorno del dialogo
+	 * 
+	 * @return el valor de retorno del dialogo
+	 */
 	public boolean getValue() {
 		return value;
 	}

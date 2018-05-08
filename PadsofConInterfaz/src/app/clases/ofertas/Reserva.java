@@ -156,4 +156,13 @@ public class Reserva {
 		}
 		return false;
 	}
+
+	/**
+	 * Devuelve la fecha en la que ha caducado la reserva
+	 * 
+	 * @return la fecha en la que ha caducado la reserva
+	 */
+	public LocalDate getFechaCaducar() {
+		return this.fechaCaducar;
+	}
 }

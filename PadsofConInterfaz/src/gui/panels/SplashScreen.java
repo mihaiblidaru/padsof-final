@@ -15,12 +15,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SpringLayout;
+
 /**
  * Esta clase nos sirve para trabajar con imagen con el logo
+ * 
  * @author Mihai Blidaru
  * @author Sergio Dominguez
  */
-public class SplashScreen extends JFrame{
+public class SplashScreen extends JFrame {
 	/**
 	 * 
 	 */
@@ -29,52 +31,53 @@ public class SplashScreen extends JFrame{
 	 * La anchura del frame
 	 */
 	public static int FRAME_WIDTH = 500;
-	
+
 	/**
 	 * La altura del frame
 	 */
 	public static int FRAME_HEIGHT = 300;
-	
+
 	/**
 	 * La anchura de la imagen
 	 */
 	public static int IMAGE_WIDTH = 240;
-	
+
 	/**
 	 * La altura de la imagen
 	 */
 	public static int IMAGE_HEIGHT = 240;
-	
+
 	/**
 	 * Constructor de la clase SplashScreen
 	 */
-	public SplashScreen(){
+	public SplashScreen() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setUndecorated(true);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setBounds((int) (screenSize.getWidth()/2 - FRAME_WIDTH/2) , (int) (screenSize.getHeight()/2 - FRAME_HEIGHT/2), FRAME_WIDTH, FRAME_HEIGHT);
+		this.setBounds((int) (screenSize.getWidth() / 2 - FRAME_WIDTH / 2),
+				(int) (screenSize.getHeight() / 2 - FRAME_HEIGHT / 2), FRAME_WIDTH, FRAME_HEIGHT);
 		this.getContentPane().setBackground(Color.decode("#ffffff"));
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container root = this.getContentPane();
-		SpringLayout layout = new SpringLayout();		
+		SpringLayout layout = new SpringLayout();
 		root.setLayout(layout);
 		root.setBackground(Color.decode("#fafafa"));
 		root.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-		
-	    BufferedImage image = null;
+
+		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File("logo.png"));
+			image = ImageIO.read(new File("res/img/logo.png"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		Image scaledImage = image.getScaledInstance(IMAGE_WIDTH, IMAGE_HEIGHT, Image.SCALE_SMOOTH);
 		JLabel label = new JLabel(new ImageIcon(scaledImage));
 		label.setPreferredSize(new Dimension(IMAGE_WIDTH, IMAGE_HEIGHT));
 		root.add(label);
-		  
+
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, label, 0, SpringLayout.HORIZONTAL_CENTER, root);
 		JLabel titulo = new JLabel("TuVacaPiso");
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titulo, 0, SpringLayout.HORIZONTAL_CENTER, root);
@@ -82,7 +85,7 @@ public class SplashScreen extends JFrame{
 		Font font = new Font("Arial", Font.PLAIN, 40);
 		titulo.setFont(font);
 		root.add(titulo);
-		
+
 		this.pack();
 		this.setVisible(true);
 	}

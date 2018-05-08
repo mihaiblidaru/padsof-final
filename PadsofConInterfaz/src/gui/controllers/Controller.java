@@ -20,7 +20,6 @@ import app.clases.ofertas.ReservaDuplicadaException;
 import app.clases.opiniones.Comentario;
 import app.clases.opiniones.Numerica;
 import app.clases.opiniones.Opinion;
-import app.clases.users.Cliente;
 import app.clases.users.Rol;
 import app.clases.users.UsuarioNoPermisoException;
 import app.clases.users.UsuarioYaTieneReservaException;
@@ -30,6 +29,13 @@ import gui.panels.oferta.comentario.PanelComentario;
 import gui.util.DialogFactory;
 import gui.util.GuiConstants;
 
+/**
+ * Controlador de la aplicacion
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class Controller {
 	/**
 	 * Modelo del controlador
@@ -600,51 +606,6 @@ public class Controller {
 	 */
 	public boolean tienePermisosDemandante() {
 		return model.getDemandanteLogueado() != null;
-	}
-
-	public Cliente getClienteById(int id) throws SQLException {
-		return model.getClienteById(id);
-	}
-
-	public List<Integer> adminGetDemandantesProblemaPagos() {
-		try {
-			Map<Integer, String> resultados = model.getUsuariosProblemaPago();
-			List<Integer> pagos = new ArrayList<Integer>();
-			for (Integer id : resultados.keySet()) {
-				if (resultados.get(id).equals("D")) {
-					pagos.add(id);
-				}
-			}
-			return pagos;
-		} catch (SQLException e) {
-			DialogFactory.internalError(e.getMessage());
-			System.exit(-1);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Devuelve la lista de los ofertantes con problemas de pago
-	 * 
-	 * @return la lista de los ofertantes con problemas de pago
-	 */
-	public List<Integer> adminGetOfertantesProblemaCobros() {
-		try {
-			Map<Integer, String> resultados = model.getUsuariosProblemaPago();
-			List<Integer> pagos = new ArrayList<Integer>();
-			for (Integer id : resultados.keySet()) {
-				if (resultados.get(id).equals("O") || resultados.get(id).equals("OD")) {
-					pagos.add(id);
-				}
-			}
-			return pagos;
-		} catch (SQLException e) {
-			DialogFactory.internalError(e.getMessage());
-			System.exit(-1);
-		}
-
-		return null;
 	}
 
 	/**

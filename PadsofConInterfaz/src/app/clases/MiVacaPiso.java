@@ -221,6 +221,14 @@ public class MiVacaPiso {
 		con.close();
 	}
 
+	/**
+	 * Devuelve los ids de las ultimas numOfertas publicadas o en su defecto, las
+	 * que existan
+	 * 
+	 * @param numOfertas
+	 *            número maximo de ofertas que se quiere obtener
+	 * @return Devuelve los ids de las ultimas numOfertas publicadas
+	 */
 	public List<Integer> getUltimasOfertas(int numOfertas) {
 		String sql = "Select o.id from oferta as o where " + Columna.OFERTA_ESTADO.toString() + " = '"
 				+ Estado.ACEPTADA.toString() + "'";
@@ -986,6 +994,13 @@ public class MiVacaPiso {
 		return listaUsuarios;
 	}
 
+	/**
+	 * Cancela la reserva activa del demandante
+	 * 
+	 * @return true si se ha realizado correctamente
+	 * @throws SQLException
+	 *             error interno del sistema de gestion de datos
+	 */
 	public boolean cancelarReserva() throws SQLException {
 		int idReserva = this.demandanteLogueado.getReservaActiva();
 		Reserva res = this.getReservaById(idReserva);
@@ -998,6 +1013,16 @@ public class MiVacaPiso {
 		return true;
 	}
 
+	/**
+	 * Devuelve el id de un usuario y su rol buscando por su nombre si este tiene
+	 * problemas de pago
+	 * 
+	 * @param nombre
+	 *            Nombre del usuario
+	 * @return el id de un usuario y su rol
+	 * @throws SQLException
+	 *             error interno del sistema de gestion de datos
+	 */
 	public Map<Integer, String> getUsuarioProblemaPagos(String nombre) throws SQLException {
 		Connection con = DBManager.openDbConnection();
 		Statement stmt = con.createStatement();

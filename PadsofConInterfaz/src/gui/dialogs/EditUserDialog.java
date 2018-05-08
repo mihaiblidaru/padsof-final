@@ -22,31 +22,60 @@ import gui.util.IconLoader;
 import gui.util.LimitedDocument;
 
 /**
+ * Dialogo que permite la edicion de un usuario
  * 
- * @author Mihai
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
  *
  */
 public class EditUserDialog extends JDialog {
 
 	private static final long serialVersionUID = -889156607009791316L;
-	private JButton btnOk;
-	private JButton btnCancel;
-	private int limit = 200;
-	private JLabel limitLabel;
-
+	/**
+	 * Frame padre de este dialogo
+	 */
 	private Gui gui;
-	private boolean value;
-	private Integer idUsuario;
-	private JTextField tarjeta;
-	private JLabel userName;
-	private JLabel tipo;
-	private UserCard card;
 
+	/**
+	 * Valor de retorno
+	 */
+	private boolean value;
+
+	/**
+	 * Id del usuario
+	 */
+	private Integer idUsuario;
+
+	/**
+	 * Tarjeta del usuario
+	 */
+	private JTextField tarjeta;
+
+	/**
+	 * Nombre del usuario
+	 */
+	private JLabel userName;
+
+	/**
+	 * tipo del usuario
+	 */
+	private JLabel tipo;
+
+	/**
+	 * Construye la ventana con todos su componentes, los coloca
+	 * y registra los manejadores de enventos necesarios
+	 * 
+	 * @param gui
+	 *            Frame padre de este dialogo
+	 * @param idUsuario
+	 *            id del usuario al que se le intenta cambiar la tarjeta
+	 * @param card
+	 *            Panel del usuari desde el cual se ha creado este dialogo
+	 */
 	public EditUserDialog(Gui gui, Integer idUsuario, UserCard card) {
 		super(gui, "Introduce tu comentario", true);
 		this.gui = gui;
 		this.idUsuario = idUsuario;
-		this.card = card;
 
 		Point pLoc = gui.getLocation();
 		this.setLocation(pLoc.x + 375, pLoc.y + 231);
@@ -116,6 +145,9 @@ public class EditUserDialog extends JDialog {
 		pack();
 	}
 
+	/**
+	 * Intenta cambiar la tarjeta del usuario usando la funcion del controlador
+	 */
 	private void cambiarTarjeta() {
 		if (tarjeta.getText().length() != 16) {
 			DialogFactory.invalidValueError("Tarjeta");
@@ -132,6 +164,11 @@ public class EditUserDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * Devuelve el valor de retorno del dialogo
+	 * 
+	 * @return el valor de retorno del dialogo
+	 */
 	public boolean getValue() {
 		return value;
 	}
