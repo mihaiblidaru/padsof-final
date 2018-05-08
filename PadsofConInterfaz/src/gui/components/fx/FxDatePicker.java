@@ -10,12 +10,37 @@ import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.util.StringConverter;
 
+/**
+ * Clase que permite usa DatePicker's
+ * de javafx en swing
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class FxDatePicker extends FxWrapper {
 
 	private static final long serialVersionUID = -6084390837327862411L;
+	/**
+	 * Texto indicativo del datepicker
+	 */
 	private final String placeholder;
+
+	/**
+	 * El datepicker de este panel
+	 */
 	private DatePicker datePicker = null;
 
+	/**
+	 * Crea un nuevo DatePicker
+	 * 
+	 * @param width
+	 *            ancho del datepicker
+	 * @param height
+	 *            alto del datepicker
+	 * @param placeholder
+	 *            texto indicativo del datepicker
+	 */
 	public FxDatePicker(int width, int height, String placeholder) {
 		super(width, height);
 		this.placeholder = placeholder;
@@ -31,6 +56,11 @@ public class FxDatePicker extends FxWrapper {
 
 	}
 
+	/**
+	 * Inicializa el componente de javafx
+	 * 
+	 * @return el componente creado
+	 */
 	private Scene createScene() {
 		Group root = new Group();
 		Scene scene = new Scene(root, this.getWidth(), this.getHeight());
@@ -64,10 +94,21 @@ public class FxDatePicker extends FxWrapper {
 		return scene;
 	}
 
+	/**
+	 * Devuelve el valor del datepicker
+	 * 
+	 * @return la fecha del datepicker
+	 */
 	public LocalDate getValue() {
 		return this.datePicker.getValue();
 	}
 
+	/**
+	 * Cambia la fecha del datepicker
+	 * 
+	 * @param value
+	 *            nueva fecha del datepicker
+	 */
 	public final void setValue(LocalDate value) {
 		datePicker.setValue(value);
 	}

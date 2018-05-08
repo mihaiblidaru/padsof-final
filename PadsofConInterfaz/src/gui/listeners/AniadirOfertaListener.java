@@ -7,7 +7,6 @@ import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import app.clases.users.UsuarioNoPermisoException;
 import gui.Gui;
 import gui.components.fx.FxCheckBox;
 import gui.components.fx.FxDatePicker;
@@ -122,14 +121,14 @@ public class AniadirOfertaListener implements EventHandler<ActionEvent> {
 					return;
 				}
 
-				try {
-					c.addOfertaVivienda(desde, mesesAsNum, precioAsNum, fianzaAsNum, descripcion, idInmueble);
+				if (c.addOfertaVivienda(desde, mesesAsNum, precioAsNum, fianzaAsNum, descripcion, idInmueble)) {
 					gui.showOnly(Header.NAME, MisOfertas.NAME);
 					MisOfertas mo = (MisOfertas) gui.getComponent(MisOfertas.NAME);
 					mo.cargarOfertas();
-				} catch (UsuarioNoPermisoException e) {
-					e.printStackTrace();
+				} else {
+					DialogFactory.simpleErrorMessage("No se ha podido añadir la oferta");
 				}
+
 			}
 		});
 	}

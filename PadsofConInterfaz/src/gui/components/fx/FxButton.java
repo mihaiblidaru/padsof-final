@@ -14,11 +14,36 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Clase que permite usar Botones
+ * de javafx en swing
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class FxButton extends FxWrapper {
 	private static final long serialVersionUID = -6084390837327862411L;
+	/**
+	 * Texto del boton
+	 */
 	private final String text;
+
+	/**
+	 * Componente
+	 */
 	private Button button = null;
 
+	/**
+	 * Crea un nuevo Boton
+	 * 
+	 * @param width
+	 *            ancho del boton
+	 * @param height
+	 *            alto del boton
+	 * @param text
+	 *            texto del boton
+	 */
 	public FxButton(int width, int height, String text) {
 		super(width, height);
 		this.text = text;
@@ -29,6 +54,11 @@ public class FxButton extends FxWrapper {
 
 	}
 
+	/**
+	 * Inicializa el componente de javafx
+	 * 
+	 * @return el componente creado
+	 */
 	private Scene createScene() {
 		Group root = new Group();
 		Scene scene = new Scene(root, this.getWidth(), this.getHeight());
@@ -44,10 +74,26 @@ public class FxButton extends FxWrapper {
 		return scene;
 	}
 
+	/**
+	 * Cambia la escala de la fuente usada en este boton
+	 * 
+	 * @param scale
+	 *            escala de la fuente
+	 */
 	public void setFontScale(double scale) {
 		button.setStyle(String.format("-fx-font-size: %dpx;", (int) (scale * this.getHeight())));
 	}
 
+	/**
+	 * Añade una imagen al boton
+	 * 
+	 * @param path
+	 *            ruta al archivo
+	 * @param w
+	 *            ancho de la imagen
+	 * @param h
+	 *            alto de la imagen
+	 */
 	public void setGraphics(String path, int w, int h) {
 		Platform.runLater(new Runnable() {
 			@Override
@@ -69,18 +115,39 @@ public class FxButton extends FxWrapper {
 
 	}
 
+	/**
+	 * Añade un manejador de evento para cuando se hace click en el boton
+	 * 
+	 * @param arg0
+	 *            manejador de enentos
+	 */
 	public final void setOnAction(EventHandler<ActionEvent> arg0) {
 		button.setOnAction(arg0);
 	}
 
+	/**
+	 * Cambia el lado donde se muestran los graficos del boton
+	 * 
+	 * @param arg0
+	 *            ajustes para el grafico del boton
+	 */
 	public final void setContentDisplay(ContentDisplay arg0) {
 		button.setContentDisplay(arg0);
 	}
 
+	/**
+	 * Simula el hacer click en el boton
+	 */
 	public void fire() {
 		button.fire();
 	}
 
+	/**
+	 * Cambia el texto del boton
+	 * 
+	 * @param string
+	 *            nuevo texto
+	 */
 	public void setText(String string) {
 		Platform.runLater(() -> button.setText(string));
 	}
