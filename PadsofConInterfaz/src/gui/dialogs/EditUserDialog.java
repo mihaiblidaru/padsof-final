@@ -21,6 +21,11 @@ import gui.util.DialogFactory;
 import gui.util.IconLoader;
 import gui.util.LimitedDocument;
 
+/**
+ * 
+ * @author Mihai
+ *
+ */
 public class EditUserDialog extends JDialog {
 
 	private static final long serialVersionUID = -889156607009791316L;
