@@ -12,17 +12,40 @@ import gui.Gui;
 import gui.controllers.Controller;
 import gui.util.DialogFactory;
 
+/**
+ * Esta es nuestra clase que sirve como contenedor interno de usuarios
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class ContenedorUsuarios extends JPanel {
 
 	private static final long serialVersionUID = -2138438771740403776L;
 
+	/**
+	 * El layout
+	 */
 	private FlowLayout layout;
 
+	/**
+	 * La separacion entre usuarios
+	 */
 	private static final int SEPARACION = 20;
+	/**
+	 * Interfaz grafica
+	 */
 	private Gui gui;
 
+	/**
+	 * Mapa de usuarios
+	 */
 	Map<Integer, UserCard> usuarios = new HashMap<>();
 
+	/**
+	 * Constructor de ContenedorUsuario
+	 * @param gui interfaz grafica
+	 */
 	public ContenedorUsuarios(Gui gui) {
 		this.gui = gui;
 		layout = new FlowLayout(FlowLayout.LEFT);
@@ -32,6 +55,11 @@ public class ContenedorUsuarios extends JPanel {
 		layout.setHgap(SEPARACION);
 	}
 
+	/**
+	 * Añade una tarjeta usuario
+	 * @param p tarjeta de usuario a añadir
+	 * @return tarjeta de usuario añadida
+	 */
 	public Component addUsuario(UserCard p) {
 		this.add(p);
 		usuarios.put(p.getUserId(), p);
@@ -40,12 +68,19 @@ public class ContenedorUsuarios extends JPanel {
 		return p;
 	}
 
+	/**
+	 * Quita la tarjeta de usuario de un usuario
+	 * @param id id del usuario a quitar
+	 */
 	public void removeUsuario(Integer id) {
 		UserCard c = usuarios.remove(id);
 
 		this.remove(c);
 	}
 
+	/**
+	 * Recalcula el tamaño de la interfaz
+	 */
 	private void recalculateSize() {
 		int rowCount = (int) Math.ceil(this.getComponents().length / 3.0);
 		int height = (rowCount * (UserCard.PANEL_HEIGHT + this.layout.getVgap())) + this.layout.getVgap();
@@ -54,6 +89,9 @@ public class ContenedorUsuarios extends JPanel {
 		this.setPreferredSize(original);
 	}
 
+	/**
+	 * Carga los usuarios al contenedor
+	 */
 	public void cargarUsuarios() {
 		Controller c = gui.getController();
 		Map<Integer, String> users = c.adminGetUsuariosProblemaPagos();
@@ -68,6 +106,10 @@ public class ContenedorUsuarios extends JPanel {
 		this.repaint();
 	}
 
+	/**
+	 * Carga un usuario dado el nombre
+	 * @param nombre el nombre del usuario
+	 */
 	public void cargarUsuario(String nombre) {
 		Controller c = gui.getController();
 		Map<Integer, String> users = c.adminGetUsuarioProblemaPagos(nombre);

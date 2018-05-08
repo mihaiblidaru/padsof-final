@@ -18,18 +18,73 @@ import gui.util.DialogFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+/**
+ * Esta clase nos sirve para trabajar con el listener de aniadir oferta
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ */
 public class AniadirOfertaListener implements EventHandler<ActionEvent> {
+	/**
+	 * Interfaz grafica
+	 */
 	private final Gui gui;
+	
+	/**
+	 * Para aniadir el precio
+	 */
 	private final FxTextField precioTextBox;
+	
+	/**
+	 * Para aniadir la fianza
+	 */
 	private final FxTextField fianzaTextBox;
+	
+	/**
+	 * Para seleccionar la fecha inicial
+	 */
 	private final FxDatePicker desdeDatePicker;
+	
+	/**
+	 * Para seleccionar la fecha final
+	 */
 	private final FxDatePicker hastaDatePicker;
+	/**
+	 * Para aniadir la descripcion
+	 */
 	private final JTextArea descripcionTextBox;
+	
+	/**
+	 * Para aniadir los meses
+	 */
 	private final FxTextField mesesTextField;
+	
+	/**
+	 * Para marcar si es vacacional
+	 */
 	private final FxCheckBox checkBoxVacacional;
+	
+	/**
+	 * Para aniadir los inmuebles
+	 */
 	private final JComboBox<String> comboBoxInmuebles;
+	/**
+	 * La lista de inmuebles
+	 */
 	private final List<Integer> inmuebles;
 
+	/**
+	 * Constructor de AniadirOfertaListener
+	 * @param gui interfaz grafica
+	 * @param precioTextBox para aniadur precio
+	 * @param fianzaTextBox para aniadur fianza
+	 * @param desdeDatePicker para aniadur desde
+	 * @param hastaDatePicker para aniadur hasta 
+	 * @param descripcionTextBox para aniadur descripcion
+	 * @param mesesTextField para aniadur meses
+	 * @param checkBoxVacacional para aniadur si es vacacional
+	 * @param comboBoxInmuebles para ver los inmuebles
+	 * @param inmuebles la lista de inmuebles
+	 */
 	public AniadirOfertaListener(Gui gui, FxTextField precioTextBox, FxTextField fianzaTextBox,
 			FxDatePicker desdeDatePicker, FxDatePicker hastaDatePicker, JTextArea descripcionTextBox,
 			FxTextField mesesTextField, FxCheckBox checkBoxVacacional, JComboBox<String> comboBoxInmuebles,
@@ -47,6 +102,10 @@ public class AniadirOfertaListener implements EventHandler<ActionEvent> {
 		this.inmuebles = inmuebles;
 	}
 
+	/**
+	 * Handler que genera una oferta con la informacion dada
+	 * @param event evento para anadir una oferta
+	 */
 	@Override
 	public void handle(ActionEvent event) {
 		SwingUtilities.invokeLater(() -> {

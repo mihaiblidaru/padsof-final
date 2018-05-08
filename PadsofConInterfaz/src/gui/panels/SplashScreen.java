@@ -15,18 +15,39 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SpringLayout;
-
+/**
+ * Esta clase nos sirve para trabajar con imagen con el logo
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ */
 public class SplashScreen extends JFrame{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2131474593881451080L;
+	/**
+	 * La anchura del frame
+	 */
 	public static int FRAME_WIDTH = 500;
+	
+	/**
+	 * La altura del frame
+	 */
 	public static int FRAME_HEIGHT = 300;
 	
+	/**
+	 * La anchura de la imagen
+	 */
 	public static int IMAGE_WIDTH = 240;
+	
+	/**
+	 * La altura de la imagen
+	 */
 	public static int IMAGE_HEIGHT = 240;
 	
+	/**
+	 * Constructor de la clase SplashScreen
+	 */
 	public SplashScreen(){
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setUndecorated(true);

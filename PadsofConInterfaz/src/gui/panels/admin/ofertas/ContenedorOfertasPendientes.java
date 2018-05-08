@@ -21,30 +21,74 @@ import gui.panels.oferta.PanelOfertaAdmin;
 import gui.panels.ofertante.inmuebles.PanelInmueble;
 import gui.util.PanelInterfaz;
 
+/**
+ * Esta es nuestra clase que sirve como contenedor interno de ofertas pendientes
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class ContenedorOfertasPendientes extends PanelInterfaz {
 
 	private static final long serialVersionUID = -213843877174040375L;
 
+	/**
+	 * Mapa de ofertas
+	 */
 	private Map<Integer, PanelOfertaAdmin> ofertas = new HashMap<>();
 
+	/**
+	 * Interfaz gafica
+	 */
 	private Gui gui;
 
+	/**
+	 * Layout de la interfaz
+	 */
 	private SpringLayout layout;
 
+	/**
+	 * Label de las ofertas
+	 */
 	private JLabel labelOfertas;
+	
+	/**
+	 * Separador de las ofertas
+	 */
 	private JSeparator separatorOfertas;
+	
+	/**
+	 * Label de las ofertas rechazadas
+	 */
 	private JLabel labelNoOfertas;
 
+	/**
+	 * Panel para el grupo de ofertas
+	 */
 	private JPanel grupoOfertas;
 
+	/**
+	 * Separacion entre los inmuebles
+	 */
 	private static final int SEPARACION_INMUEBLES = 10;
+	
+	/**
+	 * Anch del panel
+	 */
 	private static final int PANEL_WIDTH = 990;
 
+	/**
+	 * Constructor de ContenedorOfetasPendientes
+	 * @param gui interfaz grafica
+	 */
 	public ContenedorOfertasPendientes(Gui gui) {
 		this.gui = gui;
 		initialize();
 	}
 
+	/**
+	 * Carga las ofertas y añade los paneles
+	 */
 	public void cargarOfertas() {
 		Controller c = gui.getController();
 		List<Integer> resultados = null;
@@ -60,12 +104,18 @@ public class ContenedorOfertasPendientes extends PanelInterfaz {
 		}
 	}
 
+	/**
+	 * Cambia la dimension de la interfaz
+	 */
 	@Override
 	public void setDimension() {
 		this.setPreferredSize(new Dimension(PANEL_WIDTH,
 				90 + SEPARACION_INMUEBLES + ofertas.size() * (PanelOferta.PANEL_HEIGHT + SEPARACION_INMUEBLES)));
 	}
 
+	/**
+	 * Funcion que crea los componentes de la interfaz, y los añade a la interfaz grafica
+	 */
 	@Override
 	public void crearComponentes() {
 		Font font = new Font("Times New Roman", Font.PLAIN, 20);
@@ -88,6 +138,9 @@ public class ContenedorOfertasPendientes extends PanelInterfaz {
 
 	}
 
+	/**
+	 * Esta funcion  coloca los componentes en la interfaz grafica utilizando un SpringLayout
+	 */
 	@Override
 	public void colocarComponentes() {
 		layout = new SpringLayout();
@@ -106,6 +159,10 @@ public class ContenedorOfertasPendientes extends PanelInterfaz {
 
 	}
 
+	/**
+	 * Añade el panel de una oferta
+	 * @param panelOfertaAdmin panel a añadir
+	 */
 	public void addOferta(PanelOfertaAdmin panelOfertaAdmin) {
 		if (ofertas.isEmpty())
 			labelNoOfertas.setVisible(false);
@@ -121,11 +178,18 @@ public class ContenedorOfertasPendientes extends PanelInterfaz {
 		}
 	}
 
+	/**
+	 * Borra todas las ofertas de la interfaz
+	 */
 	public void clearOfertas() {
 		grupoOfertas.removeAll();
 		ofertas.clear();
 	}
 
+	/**
+	 * Borra una oferta dado un id
+	 * @param id id de la oferta
+	 */
 	public void removeOferta(int id) {
 		grupoOfertas.remove(ofertas.remove(id));
 		if (ofertas.isEmpty()) {

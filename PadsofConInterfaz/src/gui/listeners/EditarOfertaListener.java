@@ -17,18 +17,74 @@ import gui.util.DialogFactory;
 import gui.util.ParameterReference;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
+/**
+ * Esta clase nos sirve para trabajar con el listener de aniadir oferta
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ */
 public class EditarOfertaListener implements EventHandler<ActionEvent> {
+	
+	/**
+	 * Interfaz grafica
+	 */
 	private final Gui gui;
+	
+	/**
+	 * Para aniadir el precio
+	 */
 	private final FxTextField precioTextBox;
+	
+	/**
+	 * Para aniadir la fianza
+	 */
 	private final FxTextField fianzaTextBox;
+	
+	/**
+	 * Para seleccionar la fecha inicial
+	 */
 	private final FxDatePicker desdeDatePicker;
+	
+	/**
+	 * Para seleccionar la fecha final
+	 */
 	private final FxDatePicker hastaDatePicker;
+	
+	/**
+	 * Para aniadir la descripcion
+	 */
 	private final JTextArea descripcionTextBox;
+	
+	/**
+	 * Para aniadir los meses
+	 */
 	private final FxTextField mesesTextField;
+	
+	/**
+	 * Para marcar si es vacacional
+	 */
 	private final FxCheckBox checkBoxVacacional;
+	
+	/**
+	 * El panel de la oferta
+	 */
 	private final ParameterReference<PanelOferta> panelOferta;
 
+	/**
+	 * Constructor de EdirtarOfertaListener
+	 * @param gui interfaz grafica
+	 * @param panelOferta
+	 * @param precioTextBox para aniadur precio
+	 * @param fianzaTextBox para aniadur fianza
+	 * @param desdeDatePicker para aniadur desde
+	 * @param hastaDatePicker para aniadur hasta 
+	 * @param descripcionTextBox para aniadur descripcion
+	 * @param mesesTextField para aniadur meses
+	 * @param checkBoxVacacional para aniadur si es vacacional
+	 */
+	
+	
+	
+	 
 	public EditarOfertaListener(Gui gui, ParameterReference<PanelOferta> panelOferta, FxTextField precioTextBox,
 			FxTextField fianzaTextBox, FxDatePicker desdeDatePicker, FxDatePicker hastaDatePicker,
 			JTextArea descripcionTextBox, FxTextField mesesTextField, FxCheckBox checkBoxVacacional) {

@@ -17,21 +17,73 @@ import gui.panels.admin.AdminView;
 import gui.util.IconLoader;
 import gui.util.PanelInterfaz;
 
+/**
+ * Esta es nuestra clase que sirve como tarjeta de usuario
+ * 
+ * @author Mihai Blidaru
+ * @author Sergio Dominguez
+ *
+ */
 public class UserCard extends PanelInterfaz {
 
 	private static final long serialVersionUID = -222109993973543359L;
+	
+	/**
+	 * Ancho del panel
+	 */
 	public static final int PANEL_WIDTH = 200;
+	
+	/**
+	 * Altura del panel
+	 */
 	public static final int PANEL_HEIGHT = 160;
 
+	/**
+	 * Id del usuario
+	 */
 	private int userID;
+	
+	/**
+	 * Tipo del usuario
+	 */
 	private String tipo;
+	
+	/**
+	 * Panel de la tarjeta
+	 */
 	private JPanel filaTarjeta;
+	
+	/**
+	 * Boton para editar
+	 */
 	private JButton editar;
+	
+	/**
+	 * Interfaz grafica
+	 */
 	private Gui gui;
+	
+	/**
+	 * Label que imprime el tipo
+	 */
 	private JLabel labelTipo;
+	
+	/**
+	 * Label que imprime el nombre del usuario
+	 */
 	private JLabel userName;
+	
+	/**
+	 * Label que imprime la tarjeta
+	 */
 	private JLabel labelTarjeta;
 
+	/**
+	 * Constructor de UserCard
+	 * @param gui interfaz grafica
+	 * @param userID id de usuario
+	 * @param tipo tipo del usuario
+	 */
 	public UserCard(Gui gui, Integer userID, String tipo) {
 		this.userID = userID;
 		this.tipo = tipo;
@@ -41,6 +93,10 @@ public class UserCard extends PanelInterfaz {
 		cargarDatos();
 	}
 
+	/**
+	 * Devuelve el id de usuario
+	 * @return userID id de usuario
+	 */
 	public Integer getUserId() {
 		return userID;
 	}
@@ -84,6 +140,9 @@ public class UserCard extends PanelInterfaz {
 
 	}
 
+	/**
+	 * Carga los datos de la tarjeta de usuario
+	 */
 	private void cargarDatos() {
 		Controller c = gui.getController();
 		if (tipo.equalsIgnoreCase("o")) {
@@ -98,14 +157,26 @@ public class UserCard extends PanelInterfaz {
 		labelTarjeta.setText(c.usuarioGetTarjeta(userID));
 	}
 
+	/**
+	 * Devuelve la tarjeta del usuario
+	 * @return tarjeta del usuario
+	 */
 	public String getTarjeta() {
 		return labelTarjeta.getText();
 	}
 
+	/**
+	 * Devuelve el nombre del usuario
+	 * @return nombre del usuario
+	 */
 	public String getNombre() {
 		return userName.getText();
 	}
 
+	/**
+	 * Devuelve el tipo del usuario
+	 * @return tipo del usuario
+	 */
 	public String getTipo() {
 		return labelTipo.getText();
 	}
