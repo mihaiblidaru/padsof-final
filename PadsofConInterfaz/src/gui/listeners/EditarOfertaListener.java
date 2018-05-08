@@ -73,6 +73,7 @@ public class EditarOfertaListener implements EventHandler<ActionEvent> {
 	 * Constructor de EdirtarOfertaListener
 	 * @param gui interfaz grafica
 	 * @param panelOferta
+	 * @param precioTextBox para aniadur precio
 	 * @param fianzaTextBox para aniadur fianza
 	 * @param desdeDatePicker para aniadur desde
 	 * @param hastaDatePicker para aniadur hasta 
@@ -82,7 +83,7 @@ public class EditarOfertaListener implements EventHandler<ActionEvent> {
 	 */
 	
 	
-	 * @param precioTextBox para aniadur precio
+	
 	 
 	public EditarOfertaListener(Gui gui, ParameterReference<PanelOferta> panelOferta, FxTextField precioTextBox,
 			FxTextField fianzaTextBox, FxDatePicker desdeDatePicker, FxDatePicker hastaDatePicker,
